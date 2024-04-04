@@ -36,10 +36,13 @@
       },
       "MESSAGE_SIGNATURE_SECTION": {
         "TITLE": "امضای پیام شخصی",
-        "NOTE": "یک امضای پیام شخصی ایجاد کنید که به همه پیام‌هایی که از صندوق ورودی ایمیل ارسال می‌کنید اضافه شود. از ویرایشگر محتوای غنی برای ایجاد یک امضای بسیار شخصی استفاده کنید.",
+        "NOTE": "یک امضای منحصر به فرد ایجاد کنید تا در انتهای تمام پیام هایی که از هر صندوق ورودی ارسال می کنید نمایش داده شود. همچنین می‌توانید یک تصویر درون خطی اضافه کنید که در چت، ایمیل و صندوق‌های ورودی API پشتیبانی می‌شود.",
         "BTN_TEXT": "ذخیره امضای پیام",
         "API_ERROR": "امضا ذخیره نشد! دوباره امتحان کنید",
-        "API_SUCCESS": "امضا با موفقیت ذخیره شد"
+        "API_SUCCESS": "امضا با موفقیت ذخیره شد",
+        "IMAGE_UPLOAD_ERROR": "تصویر ارسال نشد! دوباره امتحان کنید",
+        "IMAGE_UPLOAD_SUCCESS": "تصویر با موفقیت اضافه شد. لطفا بر روی ذخیره کلیک کنید تا امضا ذخیره شود",
+        "IMAGE_UPLOAD_SIZE_ERROR": "اندازه تصویر باید کمتر از {size} مگابایت باشد"
       },
       "MESSAGE_SIGNATURE": {
         "LABEL": "امضای پیام",
@@ -65,12 +68,12 @@
           "ALL_CONVERSATIONS": "همه گفتگوها"
         },
         "DEFAULT_TONE": {
-          "TITLE": "Alert tone:"
+          "TITLE": "صدای هشدار:"
         },
         "CONDITIONS": {
           "TITLE": "شرط‌های هشدار:",
-          "CONDITION_ONE": "Send audio alerts only if the browser window is not active",
-          "CONDITION_TWO": "Send alerts every 30s until all the assigned conversations are read"
+          "CONDITION_ONE": "فقط در صورتی که پنجره مرورگر فعال نباشد، هشدارهای صوتی را ارسال کنید",
+          "CONDITION_TWO": "هر 30 ثانیه یک بار هشدار ارسال کنید تا زمانی که تمام مکالمات اختصاص داده شده خوانده شود"
         }
       },
       "EMAIL_NOTIFICATIONS_SECTION": {
@@ -79,7 +82,8 @@
         "CONVERSATION_ASSIGNMENT": "هر وقت گفتگویی به من اختصاص داده شد،‌ ایمیل بفرست",
         "CONVERSATION_CREATION": "هر وقت گفتگوی جدیدی شروع شد برای من ایمیل بفرست",
         "CONVERSATION_MENTION": "هنگامی که از شما در گفتگو نام برده می‌شود، از طریق ایمیل آگاه‌سازی ارسال کن",
-        "ASSIGNED_CONVERSATION_NEW_MESSAGE": "با ایجاد پیام جدید در مکالمه اختصاصی ، اعلان های ایمیل را ارسال کنید"
+        "ASSIGNED_CONVERSATION_NEW_MESSAGE": "با ایجاد پیام جدید در مکالمه اختصاصی ، اعلان های ایمیل را ارسال کنید",
+        "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "هنگامی که یک پیام جدید در یک مکالمه شرکت کننده ایجاد می شود، اعلان های ایمیل ارسال کنید"
       },
       "API": {
         "UPDATE_SUCCESS": "تغییرات تنظیمات اعلامیه‌ها با موفقیت ثبت شد",
@@ -92,6 +96,7 @@
         "CONVERSATION_CREATION": "هر وقت گفتگوی جدیدی شروع شد برای من پوش نوتیفیکیشن بفرست",
         "CONVERSATION_MENTION": "هنگامی که از شما در مکالمه نام برده می شود پوش نوتیفیکیشن ارسال کنید",
         "ASSIGNED_CONVERSATION_NEW_MESSAGE": "وقتی پیام جدیدی در مکالمه اختصاص داده شده ایجاد می شود ، پوش نوتیفیکیشن را ارسال کنید",
+        "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "هنگامی که یک پیام جدید در یک مکالمه شرکت کننده ایجاد می شود، اعلان فشار ارسال کنید",
         "HAS_ENABLED_PUSH": "در این مرورگر پوش نوتیفیکیشن را فعال کرده‌اید",
         "REQUEST_PUSH": "فعال کردن پوش نوتیفیکیشن"
       },
@@ -147,6 +152,7 @@
     "SELECTOR_SUBTITLE": "از لیست یکی از حساب‌ها را انتخاب کنید",
     "PROFILE_SETTINGS": "تنظیمات پروفایل",
     "KEYBOARD_SHORTCUTS": "میانبرهای صفحه‌کلید",
+    "APPEARANCE": "تغییر ظاهر",
     "SUPER_ADMIN_CONSOLE": "کنسول سوپر مدیر",
     "LOGOUT": "خروج از حساب‌کاربری"
   },
@@ -154,6 +160,9 @@
     "TRIAL_MESSAGE": "روز تا اتمام دوره آزمایشی باقی است.",
     "TRAIL_BUTTON": "الان بخرید",
     "DELETED_USER": "کاربر حذف شده",
+    "EMAIL_VERIFICATION_PENDING": "It seems that you haven't verified your email address yet. Please check your inbox for the verification email.",
+    "RESEND_VERIFICATION_MAIL": "Resend verification email",
+    "EMAIL_VERIFICATION_SENT": "Verification email has been sent. Please check your inbox.",
     "ACCOUNT_SUSPENDED": {
       "TITLE": "حساب‌کاربری معلق شده است",
       "MESSAGE": "حساب‌کاربری شما به حالت تعلیق درآمده. لطفا برای اطلاعات بیشتر با تیم پشتیبانی تماس بگیرید."
@@ -162,6 +171,7 @@
   "COMPONENTS": {
     "CODE": {
       "BUTTON_TEXT": "کپی",
+      "CODEPEN": "در CodePen باز کنید",
       "COPY_SUCCESSFUL": "کد به حافظه کپی شد"
     },
     "SHOW_MORE_BLOCK": {
@@ -170,7 +180,8 @@
     },
     "FILE_BUBBLE": {
       "DOWNLOAD": "دانلود",
-      "UPLOADING": "در حال آپلود..."
+      "UPLOADING": "در حال آپلود...",
+      "INSTAGRAM_STORY_UNAVAILABLE": "این داستان دیگر در دسترس نیست."
     },
     "LOCATION_BUBBLE": {
       "SEE_ON_MAP": "مشاهده‌ بر روی نقشه"
@@ -189,8 +200,10 @@
     "CURRENTLY_VIEWING_ACCOUNT": "در حال مشاهده:",
     "SWITCH": "تعویض",
     "CONVERSATIONS": "گفتگوها",
+    "INBOX": "صندوق ورودی",
     "ALL_CONVERSATIONS": "همه گفتگوها",
     "MENTIONED_CONVERSATIONS": "اشاره",
+    "PARTICIPATING_CONVERSATIONS": "شرکت کننده",
     "UNATTENDED_CONVERSATIONS": "بی سرپرست",
     "REPORTS": "گزارشات",
     "SETTINGS": "تنظیمات",
@@ -198,6 +211,7 @@
     "HOME": "صفحه اصلی",
     "AGENTS": "ایجنت ها",
     "AGENT_BOTS": "ربات‌ها",
+    "AUDIT_LOGS": "بررسی لاگ هاگزارش های حسابرسی",
     "INBOXES": "صندوق‌های ورودی",
     "NOTIFICATIONS": "اعلان ها",
     "CANNED_RESPONSES": "پاسخ‌های آماده",
@@ -228,16 +242,18 @@
     "REPORTS_INBOX": "صندوق ورودی",
     "REPORTS_TEAM": "تیم‌",
     "SET_AVAILABILITY_TITLE": "خود را به عنوان",
+    "SLA": "SLA",
     "BETA": "آزمایشی",
     "REPORTS_OVERVIEW": "بررسی اجمالی",
     "FACEBOOK_REAUTHORIZE": "اتصال فیس بوک شما منقضی شده است ، لطفاً برای ادامه خدمات دوباره صفحه فیس بوک خود را متصل کنید",
     "HELP_CENTER": {
-      "TITLE": "مرکز راهنمایی (آزمایشی)",
+      "TITLE": "مرکز راهنما",
       "ALL_ARTICLES": "همه مقالات",
       "MY_ARTICLES": "مقالات من",
       "DRAFT": "پیش‌نویس",
       "ARCHIVED": "بایگانی شد",
       "CATEGORY": "دسته‌بندی",
+      "SETTINGS": "تنظیمات",
       "CATEGORY_EMPTY_MESSAGE": "هیچ دسته‌بندی‌ای یافت نشد"
     },
     "SET_AUTO_OFFLINE": {
@@ -282,6 +298,7 @@
     }
   },
   "KEYBOARD_SHORTCUTS": {
+    "TOGGLE_MODAL": "مشاهده همه کلیدهای میانبر",
     "TITLE": {
       "OPEN_CONVERSATION": "باز کردن گفتگو",
       "RESOLVE_AND_NEXT": "حل کنید و به مرحله بعدی بروید",

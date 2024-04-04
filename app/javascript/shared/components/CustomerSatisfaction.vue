@@ -47,7 +47,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Spinner from 'shared/components/Spinner';
+import Spinner from 'shared/components/Spinner.vue';
 import { CSAT_RATINGS } from 'shared/constants/messages';
 import FluentIcon from 'shared/components/FluentIcon/Index.vue';
 import darkModeMixin from 'widget/mixins/darkModeMixin';
@@ -231,6 +231,12 @@ export default {
         width: auto;
       }
     }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .customer-satisfaction .feedback-form input {
+    border-top: 1px solid var(--b-500);
   }
 }
 </style>

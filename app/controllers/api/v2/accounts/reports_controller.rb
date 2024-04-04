@@ -1,5 +1,7 @@
 class Api::V2::Accounts::ReportsController < Api::V1::Accounts::BaseController
   include Api::V2::Accounts::ReportsHelper
+  include Api::V2::Accounts::HeatmapHelper
+
   before_action :check_authorization
 
   def index
@@ -10,6 +12,12 @@ class Api::V2::Accounts::ReportsController < Api::V1::Accounts::BaseController
 
   def summary
     render json: summary_metrics
+  end
+
+  def bot_summary
+    summary = V2::ReportBuilder.new(Current.account, current_summary_params).bot_summary
+    summary[:previous] = V2::ReportBuilder.new(Current.account, previous_summary_params).bot_summary
+    render json: summary
   end
 
   def agents
@@ -32,10 +40,23 @@ class Api::V2::Accounts::ReportsController < Api::V1::Accounts::BaseController
     generate_csv('teams_report', 'api/v2/accounts/reports/teams')
   end
 
+  def conversation_traffic
+    @report_data = generate_conversations_heatmap_report
+    timezone_offset = (params[:timezone_offset] || 0).to_f
+    @timezone = ActiveSupport::TimeZone[timezone_offset]
+
+    generate_csv('conversation_traffic_reports', 'api/v2/accounts/reports/conversation_traffic')
+  end
+
   def conversations
     return head :unprocessable_entity if params[:type].blank?
 
     render json: conversation_metrics
+  end
+
+  def bot_metrics
+    bot_metrics = V2::Reports::BotMetricsBuilder.new(Current.account, params).metrics
+    render json: bot_metrics
   end
 
   private
@@ -62,14 +83,16 @@ class Api::V2::Accounts::ReportsController < Api::V1::Accounts::BaseController
   def current_summary_params
     common_params.merge({
                           since: range[:current][:since],
-                          until: range[:current][:until]
+                          until: range[:current][:until],
+                          timezone_offset: params[:timezone_offset]
                         })
   end
 
   def previous_summary_params
     common_params.merge({
                           since: range[:previous][:since],
-                          until: range[:previous][:until]
+                          until: range[:previous][:until],
+                          timezone_offset: params[:timezone_offset]
                         })
   end
 

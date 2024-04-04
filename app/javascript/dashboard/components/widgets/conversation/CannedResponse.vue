@@ -1,5 +1,13 @@
 <template>
-  <mention-box :items="items" @mention-select="handleMentionClick" />
+  <mention-box
+    v-if="items.length"
+    :items="items"
+    @mention-select="handleMentionClick"
+  >
+    <template slot-scope="{ item }">
+      <strong>{{ item.label }}</strong> - {{ item.description }}
+    </template>
+  </mention-box>
 </template>
 
 <script>

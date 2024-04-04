@@ -1,49 +1,130 @@
 import commonHelpers from '../../../../helper/commons';
 import getters from '../../conversations/getters';
+/*
+  Order of conversations in the fixture is as follows:
+  - lastActivity: c0 < c3 < c2 < c1
+  - createdAt: c3 < c2 < c1 < c0
+  - priority: c1 < c2 < c0 < c3
+  - waitingSince: c1 > c3 > c0 < c2
+*/
+import conversations from './conversations.fixtures';
 
 // loads .last() helper
 commonHelpers();
 
 describe('#getters', () => {
   describe('#getAllConversations', () => {
-    it('order conversations based on last message date', () => {
+    it('returns conversations ordered by lastActivityAt in descending order if no sort order is available', () => {
+      const state = { allConversations: [...conversations] };
+      expect(getters.getAllConversations(state)).toEqual([
+        conversations[1],
+        conversations[2],
+        conversations[3],
+        conversations[0],
+      ]);
+    });
+
+    it('returns conversations ordered by lastActivityAt in descending order if invalid sort order is available', () => {
       const state = {
-        allConversations: [
-          {
-            id: 1,
-            messages: [
-              {
-                created_at: 1466424480,
-              },
-            ],
-          },
-          {
-            id: 2,
-            messages: [
-              {
-                created_at: 2466424490,
-              },
-            ],
-          },
-        ],
+        allConversations: [...conversations],
+        chatSortFilter: 'latest',
       };
       expect(getters.getAllConversations(state)).toEqual([
-        {
-          id: 2,
-          messages: [
-            {
-              created_at: 2466424490,
-            },
-          ],
-        },
-        {
-          id: 1,
-          messages: [
-            {
-              created_at: 1466424480,
-            },
-          ],
-        },
+        conversations[1],
+        conversations[2],
+        conversations[3],
+        conversations[0],
+      ]);
+    });
+
+    it('returns conversations ordered by lastActivityAt in descending order if chatStatusFilter = last_activity_at_desc', () => {
+      const state = {
+        allConversations: [...conversations],
+        chatSortFilter: 'last_activity_at_desc',
+      };
+      expect(getters.getAllConversations(state)).toEqual([
+        conversations[1],
+        conversations[2],
+        conversations[3],
+        conversations[0],
+      ]);
+    });
+
+    it('returns conversations ordered by lastActivityAt in ascending order if chatStatusFilter = last_activity_at_asc', () => {
+      const state = {
+        allConversations: [...conversations],
+        chatSortFilter: 'last_activity_at_asc',
+      };
+      expect(getters.getAllConversations(state)).toEqual([
+        conversations[0],
+        conversations[3],
+        conversations[2],
+        conversations[1],
+      ]);
+    });
+
+    it('returns conversations ordered by createdAt in descending order if chatStatusFilter = created_at_desc', () => {
+      const state = {
+        allConversations: [...conversations],
+        chatSortFilter: 'created_at_desc',
+      };
+      expect(getters.getAllConversations(state)).toEqual([
+        conversations[0],
+        conversations[1],
+        conversations[2],
+        conversations[3],
+      ]);
+    });
+
+    it('returns conversations ordered by createdAt in ascending order if chatStatusFilter = created_at_asc', () => {
+      const state = {
+        allConversations: [...conversations],
+        chatSortFilter: 'created_at_asc',
+      };
+      expect(getters.getAllConversations(state)).toEqual([
+        conversations[3],
+        conversations[2],
+        conversations[1],
+        conversations[0],
+      ]);
+    });
+
+    it('returns conversations ordered by priority in descending order if chatStatusFilter = priority_desc', () => {
+      const state = {
+        allConversations: [...conversations],
+        chatSortFilter: 'priority_desc',
+      };
+      expect(getters.getAllConversations(state)).toEqual([
+        conversations[3],
+        conversations[0],
+        conversations[1],
+        conversations[2],
+      ]);
+    });
+
+    it('returns conversations ordered by priority in ascending order if chatStatusFilter = priority_asc', () => {
+      const state = {
+        allConversations: [...conversations],
+        chatSortFilter: 'priority_asc',
+      };
+      expect(getters.getAllConversations(state)).toEqual([
+        conversations[1],
+        conversations[2],
+        conversations[0],
+        conversations[3],
+      ]);
+    });
+
+    it('returns conversations ordered by longest waiting if chatStatusFilter = waiting_since_asc', () => {
+      const state = {
+        allConversations: [...conversations],
+        chatSortFilter: 'waiting_since_asc',
+      };
+      expect(getters.getAllConversations(state)).toEqual([
+        conversations[1],
+        conversations[3],
+        conversations[2],
+        conversations[0],
       ]);
     });
   });
@@ -159,6 +240,36 @@ describe('#getters', () => {
           },
         },
       });
+    });
+  });
+
+  describe('#getSelectedChatAttachments', () => {
+    it('Returns attachments in selected chat', () => {
+      const state = {};
+      const getSelectedChat = {
+        attachments: [
+          {
+            id: 1,
+            file_name: 'test1',
+          },
+          {
+            id: 2,
+            file_name: 'test2',
+          },
+        ],
+      };
+      expect(
+        getters.getSelectedChatAttachments(state, { getSelectedChat })
+      ).toEqual([
+        {
+          id: 1,
+          file_name: 'test1',
+        },
+        {
+          id: 2,
+          file_name: 'test2',
+        },
+      ]);
     });
   });
 });

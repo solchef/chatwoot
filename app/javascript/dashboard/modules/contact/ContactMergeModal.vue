@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <woot-modal :show.sync="show" :on-close="onClose">
     <woot-modal-header
@@ -19,14 +20,12 @@
 
 <script>
 import alertMixin from 'shared/mixins/alertMixin';
-import MergeContact from 'dashboard/modules/contact/components/MergeContact';
+import MergeContact from 'dashboard/modules/contact/components/MergeContact.vue';
 
 import ContactAPI from 'dashboard/api/contacts';
 
 import { mapGetters } from 'vuex';
-import AnalyticsHelper, {
-  ANALYTICS_EVENTS,
-} from '../../helper/AnalyticsHelper';
+import { CONTACTS_EVENTS } from '../../helper/AnalyticsHelper/events';
 
 export default {
   components: { MergeContact },
@@ -74,12 +73,12 @@ export default {
         this.isSearching = false;
       }
     },
-    async onMergeContacts(childContactId) {
-      AnalyticsHelper.track(ANALYTICS_EVENTS.MERGED_CONTACTS);
+    async onMergeContacts(parentContactId) {
+      this.$track(CONTACTS_EVENTS.MERGED_CONTACTS);
       try {
         await this.$store.dispatch('contacts/merge', {
-          childId: childContactId,
-          parentId: this.primaryContact.id,
+          childId: this.primaryContact.id,
+          parentId: parentContactId,
         });
         this.showAlert(this.$t('MERGE_CONTACTS.FORM.SUCCESS_MESSAGE'));
         this.onClose();

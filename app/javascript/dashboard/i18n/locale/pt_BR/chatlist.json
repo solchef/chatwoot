@@ -8,7 +8,7 @@
     },
     "TAB_HEADING": "Conversas",
     "MENTION_HEADING": "Menções",
-    "UNATTENDED_HEADING": "Não atendidas",
+    "UNATTENDED_HEADING": "Não Atendidas",
     "SEARCH": {
       "INPUT": "Pesquisar pessoas, conversas, respostas salvas .."
     },
@@ -30,6 +30,51 @@
       },
       "snoozed": {
         "TEXT": "Adiado"
+      },
+      "all": {
+        "TEXT": "Todos"
+      }
+    },
+    "VIEW_FILTER": "Visualizar",
+    "SORT_TOOLTIP_LABEL": "Classificar conversas",
+    "CHAT_SORT": {
+      "STATUS": "Situação",
+      "ORDER_BY": "Ordenar por"
+    },
+    "CHAT_TIME_STAMP": {
+      "CREATED": {
+        "LATEST": "Criado",
+        "OLDEST": "Criado em:"
+      },
+      "LAST_ACTIVITY": {
+        "NOT_ACTIVE": "Última atividade:",
+        "ACTIVE": "Última atividade"
+      }
+    },
+    "SORT_ORDER_ITEMS": {
+      "last_activity_at_asc": {
+        "TEXT": ""
+      },
+      "last_activity_at_desc": {
+        "TEXT": "Última atividade: Recentes primeiro"
+      },
+      "created_at_desc": {
+        "TEXT": "Criado em: Recentes primeiro"
+      },
+      "created_at_asc": {
+        "TEXT": "Criado em: Antigos primeiro"
+      },
+      "priority_desc": {
+        "TEXT": "Prioridade: Altas primeiro"
+      },
+      "priority_asc": {
+        "TEXT": "Prioridade: Baixas primeiro"
+      },
+      "waiting_since_asc": {
+        "TEXT": "Resposta pendente: Longas primeiro"
+      },
+      "waiting_since_desc": {
+        "TEXT": "Resposta pendente: Curtas primeiro"
       }
     },
     "ATTACHMENTS": {
@@ -52,12 +97,30 @@
         "CONTENT": "compartilhou uma URL"
       }
     },
+    "CHAT_SORT_BY_FILTER": {
+      "TITLE": "Classificar conversas",
+      "DROPDOWN_TITLE": "Ordenar por",
+      "ITEMS": {
+        "LATEST": {
+          "NAME": "Última atividade em",
+          "LABEL": "Última atividade"
+        },
+        "CREATED_AT": {
+          "NAME": "Criado em",
+          "LABEL": "Criado em"
+        },
+        "LAST_USER_MESSAGE_AT": {
+          "NAME": "Última mensagem de usuário em",
+          "LABEL": "Última mensagem"
+        }
+      }
+    },
     "RECEIVED_VIA_EMAIL": "Recebido por e-mail",
     "VIEW_TWEET_IN_TWITTER": "Ver tweet no Twitter",
     "REPLY_TO_TWEET": "Responder a este tweet",
     "LINK_TO_STORY": "Vá para o Story do Instagram",
     "SENT": "Enviado com sucesso",
-    "READ": "Leitura com sucesso",
+    "READ": "Lido com sucesso",
     "DELIVERED": "Entregue com sucesso",
     "NO_MESSAGES": "Nova Mensagem",
     "NO_CONTENT": "Nenhum conteúdo disponível",

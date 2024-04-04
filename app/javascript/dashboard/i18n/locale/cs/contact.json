@@ -15,6 +15,7 @@
     "INITIATED_FROM": "Zahájeno od",
     "INITIATED_AT": "Zahájeno v",
     "IP_ADDRESS": "IP adresa",
+    "CREATED_AT_LABEL": "Created",
     "NEW_MESSAGE": "New message",
     "CONVERSATIONS": {
       "NO_RECORDS_FOUND": "K tomuto kontaktu nejsou přiřazeny žádné předchozí konverzace.",
@@ -32,15 +33,16 @@
       "LABEL_SELECT": {
         "TITLE": "Add Labels",
         "PLACEHOLDER": "Search labels",
-        "NO_RESULT": "No labels found"
+        "NO_RESULT": "No labels found",
+        "CREATE_LABEL": "Create new label"
       }
     },
     "MERGE_CONTACT": "Merge contact",
     "CONTACT_ACTIONS": "Contact actions",
-    "MUTE_CONTACT": "Ztlumit konverzaci",
-    "UNMUTE_CONTACT": "Zrušit ztlumení konverzace",
-    "MUTED_SUCCESS": "Tato konverzace je ztlumena na 6 hodin",
-    "UNMUTED_SUCCESS": "Tato konverzace je odtlumena",
+    "MUTE_CONTACT": "Block Contact",
+    "UNMUTE_CONTACT": "Unblock Contact",
+    "MUTED_SUCCESS": "This contact is blocked successfully. You will not be notified of any future conversations.",
+    "UNMUTED_SUCCESS": "This contact is unblocked successfully.",
     "SEND_TRANSCRIPT": "Poslat přepis",
     "EDIT_LABEL": "Upravit",
     "SIDEBAR_SECTIONS": {
@@ -69,8 +71,21 @@
       "SUBMIT": "Import",
       "CANCEL": "Zrušit"
     },
-    "SUCCESS_MESSAGE": "Contacts saved successfully",
+    "SUCCESS_MESSAGE": "You will be notified via email when the import is complete.",
     "ERROR_MESSAGE": "Došlo k chybě, zkuste to prosím znovu"
+  },
+  "EXPORT_CONTACTS": {
+    "BUTTON_LABEL": "Export",
+    "TITLE": "Export Contacts",
+    "DESC": "Export contacts to a CSV file.",
+    "SUCCESS_MESSAGE": "Export is in progress, You will be notified via email when export file is ready to dowanlod.",
+    "ERROR_MESSAGE": "Došlo k chybě, zkuste to prosím znovu",
+    "CONFIRM": {
+      "TITLE": "Export Contacts",
+      "MESSAGE": "Are you sure you want to export all contacts?",
+      "YES": "Yes, Export",
+      "NO": "No, Cancel"
+    }
   },
   "DELETE_NOTE": {
     "CONFIRM": {
@@ -121,6 +136,7 @@
         "LABEL": "Telefonní číslo",
         "HELP": "Phone number should be of E.164 format eg: +1415555555 [+][country code][area code][local phone number]",
         "ERROR": "Phone number should be either empty or of E.164 format",
+        "DIAL_CODE_ERROR": "Please select a dial code from the list",
         "DUPLICATE": "This phone number is in use for another contact."
       },
       "LOCATION": {
@@ -130,6 +146,17 @@
       "COMPANY_NAME": {
         "PLACEHOLDER": "Zadejte název společnosti",
         "LABEL": "Název společnosti"
+      },
+      "COUNTRY": {
+        "PLACEHOLDER": "Enter the country name",
+        "LABEL": "Country Name",
+        "SELECT_PLACEHOLDER": "Select",
+        "REMOVE": "Odebrat",
+        "SELECT_COUNTRY": "Select Country"
+      },
+      "CITY": {
+        "PLACEHOLDER": "Enter the city name",
+        "LABEL": "City Name"
       },
       "SOCIAL_PROFILES": {
         "FACEBOOK": {
@@ -170,6 +197,7 @@
       },
       "INBOX": {
         "LABEL": "Inbox",
+        "PLACEHOLDER": "Choose source inbox",
         "ERROR": "Select an inbox"
       },
       "SUBJECT": {
@@ -181,6 +209,10 @@
         "LABEL": "Zpráva",
         "PLACEHOLDER": "Write your message here",
         "ERROR": "Message can't be empty"
+      },
+      "ATTACHMENTS": {
+        "SELECT": "Choose files",
+        "HELP_TEXT": "Drag and drop files here or choose files to attach"
       },
       "SUBMIT": "Send message",
       "CANCEL": "Zrušit",
@@ -197,6 +229,7 @@
     "FILTER_CONTACTS": "Filter",
     "FILTER_CONTACTS_SAVE": "Save filter",
     "FILTER_CONTACTS_DELETE": "Delete filter",
+    "FILTER_CONTACTS_EDIT": "Edit segment",
     "LIST": {
       "LOADING_MESSAGE": "Načítání kontaktů...",
       "404": "Vašemu hledání neodpovídají žádné kontakty 🔍",
@@ -206,6 +239,7 @@
         "PHONE_NUMBER": "Telefonní číslo",
         "CONVERSATIONS": "Konverzace",
         "LAST_ACTIVITY": "Poslední aktivita",
+        "CREATED_AT": "Vytvořeno",
         "COUNTRY": "Země",
         "CITY": "Město",
         "SOCIAL_PROFILES": "Sociální profily",
@@ -311,7 +345,8 @@
     },
     "VALIDATIONS": {
       "REQUIRED": "Valid value is required",
-      "INVALID_URL": "Invalid URL"
+      "INVALID_URL": "Invalid URL",
+      "INVALID_INPUT": "Invalid Input"
     }
   },
   "MERGE_CONTACTS": {
@@ -319,17 +354,17 @@
     "DESCRIPTION": "Merge contacts to combine two profiles into one, including all attributes and conversations. In case of conflict, the Primary contact’ s attributes will take precedence.",
     "PRIMARY": {
       "TITLE": "Primary contact",
-      "HELP_LABEL": "To be kept"
+      "HELP_LABEL": "To be deleted"
     },
-    "CHILD": {
+    "PARENT": {
       "TITLE": "Contact to merge",
       "PLACEHOLDER": "Search for a contact",
-      "HELP_LABEL": "To be deleted"
+      "HELP_LABEL": "To be kept"
     },
     "SUMMARY": {
       "TITLE": "Summary",
-      "DELETE_WARNING": "Contact of <strong>%{childContactName}</strong> will be deleted.",
-      "ATTRIBUTE_WARNING": "Contact details of <strong>%{childContactName}</strong> will be copied to <strong>%{primaryContactName}</strong>."
+      "DELETE_WARNING": "Contact of <strong>%{primaryContactName}</strong> will be deleted.",
+      "ATTRIBUTE_WARNING": "Contact details of <strong>%{primaryContactName}</strong> will be copied to <strong>%{parentContactName}</strong>."
     },
     "SEARCH": {
       "ERROR": "ERROR_MESSAGE"

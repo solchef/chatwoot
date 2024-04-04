@@ -4,6 +4,7 @@ import agent from './agents/agent.routes';
 import agentBot from './agentBots/agentBot.routes';
 import attributes from './attributes/attributes.routes';
 import automation from './automation/automation.routes';
+import auditlogs from './auditlogs/audit.routes';
 import billing from './billing/billing.routes';
 import campaigns from './campaigns/campaigns.routes';
 import canned from './canned/canned.routes';
@@ -15,6 +16,7 @@ import macros from './macros/macros.routes';
 import profile from './profile/profile.routes';
 import reports from './reports/reports.routes';
 import store from '../../../store';
+import sla from './sla/sla.routes';
 import teams from './teams/teams.routes';
 
 export default {
@@ -35,6 +37,7 @@ export default {
     ...agentBot.routes,
     ...attributes.routes,
     ...automation.routes,
+    ...auditlogs.routes,
     ...billing.routes,
     ...campaigns.routes,
     ...canned.routes,
@@ -45,6 +48,7 @@ export default {
     ...macros.routes,
     ...profile.routes,
     ...reports.routes,
+    ...sla.routes,
     ...teams.routes,
   ],
 };

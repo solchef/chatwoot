@@ -1,14 +1,19 @@
 <template>
-  <div class="wizard-body columns content-box small-9">
-    <form class="row" @submit.prevent="addAgents">
-      <div class="medium-12 columns">
+  <div
+    class="border border-slate-25 dark:border-slate-800/60 overflow-x-auto bg-white dark:bg-slate-900 h-full p-6 w-full max-w-full md:w-3/4 md:max-w-[75%] flex-shrink-0 flex-grow-0"
+  >
+    <form
+      class="mx-0 flex flex-wrap overflow-x-auto"
+      @submit.prevent="addAgents"
+    >
+      <div class="w-full">
         <page-header
           :header-title="headerTitle"
           :header-content="$t('TEAMS_SETTINGS.ADD.DESC')"
         />
       </div>
 
-      <div class="medium-12 columns">
+      <div class="w-full">
         <div v-if="$v.selectedAgents.$error">
           <p class="error-message">
             {{ $t('TEAMS_SETTINGS.ADD.AGENT_VALIDATION_ERROR') }}
@@ -31,8 +36,8 @@ import { mapGetters } from 'vuex';
 
 import alertMixin from 'shared/mixins/alertMixin';
 import router from '../../../../index';
-import PageHeader from '../../SettingsSubPageHeader';
-import AgentSelector from '../AgentSelector';
+import PageHeader from '../../SettingsSubPageHeader.vue';
+import AgentSelector from '../AgentSelector.vue';
 
 export default {
   components: {

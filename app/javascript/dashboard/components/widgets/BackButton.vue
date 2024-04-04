@@ -1,5 +1,8 @@
 <template>
-  <button class="back-button" @click.capture="goBack">
+  <button
+    class="header-section flex items-center text-base font-normal mr-4 ml-2 p-0 cursor-pointer text-woot-500 dark:text-woot-500"
+    @click.capture="goBack"
+  >
     <fluent-icon icon="chevron-left" />
     {{ buttonLabel || $t('GENERAL_SETTINGS.BACK') }}
   </button>
@@ -29,4 +32,3 @@ export default {
   },
 };
 </script>
-<style scoped></style>

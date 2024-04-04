@@ -1,13 +1,16 @@
 <template>
-  <div class="row">
-    <div class="integration--image">
-      <img :src="'/dashboard/images/integrations/' + integrationLogo" />
+  <div class="flex">
+    <div class="flex h-[6.25rem] w-[6.25rem]">
+      <img
+        :src="'/dashboard/images/integrations/' + integrationLogo"
+        class="max-w-full p-6"
+      />
     </div>
-    <div class="column">
-      <h3 class="integration--title">
+    <div class="flex flex-col justify-center m-0 mx-4 flex-1">
+      <h3 class="text-xl font-medium mb-1 text-slate-800 dark:text-slate-100">
         {{ integrationName }}
       </h3>
-      <p class="integration--description">
+      <p class="text-slate-700 dark:text-slate-200">
         {{
           useInstallationName(
             integrationDescription,
@@ -16,10 +19,14 @@
         }}
       </p>
     </div>
-    <div class="small-2 column button-wrap">
-      <woot-label :title="labelText" :color-scheme="labelColor" />
+    <div class="flex justify-center items-center mb-0 w-[15%]">
+      <woot-label
+        :title="labelText"
+        :color-scheme="labelColor"
+        class="text-xs rounded-sm"
+      />
     </div>
-    <div class="small-2 column button-wrap">
+    <div class="flex justify-center items-center mb-0 w-[15%]">
       <router-link
         :to="
           frontendURL(
@@ -37,7 +44,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { frontendURL } from '../../../../helper/URLHelper';
-import WootLabel from 'dashboard/components/ui/Label';
+import WootLabel from 'dashboard/components/ui/Label.vue';
 import globalConfigMixin from 'shared/mixins/globalConfigMixin';
 
 export default {

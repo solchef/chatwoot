@@ -1,11 +1,11 @@
 <template>
-  <div class="column content-box">
+  <div class="h-auto overflow-auto flex flex-col">
     <woot-modal-header
       :header-title="$t('CAMPAIGN.ADD.TITLE')"
       :header-content="$t('CAMPAIGN.ADD.DESC')"
     />
-    <form class="row" @submit.prevent="addCampaign">
-      <div class="medium-12 columns">
+    <form class="flex flex-col w-full" @submit.prevent="addCampaign">
+      <div class="w-full">
         <woot-input
           v-model="title"
           :label="$t('CAMPAIGN.ADD.FORM.TITLE.LABEL')"
@@ -16,19 +16,23 @@
           @blur="$v.title.$touch"
         />
 
-        <label v-if="isOngoingType" class="editor-wrap">
-          {{ $t('CAMPAIGN.ADD.FORM.MESSAGE.LABEL') }}
-          <woot-message-editor
-            v-model="message"
-            class="message-editor"
-            :class="{ editor_warning: $v.message.$error }"
-            :placeholder="$t('CAMPAIGN.ADD.FORM.MESSAGE.PLACEHOLDER')"
-            @blur="$v.message.$touch"
-          />
-          <span v-if="$v.message.$error" class="editor-warning__message">
-            {{ $t('CAMPAIGN.ADD.FORM.MESSAGE.ERROR') }}
-          </span>
-        </label>
+        <div v-if="isOngoingType" class="editor-wrap">
+          <label>
+            {{ $t('CAMPAIGN.ADD.FORM.MESSAGE.LABEL') }}
+          </label>
+          <div>
+            <woot-message-editor
+              v-model="message"
+              class="message-editor"
+              :class="{ editor_warning: $v.message.$error }"
+              :placeholder="$t('CAMPAIGN.ADD.FORM.MESSAGE.PLACEHOLDER')"
+              @blur="$v.message.$touch"
+            />
+            <span v-if="$v.message.$error" class="editor-warning__message">
+              {{ $t('CAMPAIGN.ADD.FORM.MESSAGE.ERROR') }}
+            </span>
+          </div>
+        </div>
 
         <label v-else :class="{ error: $v.message.$error }">
           {{ $t('CAMPAIGN.ADD.FORM.MESSAGE.LABEL') }}
@@ -57,7 +61,8 @@
         </label>
 
         <label
-          v-if="isOnOffType"
+          v-if="isOneOffType"
+          class="multiselect-wrap--small"
           :class="{ error: $v.selectedAudience.$error }"
         >
           {{ $t('CAMPAIGN.ADD.FORM.AUDIENCE.LABEL') }}
@@ -101,7 +106,7 @@
           </span>
         </label>
 
-        <label v-if="isOnOffType">
+        <label v-if="isOneOffType">
           {{ $t('CAMPAIGN.ADD.FORM.SCHEDULED_AT.LABEL') }}
           <woot-date-time-picker
             :value="scheduledAt"
@@ -157,7 +162,7 @@
         </label>
       </div>
 
-      <div class="modal-footer">
+      <div class="flex flex-row justify-end gap-2 py-2 px-0 w-full">
         <woot-button :is-loading="uiFlags.isCreating">
           {{ $t('CAMPAIGN.ADD.CREATE_BUTTON_TEXT') }}
         </woot-button>
@@ -173,10 +178,11 @@
 import { mapGetters } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
 import alertMixin from 'shared/mixins/alertMixin';
-import WootMessageEditor from 'dashboard/components/widgets/WootWriter/Editor';
+import WootMessageEditor from 'dashboard/components/widgets/WootWriter/Editor.vue';
 import campaignMixin from 'shared/mixins/campaignMixin';
 import WootDateTimePicker from 'dashboard/components/ui/DateTimePicker.vue';
 import { URLPattern } from 'urlpattern-polyfill';
+import { CAMPAIGNS_EVENTS } from '../../../../helper/AnalyticsHelper/events';
 
 export default {
   components: {
@@ -275,6 +281,11 @@ export default {
       ];
     },
   },
+  mounted() {
+    this.$track(CAMPAIGNS_EVENTS.OPEN_NEW_CAMPAIGN_MODAL, {
+      type: this.campaignType,
+    });
+  },
   methods: {
     onClose() {
       this.$emit('on-close');
@@ -339,6 +350,12 @@ export default {
       try {
         const campaignDetails = this.getCampaignDetails();
         await this.$store.dispatch('campaigns/create', campaignDetails);
+
+        // tracking this here instead of the store to track the type of campaign
+        this.$track(CAMPAIGNS_EVENTS.CREATE_CAMPAIGN, {
+          type: this.campaignType,
+        });
+
         this.showAlert(this.$t('CAMPAIGN.ADD.API.SUCCESS_MESSAGE'));
         this.onClose();
       } catch (error) {
@@ -352,6 +369,16 @@ export default {
 </script>
 <style lang="scss" scoped>
 ::v-deep .ProseMirror-woot-style {
-  height: 8rem;
+  height: 5rem;
+}
+
+.message-editor {
+  @apply px-3;
+
+  ::v-deep {
+    .ProseMirror-menubar {
+      @apply rounded-tl-[4px];
+    }
+  }
 }
 </style>

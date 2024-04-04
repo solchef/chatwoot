@@ -1,6 +1,6 @@
 <template>
-  <div class="row ">
-    <div class="small-8 columns with-right-space ">
+  <div class="flex flex-row gap-4">
+    <div class="w-full lg:w-3/5">
       <table v-if="hasConnectedHooks" class="woot-table">
         <thead>
           <th v-for="hookHeader in hookHeaders" :key="hookHeader">
@@ -15,14 +15,14 @@
             <td
               v-for="property in hook.properties"
               :key="property"
-              class="hook-item"
+              class="break-words"
             >
               {{ property }}
             </td>
-            <td v-if="isHookTypeInbox" class="hook-item">
+            <td v-if="isHookTypeInbox" class="break-words">
               {{ inboxName(hook) }}
             </td>
-            <td class="button-wrapper">
+            <td class="flex justify-end gap-1">
               <woot-button
                 v-tooltip.top="$t('INTEGRATION_APPS.LIST.DELETE.BUTTON_TEXT')"
                 variant="smooth"
@@ -36,7 +36,7 @@
           </tr>
         </tbody>
       </table>
-      <p v-else class="no-items-error-message">
+      <p v-else class="flex flex-col items-center justify-center h-full">
         {{
           $t('INTEGRATION_APPS.NO_HOOK_CONFIGURED', {
             integrationId: integration.id,
@@ -44,7 +44,7 @@
         }}
       </p>
     </div>
-    <div class="small-4 columns">
+    <div class="hidden w-1/3 lg:block">
       <p>
         <b>{{ integration.name }}</b>
       </p>
@@ -99,8 +99,3 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss">
-.hook-item {
-  word-break: break-word;
-}
-</style>

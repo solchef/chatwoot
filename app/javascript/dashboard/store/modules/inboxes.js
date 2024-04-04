@@ -6,9 +6,8 @@ import WebChannel from '../../api/channel/webChannel';
 import FBChannel from '../../api/channel/fbChannel';
 import TwilioChannel from '../../api/channel/twilioChannel';
 import { throwErrorMessage } from '../utils/api';
-import AnalyticsHelper, {
-  ANALYTICS_EVENTS,
-} from '../../helper/AnalyticsHelper';
+import AnalyticsHelper from '../../helper/AnalyticsHelper';
+import { ACCOUNT_EVENTS } from '../../helper/AnalyticsHelper/events';
 
 const buildInboxData = inboxParams => {
   const formData = new FormData();
@@ -77,10 +76,8 @@ export const getters = {
   },
   getNewConversationInboxes($state) {
     return $state.records.filter(inbox => {
-      const {
-        channel_type: channelType,
-        phone_number: phoneNumber = '',
-      } = inbox;
+      const { channel_type: channelType, phone_number: phoneNumber = '' } =
+        inbox;
 
       const isEmailChannel = channelType === INBOX_TYPES.EMAIL;
       const isSmsChannel =
@@ -121,16 +118,27 @@ export const getters = {
 };
 
 const sendAnalyticsEvent = channelType => {
-  AnalyticsHelper.track(ANALYTICS_EVENTS.ADDED_AN_INBOX, {
+  AnalyticsHelper.track(ACCOUNT_EVENTS.ADDED_AN_INBOX, {
     channelType,
   });
 };
 
 export const actions = {
+  revalidate: async ({ commit }, { newKey }) => {
+    try {
+      const isExistingKeyValid = await InboxesAPI.validateCacheKey(newKey);
+      if (!isExistingKeyValid) {
+        const response = await InboxesAPI.refetchAndCommit(newKey);
+        commit(types.default.SET_INBOXES, response.data.payload);
+      }
+    } catch (error) {
+      // Ignore error
+    }
+  },
   get: async ({ commit }) => {
     commit(types.default.SET_INBOXES_UI_FLAG, { isFetching: true });
     try {
-      const response = await InboxesAPI.get();
+      const response = await InboxesAPI.get(true);
       commit(types.default.SET_INBOXES_UI_FLAG, { isFetching: false });
       commit(types.default.SET_INBOXES, response.data.payload);
     } catch (error) {
@@ -147,8 +155,9 @@ export const actions = {
       sendAnalyticsEvent(channel.type);
       return response.data;
     } catch (error) {
+      const errorMessage = error?.response?.data?.message;
       commit(types.default.SET_INBOXES_UI_FLAG, { isCreating: false });
-      throw new Error(error);
+      throw new Error(errorMessage);
     }
   },
   createWebsiteChannel: async ({ commit }, params) => {

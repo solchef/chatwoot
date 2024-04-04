@@ -27,6 +27,7 @@ export default {
       inboxes: 'inboxes/getInboxes',
       labels: 'labels/getLabels',
       teams: 'teams/getTeams',
+      slaPolicies: 'sla/getSLA',
     }),
     booleanFilterOptions() {
       return [
@@ -169,8 +170,9 @@ export default {
     showActionInput(action) {
       if (action === 'send_email_to_team' || action === 'send_message')
         return false;
-      const type = this.automationActionTypes.find(i => i.key === action)
-        .inputType;
+      const type = this.automationActionTypes.find(
+        i => i.key === action
+      ).inputType;
       return !!type;
     },
     resetAction(index) {
@@ -197,6 +199,12 @@ export default {
           return {
             ...condition,
             values: condition.values[0],
+          };
+        }
+        if (inputType === 'comma_separated_plain_text') {
+          return {
+            ...condition,
+            values: condition.values.join(','),
           };
         }
         return {
@@ -250,17 +258,25 @@ export default {
       };
     },
     getActionDropdownValues(type) {
-      const { labels, teams } = this;
-      return getActionOptions({ labels, teams, type });
+      const { agents, labels, teams, slaPolicies } = this;
+      return getActionOptions({
+        agents,
+        labels,
+        teams,
+        slaPolicies,
+        languages,
+        type,
+      });
     },
     manifestCustomAttributes() {
       const conversationCustomAttributesRaw = this.$store.getters[
         'attributes/getAttributesByModel'
       ]('conversation_attribute');
 
-      const contactCustomAttributesRaw = this.$store.getters[
-        'attributes/getAttributesByModel'
-      ]('contact_attribute');
+      const contactCustomAttributesRaw =
+        this.$store.getters['attributes/getAttributesByModel'](
+          'contact_attribute'
+        );
       const conversationCustomAttributeTypes = generateCustomAttributeTypes(
         conversationCustomAttributesRaw,
         'conversation_attribute'
@@ -282,6 +298,9 @@ export default {
         ...manifestedCustomAttributes
       );
       this.automationTypes.conversation_updated.conditions.push(
+        ...manifestedCustomAttributes
+      );
+      this.automationTypes.conversation_opened.conditions.push(
         ...manifestedCustomAttributes
       );
     },

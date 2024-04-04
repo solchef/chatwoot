@@ -1,3 +1,4 @@
+import { PRIORITY_CONDITION_VALUES } from 'dashboard/helper/automationHelper.js';
 export default {
   methods: {
     getDropdownValues(type) {
@@ -6,7 +7,7 @@ export default {
         case 'send_email_to_team':
           return this.teams;
         case 'assign_agent':
-          return this.agents;
+          return [{ id: 'self', name: 'Self' }, ...this.agents];
         case 'add_label':
         case 'remove_label':
           return this.labels.map(i => {
@@ -15,6 +16,8 @@ export default {
               name: i.title,
             };
           });
+        case 'change_priority':
+          return PRIORITY_CONDITION_VALUES;
         default:
           return [];
       }

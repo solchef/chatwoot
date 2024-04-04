@@ -18,7 +18,7 @@ import createAxios from '../dashboard/helper/APIHelper';
 import commonHelpers, { isJSONValid } from '../dashboard/helper/commons';
 import router, { initalizeRouter } from '../dashboard/routes';
 import store from '../dashboard/store';
-import constants from '../dashboard/constants';
+import constants from 'dashboard/constants/globals';
 import * as Sentry from '@sentry/vue';
 import 'vue-easytable/libs/theme-default/index.css';
 import { Integrations } from '@sentry/tracing';
@@ -29,7 +29,8 @@ import {
 import FluentIcon from 'shared/components/FluentIcon/DashboardIcon';
 import VueDOMPurifyHTML from 'vue-dompurify-html';
 import { domPurifyConfig } from '../shared/helpers/HTMLSanitizer';
-import AnalyticsHelper from '../dashboard/helper/AnalyticsHelper';
+import AnalyticsPlugin from '../dashboard/helper/AnalyticsHelper/plugin';
+import resizeDirective from '../dashboard/helper/directives/resize.js';
 
 Vue.config.env = process.env;
 
@@ -37,7 +38,23 @@ if (window.errorLoggingConfig) {
   Sentry.init({
     Vue,
     dsn: window.errorLoggingConfig,
+    denyUrls: [
+      // Chrome extensions
+      /^chrome:\/\//i,
+      /chrome-extension:/i,
+      /extensions\//i,
+
+      // Locally saved copies
+      /file:\/\//i,
+
+      // Safari extensions.
+      /safari-web-extension:/i,
+      /safari-extension:/i,
+    ],
     integrations: [new Integrations.BrowserTracing()],
+    ignoreErrors: [
+      'ResizeObserver loop completed with undelivered notifications',
+    ],
   });
 }
 
@@ -55,12 +72,14 @@ Vue.use(VTooltip, {
   defaultHtml: false,
 });
 Vue.use(hljs.vuePlugin);
+Vue.use(AnalyticsPlugin);
 
 Vue.component('multiselect', Multiselect);
 Vue.component('woot-switch', WootSwitch);
 Vue.component('woot-wizard', WootWizard);
 Vue.component('fluent-icon', FluentIcon);
 
+Vue.directive('resize', resizeDirective);
 const i18nConfig = new VueI18n({
   locale: 'en',
   messages: i18n,
@@ -74,7 +93,6 @@ window.WootConstants = constants;
 window.axios = createAxios(axios);
 window.bus = new Vue();
 initializeChatwootEvents();
-AnalyticsHelper.init();
 initializeAnalyticsEvents();
 initalizeRouter();
 

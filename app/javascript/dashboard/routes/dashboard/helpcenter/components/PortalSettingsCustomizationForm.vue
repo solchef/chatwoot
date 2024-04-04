@@ -1,24 +1,30 @@
 <template>
-  <div class="wizard-body height-auto small-9 columns">
-    <div class="medium-12 columns">
-      <h3 class="block-title">
+  <div
+    class="pt-3 bg-white dark:bg-slate-900 h-full border border-solid border-transparent px-6 pb-6 dark:border-transparent w-full max-w-full md:w-3/4 md:max-w-[75%] flex-shrink-0 flex-grow-0"
+  >
+    <div class="w-full">
+      <h3 class="text-lg text-black-900 dark:text-slate-200">
         {{
           $t('HELP_CENTER.PORTAL.ADD.CREATE_FLOW_PAGE.CUSTOMIZATION_PAGE.TITLE')
         }}
       </h3>
     </div>
-    <div class="portal-form">
-      <div class="medium-8 columns">
-        <div class="form-item">
+    <div
+      class="my-4 mx-0 border-b border-solid border-slate-25 dark:border-slate-800"
+    >
+      <div class="w-[65%] flex-shrink-0 flex-grow-0 max-w-[65%]">
+        <div class="mb-4">
           <label>
             {{ $t('HELP_CENTER.PORTAL.ADD.THEME_COLOR.LABEL') }}
           </label>
           <woot-color-picker v-model="color" />
-          <p class="color-help--text">
+          <p
+            class="mt-1 mb-0 text-xs text-slate-600 dark:text-slate-400 not-italic"
+          >
             {{ $t('HELP_CENTER.PORTAL.ADD.THEME_COLOR.HELP_TEXT') }}
           </p>
         </div>
-        <div class="form-item">
+        <div class="mb-4">
           <woot-input
             v-model.trim="pageTitle"
             :label="$t('HELP_CENTER.PORTAL.ADD.PAGE_TITLE.LABEL')"
@@ -26,7 +32,7 @@
             :help-text="$t('HELP_CENTER.PORTAL.ADD.PAGE_TITLE.HELP_TEXT')"
           />
         </div>
-        <div class="form-item">
+        <div class="mb-4">
           <woot-input
             v-model.trim="headerText"
             :label="$t('HELP_CENTER.PORTAL.ADD.HEADER_TEXT.LABEL')"
@@ -34,14 +40,14 @@
             :help-text="$t('HELP_CENTER.PORTAL.ADD.HEADER_TEXT.HELP_TEXT')"
           />
         </div>
-        <div class="form-item">
+        <div class="mb-4">
           <woot-input
             v-model.trim="homePageLink"
             :label="$t('HELP_CENTER.PORTAL.ADD.HOME_PAGE_LINK.LABEL')"
             :placeholder="
               $t('HELP_CENTER.PORTAL.ADD.HOME_PAGE_LINK.PLACEHOLDER')
             "
-            :help-text="$t('HELP_CENTER.PORTAL.ADD.HOME_PAGE_LINK.HELP_TEXT')"
+            :help-text="homepageExampleHelpText"
             :error="
               $v.homePageLink.$error
                 ? $t('HELP_CENTER.PORTAL.ADD.HOME_PAGE_LINK.ERROR')
@@ -53,7 +59,7 @@
         </div>
       </div>
     </div>
-    <div class="flex-end">
+    <div class="flex justify-end">
       <woot-button
         :is-loading="isSubmitting"
         :is-disabled="$v.$invalid"
@@ -74,6 +80,9 @@ import { url } from 'vuelidate/lib/validators';
 import { getRandomColor } from 'dashboard/helper/labelColor';
 
 import alertMixin from 'shared/mixins/alertMixin';
+import wootConstants from 'dashboard/constants/globals';
+
+const { EXAMPLE_URL } = wootConstants;
 
 export default {
   components: {},
@@ -100,6 +109,13 @@ export default {
   validations: {
     homePageLink: {
       url,
+    },
+  },
+  computed: {
+    homepageExampleHelpText() {
+      return this.$t('HELP_CENTER.PORTAL.ADD.HOME_PAGE_LINK.HELP_TEXT', {
+        exampleURL: EXAMPLE_URL,
+      });
     },
   },
   mounted() {
@@ -136,34 +152,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.wizard-body {
-  padding-top: var(--space-slab);
-  border: 1px solid transparent;
-}
-.portal-form {
-  margin: var(--space-normal) 0;
-  border-bottom: 1px solid var(--s-25);
-
-  .form-item {
-    margin-bottom: var(--space-normal);
-    .color-help--text {
-      margin-top: var(--space-smaller);
-      margin-bottom: 0;
-      font-size: var(--font-size-mini);
-      color: var(--s-600);
-      font-style: normal;
-    }
-  }
-}
 ::v-deep {
   input {
-    margin-bottom: var(--space-smaller);
+    @apply mb-1;
   }
   .help-text {
-    margin-bottom: 0;
+    @apply mb-0;
   }
   .colorpicker--selected {
-    margin-bottom: 0;
+    @apply mb-0;
   }
 }
 </style>

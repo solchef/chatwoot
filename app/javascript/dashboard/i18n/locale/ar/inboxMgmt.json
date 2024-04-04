@@ -111,6 +111,17 @@
           "PLACEHOLDER": "الرجاء إدخال معرف حساب Twilio الخاص بك (يعرف أيضاً بـ Account SID)",
           "ERROR": "هذا الحقل مطلوب"
         },
+        "API_KEY": {
+          "USE_API_KEY": "Use API Key Authentication",
+          "LABEL": "API Key SID",
+          "PLACEHOLDER": "Please enter your API Key SID",
+          "ERROR": "هذا الحقل مطلوب"
+        },
+        "API_KEY_SECRET": {
+          "LABEL": "API Key Secret",
+          "PLACEHOLDER": "Please enter your API Key Secret",
+          "ERROR": "هذا الحقل مطلوب"
+        },
         "MESSAGING_SERVICE_SID": {
           "LABEL": "SID خدمة المراسلة",
           "PLACEHOLDER": "الرجاء إدخال SID لخدمة مراسلة Twilio",
@@ -134,7 +145,7 @@
         "PHONE_NUMBER": {
           "LABEL": "رقم الهاتف",
           "PLACEHOLDER": "الرجاء إدخال رقم الهاتف الذي سيتم إرسال الرسائل منه.",
-          "ERROR": "Please provide a valid phone number that starts with a `+` sign and does not contain any spaces."
+          "ERROR": "الرجاء تقديم رقم هاتف صالح يبدأ بإشارة '+' ولا يحتوي على أي مسافات."
         },
         "API_CALLBACK": {
           "TITLE": "عنوان Callback URL",
@@ -185,7 +196,7 @@
           "PHONE_NUMBER": {
             "LABEL": "رقم الهاتف",
             "PLACEHOLDER": "الرجاء إدخال رقم الهاتف الذي سيتم إرسال الرسائل منه.",
-            "ERROR": "Please provide a valid phone number that starts with a `+` sign and does not contain any spaces."
+            "ERROR": "الرجاء تقديم رقم هاتف صالح يبدأ بإشارة '+' ولا يحتوي على أي مسافات."
           },
           "SUBMIT_BUTTON": "إنشاء قناة عرض التردد",
           "API": {
@@ -214,7 +225,7 @@
         "PHONE_NUMBER": {
           "LABEL": "رقم الهاتف",
           "PLACEHOLDER": "الرجاء إدخال رقم الهاتف الذي سيتم إرسال الرسائل منه.",
-          "ERROR": "Please provide a valid phone number that starts with a `+` sign and does not contain any spaces."
+          "ERROR": "الرجاء تقديم رقم هاتف صالح يبدأ بإشارة '+' ولا يحتوي على أي مسافات."
         },
         "PHONE_NUMBER_ID": {
           "LABEL": "رقم الهاتف",
@@ -239,9 +250,9 @@
         },
         "API_CALLBACK": {
           "TITLE": "عنوان Callback URL",
-          "SUBTITLE": "You have to configure the webhook URL and the verification token in the Facebook Developer portal with the values shown below.",
+          "SUBTITLE": "يجب عليك تكوين رابط الويب هوك و رمز التحقق في بوابة مطور الفيسبوك مع القيم الموضحة أدناه.",
           "WEBHOOK_URL": "رابط Webhook",
-          "WEBHOOK_VERIFICATION_TOKEN": "Webhook Verification Token"
+          "WEBHOOK_VERIFICATION_TOKEN": "رمز التحقق من Webhook"
         },
         "SUBMIT_BUTTON": "إنشاء قناة واتساب",
         "API": {
@@ -344,11 +355,24 @@
       "FINISH": {
         "TITLE": "تم!",
         "DESC": "لقد تم بنجاح ربط صفحة فيسبوك الخاصة بك مع Chatwoot. في المرة القادمة التي يرسل فيها العملاء رسالة إلى صفحتك، ستظهر المحادثة تلقائيًا على صندوق الوارد الخاص بك هنا.<br>نحن نزودك أيضًا بالكود النصي لصندوق دردشة الماسنجر والذي يمكنك إضافته بسهولة إلى الموقع الخاص بك لاستقبال الرسائل من الزوار كذلك. بمجرد أن يتم ذلك على موقع الويب الخاص بك، يمكن للعملاء مراسلتك من موقع الويب الخاص بك بدون الحاجة لأي أدوات خارجية وستظهر المحادثة هنا على Chatwoot.<br>رائع، أليس كذلك؟ نحن بالتأكيد نحاول أن نكون الأفضل :)"
+      },
+      "EMAIL_PROVIDER": {
+        "TITLE": "Select your email provider",
+        "DESCRIPTION": "Select an email provider from the list below. If you don't see your email provider in the list, you can select the other provider option and provide the IMAP and SMTP Credentials."
+      },
+      "MICROSOFT": {
+        "TITLE": "Microsoft Email",
+        "DESCRIPTION": "Click on the Sign in with Microsoft button to get started. You will redirected to the email sign in page. Once you accept the requested permissions, you would be redirected back to the inbox creation step.",
+        "EMAIL_PLACEHOLDER": "Enter email address",
+        "HELP": "To add your Microsoft account as a channel, you need to authenticate your Microsoft account by clicking on 'Sign in with Microsoft' ",
+        "ERROR_MESSAGE": "There was an error connecting to Microsoft, please try again"
       }
     },
     "DETAILS": {
       "LOADING_FB": "جار المصادقة والربط مع الفيسبوك...",
       "ERROR_FB_AUTH": "حدث خطأ ما، الرجاء تحديث الصفحة...",
+      "ERROR_FB_UNAUTHORIZED": "You're not authorized to perform this action. ",
+      "ERROR_FB_UNAUTHORIZED_HELP": "Please ensure you have access to the Facebook page with full control. You can read more about Facebook roles <a href=\" https://www.facebook.com/help/187316341316631\">here</a>.",
       "CREATING_CHANNEL": "جار إنشاء قناة التواصل...",
       "TITLE": "تهيئة إعدادات قناة التواصل",
       "DESC": ""
@@ -379,6 +403,25 @@
       "ENABLE_CSAT": {
         "ENABLED": "مفعل",
         "DISABLED": "معطّل"
+      },
+      "SENDER_NAME_SECTION": {
+        "TITLE": "Sender name",
+        "SUB_TEXT": "Select the name shown to the your customer when they receive emails from your agents.",
+        "FOR_EG": "For eg:",
+        "FRIENDLY": {
+          "TITLE": "Friendly",
+          "FROM": "من",
+          "SUBTITLE": "Add the name of the agent who sent the reply in the sender name to make it friendly."
+        },
+        "PROFESSIONAL": {
+          "TITLE": "Professional",
+          "SUBTITLE": "Use only the configured business name as the sender name in the email header."
+        },
+        "BUSINESS_NAME": {
+          "BUTTON_TEXT": "+ Configure your business name",
+          "PLACEHOLDER": "Enter your business name",
+          "SAVE_BUTTON_TEXT": "حفظ"
+        }
       },
       "ALLOW_MESSAGES_AFTER_RESOLVED": {
         "ENABLED": "مفعل",
@@ -421,14 +464,15 @@
       "PRE_CHAT_FORM": "نموذج ما قبل الدردشة",
       "BUSINESS_HOURS": "ساعات العمل",
       "WIDGET_BUILDER": "منشئ اللايف شات",
-      "BOT_CONFIGURATION": "Bot Configuration"
+      "BOT_CONFIGURATION": "اعدادات البوت"
     },
     "SETTINGS": "الإعدادات",
     "FEATURES": {
       "LABEL": "الخصائص",
       "DISPLAY_FILE_PICKER": "عرض أداة انتقاء الملفات في الـ widget",
       "DISPLAY_EMOJI_PICKER": "عرض منتقي الرموز التعبيرية على الـ widget",
-      "ALLOW_END_CONVERSATION": "السماح للمستخدمين بإنهاء المحادثة من عنصر واجهة المستخدم"
+      "ALLOW_END_CONVERSATION": "السماح للمستخدمين بإنهاء المحادثة من عنصر واجهة المستخدم",
+      "USE_INBOX_AVATAR_FOR_BOT": "Use inbox name and avatar for the bot"
     },
     "SETTINGS_POPUP": {
       "MESSENGER_HEADING": "كود \"الماسنجر\"",
@@ -442,16 +486,19 @@
       "ENABLE_EMAIL_COLLECT_BOX_SUB_TEXT": "تمكين أو تعطيل مربع جمع البريد الإلكتروني في محادثة جديدة",
       "AUTO_ASSIGNMENT": "تفعيل الإسناد التلقائي",
       "ENABLE_CSAT": "تمكين تقييم خدمة العملاء",
+      "SENDER_NAME_SECTION": "Enable Agent Name in Email",
       "ENABLE_CSAT_SUB_TEXT": "تمكين/تعطيل تقييم خدمة العملاء بعد إنتهاء المحادثة",
+      "SENDER_NAME_SECTION_TEXT": "Enable/Disable showing Agent's name in email, if disabled it will show business name",
       "ENABLE_CONTINUITY_VIA_EMAIL": "تمكين استمرارية المحادثة عبر البريد الإلكتروني",
       "ENABLE_CONTINUITY_VIA_EMAIL_SUB_TEXT": "المحادثات ستستمر عبر البريد الإلكتروني إذا كان عنوان البريد الإلكتروني لجهة الاتصال متاحاً.",
-      "LOCK_TO_SINGLE_CONVERSATION": "Lock to single conversation",
-      "LOCK_TO_SINGLE_CONVERSATION_SUB_TEXT": "Enable or disable multiple conversations for the same contact in this inbox",
+      "LOCK_TO_SINGLE_CONVERSATION": "قفل إلى محادثة واحدة",
+      "LOCK_TO_SINGLE_CONVERSATION_SUB_TEXT": "تمكين أو تعطيل محادثات متعددة لنفس جهة الاتصال في هذا البريد الوارد",
       "INBOX_UPDATE_TITLE": "إعدادات قناة التواصل",
       "INBOX_UPDATE_SUB_TEXT": "تحديث إعدادات قناة التواصل",
       "AUTO_ASSIGNMENT_SUB_TEXT": "تمكين أو تعطيل الإسناد التلقائي للمحادثات الجديدة إلى الموظفين المضافين إلى قناة التواصل هذه.",
       "HMAC_VERIFICATION": "التحقق من هوية المستخدم",
       "HMAC_DESCRIPTION": "من أجل التحقق من هوية المستخدم، يمكنك تمرير 'IDer_hash` لكل مستخدم. يمكنك إنشاء تجزئة HMAC sha256 باستخدام \"المعرف\" مع المفتاح المعروض هنا.",
+      "HMAC_LINK_TO_DOCS": "You can read more here.",
       "HMAC_MANDATORY_VERIFICATION": "فرض التحقق من هوية المستخدم",
       "HMAC_MANDATORY_DESCRIPTION": "في حالة التمكين، سيتم رفض الطلبات المفقودة 'IDer_hash'.",
       "INBOX_IDENTIFIER": "معرف صندوق الوارد",
@@ -461,7 +508,21 @@
       "ALLOW_MESSAGES_AFTER_RESOLVED": "السماح بالرسائل بعد حل المحادثة",
       "ALLOW_MESSAGES_AFTER_RESOLVED_SUB_TEXT": "السماح للمستخدمين النهائيين بإرسال رسائل حتى بعد تسوية المحادثة.",
       "WHATSAPP_SECTION_SUBHEADER": "يتم استخدام مفتاح API هذا للتكامل مع واتسب APIs.",
-      "WHATSAPP_SECTION_TITLE": "مفتاح API"
+      "WHATSAPP_SECTION_UPDATE_SUBHEADER": "Enter the updated key to be used for the integration with the WhatsApp APIs.",
+      "WHATSAPP_SECTION_TITLE": "مفتاح API",
+      "WHATSAPP_SECTION_UPDATE_TITLE": "Update API Key",
+      "WHATSAPP_SECTION_UPDATE_PLACEHOLDER": "Enter the new API Key here",
+      "WHATSAPP_SECTION_UPDATE_BUTTON": "تحديث",
+      "WHATSAPP_WEBHOOK_TITLE": "رمز التحقق من Webhook",
+      "WHATSAPP_WEBHOOK_SUBHEADER": "This token is used to verify the authenticity of the webhook endpoint.",
+      "UPDATE_PRE_CHAT_FORM_SETTINGS": "Update Pre Chat Form Settings"
+    },
+    "HELP_CENTER": {
+      "LABEL": "Help Center",
+      "PLACEHOLDER": "Select Help Center",
+      "SELECT_PLACEHOLDER": "Select Help Center",
+      "REMOVE": "Remove Help Center",
+      "SUB_TEXT": "Attach a Help Center with the inbox"
     },
     "AUTO_ASSIGNMENT": {
       "MAX_ASSIGNMENT_LIMIT": "حد الإسناد التلقائي",
@@ -508,8 +569,7 @@
       "UPDATE": "تحديث إعدادات ساعات العمل",
       "TOGGLE_AVAILABILITY": "تمكين توافر العمل لهذا البريد الوارد",
       "UNAVAILABLE_MESSAGE_LABEL": "رسالة غير متاح للزائرين",
-      "UNAVAILABLE_MESSAGE_DEFAULT": "نحن غير متوفرين في هذه اللحظة. اترك رسالة سنرد عليها بمجرد عودتنا.",
-      "TOGGLE_HELP": "تمكين توفر العمل سيظهر الساعات المتاحة على أداة الدردشة المباشرة حتى لو كان جميع الوكلاء غير متصلين بالإنترنت. خارج الساعات المتاحة يمكن تحذير الزوار برسالة ونموذج ما قبل الدردشة.",
+      "TOGGLE_HELP": "Enabling business availability will show the available hours on live chat widget even if all the agents are offline. Outside available hours visitors can be warned with a message and a pre-chat form.",
       "DAY": {
         "ENABLE": "تمكين التوفر لهذا اليوم",
         "UNAVAILABLE": "غير متوفر",
@@ -547,6 +607,10 @@
         "PLACE_HOLDER": "كلمة المرور"
       },
       "ENABLE_SSL": "تمكين SSL"
+    },
+    "MICROSOFT": {
+      "TITLE": "Microsoft",
+      "SUBTITLE": "Reauthorize your MICROSOFT account"
     },
     "SMTP": {
       "TITLE": "SMTP",
@@ -666,6 +730,10 @@
       },
       "BRANDING_TEXT": "مدعوم بواسطة Chatwoot",
       "SCRIPT_SETTINGS": "\n      window.chatwootSettings = {options};"
+    },
+    "EMAIL_PROVIDERS": {
+      "MICROSOFT": "Microsoft",
+      "OTHER_PROVIDERS": "Other Providers"
     }
   }
 }

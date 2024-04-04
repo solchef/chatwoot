@@ -14,7 +14,8 @@
 import { mapGetters } from 'vuex';
 import alertMixin from 'shared/mixins/alertMixin';
 
-import PortalSettingsBasicForm from 'dashboard/routes/dashboard/helpcenter/components/PortalSettingsBasicForm';
+import PortalSettingsBasicForm from 'dashboard/routes/dashboard/helpcenter/components/PortalSettingsBasicForm.vue';
+import { PORTALS_EVENTS } from '../../../../../helper/AnalyticsHelper/events';
 
 export default {
   components: {
@@ -39,9 +40,12 @@ export default {
   methods: {
     async createPortal(portal) {
       try {
+        const { blob_id: blobId } = portal;
         await this.$store.dispatch('portals/create', {
           portal,
+          blob_id: blobId,
         });
+
         this.alertMessage = this.$t(
           'HELP_CENTER.PORTAL.ADD.API.SUCCESS_MESSAGE_FOR_BASIC'
         );
@@ -49,6 +53,11 @@ export default {
           name: 'portal_customization',
           params: { portalSlug: portal.slug },
         });
+        const analyticsPayload = {
+          has_custom_domain: portal.domain !== '',
+        };
+        this.$track(PORTALS_EVENTS.ONBOARD_BASIC_INFORMATION, analyticsPayload);
+        this.$track(PORTALS_EVENTS.CREATE_PORTAL, analyticsPayload);
       } catch (error) {
         this.alertMessage =
           error?.message ||

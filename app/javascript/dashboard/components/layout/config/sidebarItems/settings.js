@@ -8,6 +8,7 @@ const settings = accountId => ({
     'agent_list',
     'attributes_list',
     'automation_list',
+    'auditlogs_list',
     'billing_settings_index',
     'canned_list',
     'general_settings_index',
@@ -28,6 +29,7 @@ const settings = accountId => ({
     'settings_inboxes_page_channel',
     'settings_integrations_dashboard_apps',
     'settings_integrations_integration',
+    'settings_integrations_slack',
     'settings_integrations_webhook',
     'settings_integrations',
     'settings_teams_add_agents',
@@ -37,6 +39,7 @@ const settings = accountId => ({
     'settings_teams_finish',
     'settings_teams_list',
     'settings_teams_new',
+    'sla_list',
   ],
   menuItems: [
     {
@@ -91,7 +94,6 @@ const settings = accountId => ({
     {
       icon: 'automation',
       label: 'AUTOMATION',
-      beta: true,
       hasSubMenu: false,
       toState: frontendURL(`accounts/${accountId}/settings/automation/list`),
       toStateName: 'automation_list',
@@ -100,7 +102,6 @@ const settings = accountId => ({
     {
       icon: 'bot',
       label: 'AGENT_BOTS',
-      beta: true,
       hasSubMenu: false,
       globalConfigFlag: 'csmlEditorHost',
       toState: frontendURL(`accounts/${accountId}/settings/agent-bots`),
@@ -113,7 +114,6 @@ const settings = accountId => ({
       hasSubMenu: false,
       toState: frontendURL(`accounts/${accountId}/settings/macros`),
       toStateName: 'macros_wrapper',
-      beta: true,
       featureFlag: FEATURE_FLAGS.MACROS,
     },
     {
@@ -149,6 +149,24 @@ const settings = accountId => ({
       toState: frontendURL(`accounts/${accountId}/settings/billing`),
       toStateName: 'billing_settings_index',
       showOnlyOnCloud: true,
+    },
+    {
+      icon: 'key',
+      label: 'AUDIT_LOGS',
+      hasSubMenu: false,
+      toState: frontendURL(`accounts/${accountId}/settings/audit-log/list`),
+      toStateName: 'auditlogs_list',
+      featureFlag: FEATURE_FLAGS.AUDIT_LOGS,
+      beta: true,
+    },
+    {
+      icon: 'document-list-clock',
+      label: 'SLA',
+      hasSubMenu: false,
+      toState: frontendURL(`accounts/${accountId}/settings/sla/list`),
+      toStateName: 'sla_list',
+      featureFlag: FEATURE_FLAGS.SLA,
+      beta: true,
     },
   ],
 });

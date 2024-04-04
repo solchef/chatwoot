@@ -1,22 +1,43 @@
 <template>
-  <ul
-    v-if="items.length"
-    class="vertical dropdown menu mention--box"
-    :style="{ top: getTopPadding() + 'rem' }"
+  <div
+    ref="mentionsListContainer"
+    class="bg-white dark:bg-slate-800 rounded-md overflow-auto absolute w-full z-20 pb-0 shadow-md left-0 bottom-full max-h-[9.75rem] border border-solid border-slate-100 dark:border-slate-700 mention--box"
   >
-    <li
-      v-for="(item, index) in items"
-      :id="`mention-item-${index}`"
-      :key="item.key"
-      :class="{ active: index === selectedIndex }"
-      @click="onListItemSelection(index)"
-      @mouseover="onHover(index)"
-    >
-      <a class="text-truncate">
-        <strong>{{ item.label }}</strong> - {{ item.description }}
-      </a>
-    </li>
-  </ul>
+    <ul class="vertical dropdown menu">
+      <woot-dropdown-item
+        v-for="(item, index) in items"
+        :id="`mention-item-${index}`"
+        :key="item.key"
+        class="!mb-0"
+        @mouseover="onHover(index)"
+      >
+        <button
+          class="flex group flex-col gap-0.5 overflow-hidden cursor-pointer items-start rounded-none py-2.5 px-2.5 justify-center w-full h-full text-left hover:bg-woot-50 dark:hover:bg-woot-800 border-x-0 border-t-0 border-b border-solid border-slate-100 dark:border-slate-700"
+          :class="{
+            ' bg-woot-25 dark:bg-woot-800': index === selectedIndex,
+          }"
+          @click="onListItemSelection(index)"
+        >
+          <p
+            class="text-slate-900 dark:text-slate-100 group-hover:text-woot-500 dark:group-hover:text-woot-500 font-medium mb-0 text-sm overflow-hidden text-ellipsis whitespace-nowrap min-w-0 max-w-full"
+            :class="{
+              'text-woot-500 dark:text-woot-500': index === selectedIndex,
+            }"
+          >
+            {{ item.description }}
+          </p>
+          <p
+            class="text-slate-500 dark:text-slate-300 group-hover:text-woot-500 dark:group-hover:text-woot-500 mb-0 text-xs overflow-hidden text-ellipsis whitespace-nowrap min-w-0 max-w-full"
+            :class="{
+              'text-woot-500 dark:text-woot-500': index === selectedIndex,
+            }"
+          >
+            {{ variableKey(item) }}
+          </p>
+        </button>
+      </woot-dropdown-item>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -27,6 +48,10 @@ export default {
     items: {
       type: Array,
       default: () => {},
+    },
+    type: {
+      type: String,
+      default: 'canned',
     },
   },
   data() {
@@ -40,17 +65,27 @@ export default {
         this.selectedIndex = 0;
       }
     },
+    selectedIndex() {
+      const container = this.$refs.mentionsListContainer;
+      const item = container.querySelector(
+        `#mention-item-${this.selectedIndex}`
+      );
+      if (item) {
+        const itemTop = item.offsetTop;
+        const itemBottom = itemTop + item.offsetHeight;
+        const containerTop = container.scrollTop;
+        const containerBottom = containerTop + container.offsetHeight;
+        if (itemTop < containerTop) {
+          container.scrollTop = itemTop;
+        } else if (itemBottom + 34 > containerBottom) {
+          container.scrollTop = itemBottom - container.offsetHeight + 34;
+        }
+      }
+    },
   },
   methods: {
-    getTopPadding() {
-      if (this.items.length <= 4) {
-        return -(this.items.length * 2.9 + 1.7);
-      }
-      return -14;
-    },
     handleKeyboardEvent(e) {
       this.processKeyDownEvent(e);
-      this.$el.scrollTop = 29 * this.selectedIndex;
     },
     onHover(index) {
       this.selectedIndex = index;
@@ -62,25 +97,21 @@ export default {
     onSelect() {
       this.$emit('mention-select', this.items[this.selectedIndex]);
     },
+    variableKey(item = {}) {
+      return this.type === 'variable' ? `{{${item.label}}}` : `/${item.label}`;
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
 .mention--box {
-  background: var(--white);
-  border-bottom: var(--space-small) solid var(--white);
-  border-top: 1px solid var(--color-border);
-  left: 0;
-  max-height: 14rem;
-  overflow: auto;
-  padding-top: var(--space-small);
-  position: absolute;
-  width: 100%;
-  z-index: 100;
-
-  .active a {
-    background: var(--w-500);
+  .dropdown-menu__item:last-child > button {
+    @apply border-0;
   }
+}
+
+.canned-item__button::v-deep .button__content {
+  @apply overflow-hidden text-ellipsis whitespace-nowrap;
 }
 </style>

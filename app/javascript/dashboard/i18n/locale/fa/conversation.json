@@ -1,7 +1,7 @@
 {
   "CONVERSATION": {
     "SELECT_A_CONVERSATION": "لطفا یک گفتگو را از پنجره گفتگوها انتخاب کنید",
-    "CSAT_REPLY_MESSAGE": "لطفاً به مکالمه امتیاز دهید",
+    "CSAT_REPLY_MESSAGE": "لطفاً به گفتگو امتیاز دهید",
     "404": "با عرض پوزش، ما نمی‌توانیم گفتگو را پیدا کنیم. لطفا دوباره تلاش کنید",
     "SWITCH_VIEW_LAYOUT": "تغییر طرح‌بندی",
     "DASHBOARD_APP_TAB_MESSAGES": "پیام‌ها",
@@ -12,6 +12,10 @@
     "NO_INBOX_2": " برای شروع",
     "NO_INBOX_AGENT": "اوه اوه! به نظر می‌رسد شما عضو هیچ صندوق ورودی نیستید. لطفا با مدیر خود تماس بگیرید",
     "SEARCH_MESSAGES": "پیام‌ها را در گفتگوها جستجو کنید",
+    "EMPTY_STATE": {
+      "CMD_BAR": "برای باز کردن منوی فرمان",
+      "KEYBOARD_SHORTCUTS": "برای مشاهده میانبرهای صفحه کلید"
+    },
     "SEARCH": {
       "TITLE": "جستجو پیام‌ها",
       "RESULT_TITLE": "نتایج جستجو",
@@ -30,17 +34,22 @@
     "ASSIGN_TO_ME": "اختصاص به من",
     "TWILIO_WHATSAPP_CAN_REPLY": "شما فقط می توانید با استفاده از یک پیام الگو به این مکالمه پاسخ دهید",
     "TWILIO_WHATSAPP_24_HOURS_WINDOW": "محدودیت ۲۴ ساعته پنجره پیام",
-    "SELECT_A_TWEET_TO_REPLY": "لطفا برای پاسخ دادن، یک توییت را انتخاب کنید.",
     "REPLYING_TO": "شما در حال پاسخ دادن به:",
     "REMOVE_SELECTION": "حذف انتخاب‌شده‌ها",
     "DOWNLOAD": "دانلود",
-    "UNKNOWN_FILE_TYPE": "پرونده ناشناخته",
+    "UNKNOWN_FILE_TYPE": "فایل ناشناخته",
+    "SAVE_CONTACT": "ذخیره",
     "UPLOADING_ATTACHMENTS": "در حال بارگذاری پیوست‌ها...",
+    "REPLIED_TO_STORY": "Replied to your story",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported.",
+    "UNSUPPORTED_MESSAGE_FACEBOOK": "This message is unsupported. You can view this message on the Facebook Messenger app.",
+    "UNSUPPORTED_MESSAGE_INSTAGRAM": "This message is unsupported. You can view this message on the Instagram app.",
     "SUCCESS_DELETE_MESSAGE": "پیام با موفقیت حذف شد",
     "FAIL_DELETE_MESSSAGE": "پیام حذف نشد! دوباره امتحان کنید",
     "NO_RESPONSE": "بدون پاسخ",
     "RATING_TITLE": "رتبه",
     "FEEDBACK_TITLE": "بازخورد",
+    "REPLY_MESSAGE_NOT_FOUND": "پیام در دسترس نیست",
     "CARD": {
       "SHOW_LABELS": "مشاهده کردن برچسب‌ها",
       "HIDE_LABELS": "پنهان کردن برچسب‌ها"
@@ -52,17 +61,41 @@
       "OPEN": "بیشتر",
       "CLOSE": "بستن",
       "DETAILS": "جزئیات",
+      "SNOOZED_UNTIL": "به تعویق افتاده تا",
       "SNOOZED_UNTIL_TOMORROW": "تا فردا به تعویق افتاد",
       "SNOOZED_UNTIL_NEXT_WEEK": "تا هفته آینده به تعویق افتاد",
       "SNOOZED_UNTIL_NEXT_REPLY": "تا پاسخ بعدی به تعویق افتاد"
     },
     "RESOLVE_DROPDOWN": {
       "MARK_PENDING": "علامت گذاری به عنوان در انتظار",
+      "SNOOZE_UNTIL": "به تعویق انداختن",
       "SNOOZE": {
         "TITLE": "به تعویق انداختن تا",
         "NEXT_REPLY": "پاسخ بعدی",
         "TOMORROW": "فردا",
         "NEXT_WEEK": "هفته بعد"
+      }
+    },
+    "CUSTOM_SNOOZE": {
+      "TITLE": "به تعویق انداختن تا",
+      "APPLY": "به تعویق انداختن",
+      "CANCEL": "لغو"
+    },
+    "PRIORITY": {
+      "TITLE": "اولویت",
+      "OPTIONS": {
+        "NONE": "هیچکدام",
+        "URGENT": "Urgent",
+        "HIGH": "بالا",
+        "MEDIUM": "متوسط",
+        "LOW": "پایین"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "هیچکدام",
+        "INPUT_PLACEHOLDER": "انتخاب اولویت",
+        "NO_RESULTS": "نتیجه‌ای یافت نشد",
+        "SUCCESSFUL": "تغییر اولویت گفتگوی با شناسه %{conversationId} به %{priority}",
+        "FAILED": "تغییر اولویت گفتگو با موفقیت انجام نشد. لطفا دوباره تلاش نمایید."
       }
     },
     "CARD_CONTEXT_MENU": {
@@ -109,7 +142,9 @@
       "PRIVATE_NOTE": "یادداشت خصوصی",
       "SEND": "ارسال",
       "CREATE": "افزودن یادداشت",
-      "TWEET": "توییت",
+      "INSERT_READ_MORE": "ادامه مطلب",
+      "DISMISS_REPLY": "رد پاسخ",
+      "REPLYING_TO": "در حال پاسخ دهی به:",
       "TIP_FORMAT_ICON": "نمایش ویرایشگر متنی پیشرفته",
       "TIP_EMOJI_ICON": "انتخاب ایموجی",
       "TIP_ATTACH_ICON": "ضمیمه فایل",
@@ -121,9 +156,10 @@
       "STOP_AUDIO_RECORDING": "در حال توقف ضبط صدا",
       "": "",
       "EMAIL_HEAD": {
-        "ADD_BCC": "افزودن bcc",
+        "TO": "به",
+        "ADD_BCC": "افزودن رونوشت",
         "CC": {
-          "LABEL": "CC",
+          "LABEL": "رونوشت",
           "PLACEHOLDER": "ایمیل‌ها با کاما از هم جدا می‌شوند",
           "ERROR": "لطفا آدرس‌ ایمیل معتبر وارد کنید"
         },
@@ -131,6 +167,14 @@
           "LABEL": "BCC",
           "PLACEHOLDER": "ایمیل‌ها با کاما از هم جدا می‌شوند",
           "ERROR": "لطفا آدرس‌ ایمیل معتبر وارد کنید"
+        }
+      },
+      "UNDEFINED_VARIABLES": {
+        "TITLE": "متغیرهای تعریف نشده",
+        "MESSAGE": "شما در پیام خود {undefinedVariablesCount} متغیر تعریف نشده دارید: {undefinedVariables}. آیا به هر حال می خواهید پیام را ارسال کنید؟",
+        "CONFIRM": {
+          "YES": "ارسال",
+          "CANCEL": "انصراف"
         }
       }
     },
@@ -155,8 +199,18 @@
     },
     "CONTEXT_MENU": {
       "COPY": "کپی",
+      "REPLY_TO": "پاسخ به این پیام",
       "DELETE": "حذف",
-      "CREATE_A_CANNED_RESPONSE": "اضافه کردن به پاسخ‌های آماده"
+      "CREATE_A_CANNED_RESPONSE": "اضافه کردن به پاسخ‌های آماده",
+      "TRANSLATE": "ترجمه",
+      "COPY_PERMALINK": "کپی پیوند پیام",
+      "LINK_COPIED": "نشانی اینترنتی پیام در کلیپ‌بورد کپی شد",
+      "DELETE_CONFIRMATION": {
+        "TITLE": "آیا از حذف این پیام مطمئن هستید؟",
+        "MESSAGE": "شما نمی توانید این عمل را لغو کنید",
+        "DELETE": "حذف",
+        "CANCEL": "انصراف"
+      }
     }
   },
   "EMAIL_TRANSCRIPT": {
@@ -244,5 +298,29 @@
     "BCC": "Bcc",
     "CC": "Cc",
     "SUBJECT": "موضوع"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "SIDEBAR_MENU_TITLE": "شرکت کنندگان",
+    "SIDEBAR_TITLE": "شرکت کنندگان در گفتگو",
+    "NO_RECORDS_FOUND": "نتیجه‌ای یافت نشد",
+    "ADD_PARTICIPANTS": "شرکت کنندگان را انتخاب کنید",
+    "REMANING_PARTICIPANTS_TEXT": "+%{count} نفر دیگر",
+    "REMANING_PARTICIPANT_TEXT": "+%{count} دیگر",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} نفر شرکت می کنند.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} نفر شرکت می کند.",
+    "NO_PARTICIPANTS_TEXT": "هیچ کس شرکت نمی کند!.",
+    "WATCH_CONVERSATION": "به گفتگو بپیوندید",
+    "YOU_ARE_WATCHING": "شما شرکت می کنید",
+    "API": {
+      "ERROR_MESSAGE": "به روز رسانی نشد، دوباره امتحان کنید!",
+      "SUCCESS_MESSAGE": "شرکت کنندگان به روز شدند!"
+    }
+  },
+  "TRANSLATE_MODAL": {
+    "TITLE": "مشاهده محتوای ترجمه شده",
+    "DESC": "می‌توانید محتوای ترجمه شده را به هر زبان مشاهده کنید.",
+    "ORIGINAL_CONTENT": "محتوای اصلی",
+    "TRANSLATED_CONTENT": "مطالب ترجمه شده",
+    "NO_TRANSLATIONS_AVAILABLE": "هیچ ترجمه‌ای برای این مطلب موجود نیست"
   }
 }

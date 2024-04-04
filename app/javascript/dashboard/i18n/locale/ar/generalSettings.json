@@ -3,6 +3,7 @@
     "TITLE": "إعدادات الحساب",
     "SUBMIT": "تحديث الإعدادات",
     "BACK": "العودة",
+    "DISMISS": "Dismiss",
     "UPDATE": {
       "ERROR": "تعذر تحديث الإعدادات، الرجاء المحاولة مرة أخرى!",
       "SUCCESS": "تم تحديث إعدادات الحساب بنجاح"
@@ -23,7 +24,7 @@
         "ERROR": "الرجاء إدخال اسم حساب صحيح"
       },
       "LANGUAGE": {
-        "LABEL": "Site language",
+        "LABEL": "لغة الموقع",
         "PLACEHOLDER": "اسم الحساب الخاص بك",
         "ERROR": ""
       },
@@ -48,14 +49,17 @@
       }
     },
     "UPDATE_CHATWOOT": "يتوفر تحديث %{latestChatwootVersion} لـ Chatwoot. الرجاء التحديث.",
-    "LEARN_MORE": "اعرف المزيد"
+    "LEARN_MORE": "اعرف المزيد",
+    "PAYMENT_PENDING": "Your payment is pending. Please update your payment information to continue using Chatwoot",
+    "LIMITS_UPGRADE": "Your account has exceeded the usage limits, please upgrade your plan to continue using Chatwoot",
+    "OPEN_BILLING": "Open billing"
   },
   "FORMS": {
     "MULTISELECT": {
       "ENTER_TO_SELECT": "اضغط على زر الإدخال للاختيار",
       "ENTER_TO_REMOVE": "اضغط على زر الإدخال للحذف",
       "SELECT_ONE": "اختر واحدا",
-      "SELECT": "Select"
+      "SELECT": "اختر"
     }
   },
   "NOTIFICATIONS_PAGE": {
@@ -82,12 +86,13 @@
       "conversation_creation": "محادثة جديدة",
       "conversation_assignment": "تم تعيين المحادثة",
       "assigned_conversation_new_message": "رسالة جديدة",
+      "participating_conversation_new_message": "رسالة جديدة",
       "conversation_mention": "إشارة"
     }
   },
   "NETWORK": {
     "NOTIFICATION": {
-      "TEXT": "قطع الاتصال من Chatwoot"
+      "OFFLINE": "غير متصل"
     },
     "BUTTON": {
       "REFRESH": "تحديث"
@@ -100,10 +105,15 @@
       "REPORTS": "التقارير",
       "CONVERSATION": "المحادثات",
       "CHANGE_ASSIGNEE": "تغيير المحال إليه",
+      "CHANGE_PRIORITY": "Change Priority",
       "CHANGE_TEAM": "تغيير الفريق",
+      "SNOOZE_CONVERSATION": "تأجيل المحادثة",
       "ADD_LABEL": "إضافة تسمية إلى المحادثة",
       "REMOVE_LABEL": "إزالة التسمية من المحادثة",
-      "SETTINGS": "الإعدادات"
+      "SETTINGS": "الإعدادات",
+      "AI_ASSIST": "AI Assist",
+      "APPEARANCE": "Appearance",
+      "SNOOZE_NOTIFICATION": "Snooze Notification"
     },
     "COMMANDS": {
       "GO_TO_CONVERSATION_DASHBOARD": "الذهاب إلى لوحة المحادثة",
@@ -125,6 +135,8 @@
       "GO_TO_NOTIFICATIONS": "الذهاب إلى الإشعارات",
       "ADD_LABELS_TO_CONVERSATION": "إضافة تسمية إلى المحادثة",
       "ASSIGN_AN_AGENT": "تعيين وكيل",
+      "AI_ASSIST": "AI Assist",
+      "ASSIGN_PRIORITY": "Assign priority",
       "ASSIGN_A_TEAM": "تعيين فريق",
       "MUTE_CONVERSATION": "كتم المحادثة",
       "UNMUTE_CONVERSATION": "إلغاء كتم المحادثة",
@@ -135,10 +147,22 @@
       "SNOOZE_CONVERSATION": "تأجيل المحادثة",
       "UNTIL_NEXT_REPLY": "حتى الرد القادم",
       "UNTIL_NEXT_WEEK": "حتى الأسبوع القادم",
-      "UNTIL_TOMORROW": "حتى الغد"
+      "UNTIL_TOMORROW": "حتى الغد",
+      "UNTIL_NEXT_MONTH": "Until next month",
+      "AN_HOUR_FROM_NOW": "Until an hour from now",
+      "CUSTOM": "Custom...",
+      "CHANGE_APPEARANCE": "Change Appearance",
+      "LIGHT_MODE": "Light",
+      "DARK_MODE": "Dark",
+      "SYSTEM_MODE": "System",
+      "SNOOZE_NOTIFICATION": "Snooze Notification"
     }
   },
   "DASHBOARD_APPS": {
-    "LOADING_MESSAGE": "Loading Dashboard App..."
+    "LOADING_MESSAGE": "تحميل تطبيق لوحة التحكم..."
+  },
+  "COMMON": {
+    "OR": "Or",
+    "CLICK_HERE": "اضغط هنا"
   }
 }

@@ -1,6 +1,6 @@
 {
   "MACROS": {
-    "HEADER": "Macros",
+    "HEADER": "Macro's",
     "HEADER_BTN_TXT": "Add a new macro",
     "HEADER_BTN_TXT_SAVE": "Save macro",
     "LOADING": "Fetching macros",
@@ -26,9 +26,9 @@
     "LIST": {
       "TABLE_HEADER": [
         "Naam",
-        "Created by",
+        "Aangemaakt door",
         "Last updated by",
-        "Visibility"
+        "Zichtbaarheid"
       ],
       "404": "No macros found"
     },
@@ -37,7 +37,7 @@
       "CONFIRM": {
         "MESSAGE": "Weet u zeker dat u wilt verwijderen ",
         "YES": "Ja, verwijderen",
-        "NO": "No"
+        "NO": "Nee"
       },
       "API": {
         "SUCCESS_MESSAGE": "Macro deleted successfully",

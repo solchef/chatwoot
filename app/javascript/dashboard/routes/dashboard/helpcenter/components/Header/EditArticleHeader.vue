@@ -1,23 +1,27 @@
 <template>
-  <div class="header--wrap">
-    <div class="header-left--wrap">
+  <div class="flex items-center justify-between w-full h-16">
+    <div class="flex items-center">
       <woot-button
         icon="chevron-left"
         variant="clear"
         size="small"
         color-scheme="primary"
+        class="back-button"
         @click="onClickGoBack"
       >
         {{ backButtonLabel }}
       </woot-button>
     </div>
-    <div class="header-right--wrap">
-      <span v-if="isUpdating || isSaved" class="draft-status">
+    <div class="flex items-center gap-1">
+      <span
+        v-if="isUpdating || isSaved"
+        class="draft-status mr-1 ml-4 rtl:ml-2 rtl:mr-4 text-slate-400 dark:text-slate-300 items-center text-xs"
+      >
         {{ statusText }}
       </span>
 
       <woot-button
-        class-names="article--buttons"
+        class-names="article--buttons relative"
         icon="globe"
         color-scheme="secondary"
         variant="hollow"
@@ -29,7 +33,7 @@
       <!-- Hidden since this is in V2
       <woot-button
         v-if="shouldShowAddLocaleButton"
-        class-names="article--buttons"
+        class-names="article--buttons relative"
         icon="add"
         color-scheme="secondary"
         variant="hollow"
@@ -42,7 +46,7 @@
         v-if="!isSidebarOpen"
         v-tooltip.top-end="$t('HELP_CENTER.EDIT_HEADER.OPEN_SIDEBAR')"
         icon="pane-open"
-        class-names="article--buttons"
+        class-names="article--buttons relative sidebar-button"
         variant="hollow"
         size="small"
         color-scheme="secondary"
@@ -53,13 +57,13 @@
         v-if="isSidebarOpen"
         v-tooltip.top-end="$t('HELP_CENTER.EDIT_HEADER.CLOSE_SIDEBAR')"
         icon="pane-close"
-        class-names="article--buttons"
+        class-names="article--buttons relative"
         variant="hollow"
         size="small"
         color-scheme="secondary"
         @click="closeSidebar"
       />
-      <div class="article--buttons">
+      <div class="article--buttons relative">
         <div class="button-group">
           <woot-button
             class-names="publish-button"
@@ -106,13 +110,18 @@
 <script>
 import alertMixin from 'shared/mixins/alertMixin';
 import { mixin as clickaway } from 'vue-clickaway';
-import wootConstants from 'dashboard/constants.js';
+import wootConstants from 'dashboard/constants/globals';
+import { PORTALS_EVENTS } from '../../../../../helper/AnalyticsHelper/events';
 
 const { ARTICLE_STATUS_TYPES } = wootConstants;
 
 export default {
   mixins: [alertMixin, clickaway],
   props: {
+    isSidebarOpen: {
+      type: Boolean,
+      default: true,
+    },
     backButtonLabel: {
       type: String,
       default: '',
@@ -136,10 +145,9 @@ export default {
   },
   data() {
     return {
-      isSidebarOpen: false,
       showActionsDropdown: false,
       alertMessage: '',
-      ARTICLE_STATUS_TYPES: ARTICLE_STATUS_TYPES,
+      ARTICLE_STATUS_TYPES,
     };
   },
   computed: {
@@ -181,8 +189,14 @@ export default {
           articleId: this.articleSlug,
           status: status,
         });
+        this.$emit('update-meta');
         this.statusUpdateSuccessMessage(status);
         this.closeActionsDropdown();
+        if (status === this.ARTICLE_STATUS_TYPES.ARCHIVE) {
+          this.$track(PORTALS_EVENTS.ARCHIVE_ARTICLE, { uiFrom: 'header' });
+        } else if (status === this.ARTICLE_STATUS_TYPES.PUBLISH) {
+          this.$track(PORTALS_EVENTS.PUBLISH_ARTICLE);
+        }
       } catch (error) {
         this.alertMessage =
           error?.message || this.statusUpdateErrorMessage(status);
@@ -205,11 +219,9 @@ export default {
       }
     },
     openSidebar() {
-      this.isSidebarOpen = true;
       this.$emit('open');
     },
     closeSidebar() {
-      this.isSidebarOpen = false;
       this.$emit('close');
     },
     openActionsDropdown() {
@@ -223,41 +235,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.header--wrap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: var(--space-jumbo);
-  padding-top: var(--space-small);
-}
-.header-left--wrap {
-  display: flex;
-  align-items: center;
-}
-.header-right--wrap {
-  display: flex;
-  align-items: center;
-}
 .article--buttons {
-  position: relative;
-  margin-left: var(--space-smaller);
   .dropdown-pane {
-    position: absolute;
-    right: 0;
+    @apply absolute right-0;
   }
 }
+
 .draft-status {
-  margin-right: var(--space-smaller);
-  margin-left: var(--space-normal);
-  color: var(--s-400);
-  align-items: center;
-  font-size: var(--font-size-mini);
   animation: fadeIn 1s;
+
   @keyframes fadeIn {
     0% {
       opacity: 0;
     }
+
     100% {
       opacity: 1;
     }

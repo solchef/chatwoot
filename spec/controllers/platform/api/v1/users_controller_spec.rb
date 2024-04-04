@@ -33,7 +33,7 @@ RSpec.describe 'Platform Users API', type: :request do
             headers: { api_access_token: platform_app.access_token.token }, as: :json
 
         expect(response).to have_http_status(:success)
-        data = JSON.parse(response.body)
+        data = response.parsed_body
         expect(data['email']).to eq(user.email)
         expect(data['custom_attributes']['test']).to eq('test')
       end
@@ -70,7 +70,7 @@ RSpec.describe 'Platform Users API', type: :request do
             headers: { api_access_token: platform_app.access_token.token }, as: :json
 
         expect(response).to have_http_status(:success)
-        data = JSON.parse(response.body)
+        data = response.parsed_body
         expect(data['url']).to include('email=dev%2Btesting%40chatwoot.com&sso_auth_token=')
       end
     end
@@ -103,7 +103,7 @@ RSpec.describe 'Platform Users API', type: :request do
         end.not_to enqueue_mail
 
         expect(response).to have_http_status(:success)
-        data = JSON.parse(response.body)
+        data = response.parsed_body
         expect(data).to match(
           hash_including(
             'name' => 'test',
@@ -123,7 +123,7 @@ RSpec.describe 'Platform Users API', type: :request do
                                         headers: { api_access_token: platform_app.access_token.token }, as: :json
 
         expect(response).to have_http_status(:success)
-        data = JSON.parse(response.body)
+        data = response.parsed_body
         expect(data['name']).to eq('old test')
         expect(platform_app.platform_app_permissibles.first.permissible_id).to eq data['id']
       end
@@ -162,7 +162,7 @@ RSpec.describe 'Platform Users API', type: :request do
                                                    headers: { api_access_token: platform_app.access_token.token }, as: :json
 
         expect(response).to have_http_status(:success)
-        data = JSON.parse(response.body)
+        data = response.parsed_body
         expect(data['name']).to eq('test123')
         expect(data['email']).to eq('newtestemail@test.com')
         expect(data['custom_attributes']['test']).to eq('test_update')

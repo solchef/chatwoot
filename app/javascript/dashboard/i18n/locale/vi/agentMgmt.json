@@ -74,6 +74,11 @@
           "LABEL": "Emails",
           "PLACEHOLDER": "Vui lòng nhập email"
         },
+        "AGENT_AVAILABILITY": {
+          "LABEL": "Khả dụng",
+          "PLACEHOLDER": "Please select an availability status",
+          "ERROR": "Availability is required"
+        },
         "SUBMIT": "Chỉnh sửa nhà cung cấp"
       },
       "BUTTON_TEXT": "Chỉnh sửa",
@@ -95,7 +100,7 @@
     "MULTI_SELECTOR": {
       "PLACEHOLDER": "Không có",
       "TITLE": {
-        "AGENT": "Chọn t\bổng đài viên",
+        "AGENT": "Chọn thành viên",
         "TEAM": "Chọn nhóm"
       },
       "SEARCH": {
@@ -105,7 +110,8 @@
         },
         "PLACEHOLDER": {
           "AGENT": "Tìm kiếm tổng đài viên",
-          "TEAM": "Tìm kiếm nhóm"
+          "TEAM": "Tìm kiếm nhóm",
+          "INPUT": "Tìm thành viên"
         }
       }
     }

@@ -1,11 +1,13 @@
 <template>
-  <div class="wizard-body small-9 columns">
+  <div
+    class="border border-slate-25 dark:border-slate-800/60 bg-white dark:bg-slate-900 h-full p-6 w-full max-w-full md:w-3/4 md:max-w-[75%] flex-shrink-0 flex-grow-0"
+  >
     <page-header
       :header-title="$t('INBOX_MGMT.ADD.LINE_CHANNEL.TITLE')"
       :header-content="$t('INBOX_MGMT.ADD.LINE_CHANNEL.DESC')"
     />
-    <form class="row" @submit.prevent="createChannel()">
-      <div class="medium-8 columns">
+    <form class="mx-0 flex flex-wrap" @submit.prevent="createChannel()">
+      <div class="w-[65%] flex-shrink-0 flex-grow-0 max-w-[65%]">
         <label :class="{ error: $v.channelName.$error }">
           {{ $t('INBOX_MGMT.ADD.LINE_CHANNEL.CHANNEL_NAME.LABEL') }}
           <input
@@ -22,7 +24,7 @@
         </label>
       </div>
 
-      <div class="medium-8 columns">
+      <div class="w-[65%] flex-shrink-0 flex-grow-0 max-w-[65%]">
         <label :class="{ error: $v.lineChannelId.$error }">
           {{ $t('INBOX_MGMT.ADD.LINE_CHANNEL.LINE_CHANNEL_ID.LABEL') }}
           <input
@@ -36,7 +38,7 @@
         </label>
       </div>
 
-      <div class="medium-8 columns">
+      <div class="w-[65%] flex-shrink-0 flex-grow-0 max-w-[65%]">
         <label :class="{ error: $v.lineChannelSecret.$error }">
           {{ $t('INBOX_MGMT.ADD.LINE_CHANNEL.LINE_CHANNEL_SECRET.LABEL') }}
           <input
@@ -50,7 +52,7 @@
         </label>
       </div>
 
-      <div class="medium-8 columns">
+      <div class="w-[65%] flex-shrink-0 flex-grow-0 max-w-[65%]">
         <label :class="{ error: $v.lineChannelToken.$error }">
           {{ $t('INBOX_MGMT.ADD.LINE_CHANNEL.LINE_CHANNEL_TOKEN.LABEL') }}
           <input
@@ -64,7 +66,7 @@
         </label>
       </div>
 
-      <div class="medium-12 columns">
+      <div class="w-full">
         <woot-submit-button
           :loading="uiFlags.isCreating"
           :button-text="$t('INBOX_MGMT.ADD.LINE_CHANNEL.SUBMIT_BUTTON')"
@@ -79,7 +81,7 @@ import { mapGetters } from 'vuex';
 import alertMixin from 'shared/mixins/alertMixin';
 import { required } from 'vuelidate/lib/validators';
 import router from '../../../../index';
-import PageHeader from '../../SettingsSubPageHeader';
+import PageHeader from '../../SettingsSubPageHeader.vue';
 
 export default {
   components: {

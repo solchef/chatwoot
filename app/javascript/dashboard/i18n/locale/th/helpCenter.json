@@ -1,49 +1,67 @@
 {
   "HELP_CENTER": {
     "HEADER": {
-      "FILTER": "Filter by",
-      "SORT": "Sort by",
+      "FILTER": "กรองด้วย",
+      "SORT": "เรียงด้วย",
+      "LOCALE": "Locale",
       "SETTINGS_BUTTON": "ตั้งค่า",
-      "NEW_BUTTON": "New Article",
+      "NEW_BUTTON": "สร้างบทความ",
       "DROPDOWN_OPTIONS": {
         "PUBLISHED": "Published",
-        "DRAFT": "Draft",
+        "DRAFT": "โครงร่าง",
         "ARCHIVED": "Archived"
       },
       "TITLES": {
-        "ALL_ARTICLES": "All Articles",
-        "MINE": "My Articles",
-        "DRAFT": "Draft Articles",
+        "ALL_ARTICLES": "บทความทั้งหมด",
+        "MINE": "บทความของฉัน",
+        "DRAFT": "บทความที่ร่างไว้",
         "ARCHIVED": "Archived Articles"
+      },
+      "LOCALE_SELECT": {
+        "TITLE": "Select locale",
+        "PLACEHOLDER": "Select locale",
+        "NO_RESULT": "No locale found",
+        "SEARCH_PLACEHOLDER": "Search locale"
       }
     },
     "EDIT_HEADER": {
-      "ALL_ARTICLES": "All Articles",
+      "ALL_ARTICLES": "บทความทั้งหมด",
       "PUBLISH_BUTTON": "Publish",
       "MOVE_TO_ARCHIVE_BUTTON": "Move to archived",
       "PREVIEW": "Preview",
-      "ADD_TRANSLATION": "Add translation",
+      "ADD_TRANSLATION": "เพิ่มการแปลภาษา",
       "OPEN_SIDEBAR": "Open sidebar",
       "CLOSE_SIDEBAR": "Close sidebar",
-      "SAVING": "Saving...",
-      "SAVED": "Saved"
+      "SAVING": "กำลังบันทึก...",
+      "SAVED": "บันทึกแล้ว"
+    },
+    "ARTICLE_EDITOR": {
+      "IMAGE_UPLOAD": {
+        "TITLE": "อัปโหลดรูปภาพ",
+        "UPLOADING": "กำลังอัพโหลด",
+        "SUCCESS": "Image uploaded successfully",
+        "ERROR": "Error while uploading image",
+        "ERROR_FILE_SIZE": "Image size should be less than {size}MB",
+        "ERROR_FILE_FORMAT": "Image format should be jpg, jpeg or png",
+        "ERROR_FILE_DIMENSIONS": "Image dimensions should be less than 2000 x 2000"
+      }
     },
     "ARTICLE_SETTINGS": {
-      "TITLE": "Article Settings",
+      "TITLE": "ตั้งค่าบทความ",
       "FORM": {
         "CATEGORY": {
-          "LABEL": "Category",
-          "TITLE": "Select category",
-          "PLACEHOLDER": "Select category",
-          "NO_RESULT": "No category found",
-          "SEARCH_PLACEHOLDER": "Search category"
+          "LABEL": "หมวดหมู่",
+          "TITLE": "เลือกหมวดหมู่",
+          "PLACEHOLDER": "เลือกหมวดหมู่",
+          "NO_RESULT": "ไม่พบหมวดหมู่",
+          "SEARCH_PLACEHOLDER": "ค้นหาหมวดหมู่"
         },
         "AUTHOR": {
-          "LABEL": "Author",
-          "TITLE": "Select author",
-          "PLACEHOLDER": "Select author",
-          "NO_RESULT": "No authors found",
-          "SEARCH_PLACEHOLDER": "Search author"
+          "LABEL": "ผู้เขียน",
+          "TITLE": "เลือกผู้เขียน",
+          "PLACEHOLDER": "เลือกผู้เขียน",
+          "NO_RESULT": "ไม่พบผู้เขียน",
+          "SEARCH_PLACEHOLDER": "ค้นหาผู้แต่ง"
         },
         "META_TITLE": {
           "LABEL": "Meta title",
@@ -60,17 +78,28 @@
       },
       "BUTTONS": {
         "ARCHIVE": "Archive article",
-        "DELETE": "Delete article"
+        "DELETE": "ลบบทความ"
       }
     },
+    "ARTICLE_SEARCH_RESULT": {
+      "UNCATEGORIZED": "Uncategorized",
+      "SEARCH_RESULTS": "Search results for %{query}",
+      "EMPTY_TEXT": "Search for articles to insert into replies.",
+      "SEARCH_LOADER": "Searching...",
+      "INSERT_ARTICLE": "Insert",
+      "NO_RESULT": "No articles found",
+      "COPY_LINK": "Copy article link to clipboard",
+      "OPEN_LINK": "Open article in new tab",
+      "PREVIEW_LINK": "Preview article"
+    },
     "PORTAL": {
-      "HEADER": "Portals",
+      "HEADER": "ศูนย์รวม",
       "DEFAULT": "Default",
       "NEW_BUTTON": "New Portal",
       "ACTIVE_BADGE": "ใช้งานอยู่",
       "CHOOSE_LOCALE_LABEL": "Choose a locale",
       "LOADING_MESSAGE": "Loading portals...",
-      "ARTICLES_LABEL": "articles",
+      "ARTICLES_LABEL": "บทความ",
       "NO_PORTALS_MESSAGE": "There are no available portals",
       "ADD_NEW_LOCALE": "Add a new locale",
       "POPOVER": {
@@ -83,7 +112,7 @@
       "PORTAL_SETTINGS": {
         "LIST_ITEM": {
           "HEADER": {
-            "COUNT_LABEL": "articles",
+            "COUNT_LABEL": "บทความ",
             "ADD": "Add locale",
             "VISIT": "Visit site",
             "SETTINGS": "ตั้งค่า",
@@ -201,7 +230,10 @@
         "LOGO": {
           "LABEL": "Logo",
           "UPLOAD_BUTTON": "Upload logo",
-          "HELP_TEXT": "This logo will be displayed on the portal header."
+          "HELP_TEXT": "This logo will be displayed on the portal header.",
+          "IMAGE_UPLOAD_SUCCESS": "Logo uploaded successfully",
+          "IMAGE_UPLOAD_ERROR": "Logo deleted successfully",
+          "IMAGE_DELETE_ERROR": "Error while deleting logo"
         },
         "NAME": {
           "LABEL": "ชื่อ",
@@ -287,12 +319,13 @@
       "HEADERS": {
         "TITLE": "หัวข้อ",
         "CATEGORY": "Category",
-        "READ_COUNT": "Read count",
+        "READ_COUNT": "Views",
         "STATUS": "สถานะ",
         "LAST_EDITED": "Last edited"
       },
       "COLUMNS": {
-        "BY": "by"
+        "BY": "by",
+        "AUTHOR_NOT_AVAILABLE": "Author is not available"
       }
     },
     "EDIT_ARTICLE": {
@@ -346,7 +379,7 @@
         "NAME": {
           "LABEL": "ชื่อ",
           "PLACEHOLDER": "Category name",
-          "HELP_TEXT": "The category name will be used in the public facing portal to categorize articles.",
+          "HELP_TEXT": "The category name and icon will be used in the public facing portal to categorize articles.",
           "ERROR": "โปรดระบุชื่อ"
         },
         "SLUG": {
@@ -377,7 +410,7 @@
         "NAME": {
           "LABEL": "ชื่อ",
           "PLACEHOLDER": "Category name",
-          "HELP_TEXT": "The category name will be used in the public facing portal to categorize articles.",
+          "HELP_TEXT": "The category name and icon will be used in the public facing portal to categorize articles.",
           "ERROR": "โปรดระบุชื่อ"
         },
         "SLUG": {
@@ -404,6 +437,48 @@
         "API": {
           "SUCCESS_MESSAGE": "Category deleted successfully",
           "ERROR_MESSAGE": "Unable to delete category"
+        }
+      }
+    },
+    "ARTICLE_SEARCH": {
+      "TITLE": "Search articles",
+      "PLACEHOLDER": "Search articles",
+      "NO_RESULT": "No articles found",
+      "SEARCHING": "Searching...",
+      "SEARCH_BUTTON": "ค้นหา",
+      "INSERT_ARTICLE": "Insert link",
+      "IFRAME_ERROR": "URL is empty or invalid. Unable to display content.",
+      "OPEN_ARTICLE_SEARCH": "Insert article from Help Center",
+      "SUCCESS_ARTICLE_INSERTED": "Article inserted successfully",
+      "PREVIEW_LINK": "Preview article",
+      "CANCEL": "ปิด",
+      "BACK": "ย้อนกลับ",
+      "BACK_RESULTS": "Back to results"
+    },
+    "UPGRADE_PAGE": {
+      "TITLE": "Help Center",
+      "DESCRIPTION": "Create user-friendly self-service portals. Help your users to access the articles and get support 24/7. Upgrade your subscription to enable this feature.",
+      "SELF_HOSTED_DESCRIPTION": "Create user-friendly self-service portals. Help your users to access the articles and get support 24/7. Please contact your administrator to enable this feature.",
+      "BUTTON": {
+        "LEARN_MORE": "เรียนรู้เพิ่มเติม",
+        "UPGRADE": "Upgrade"
+      },
+      "FEATURES": {
+        "PORTALS": {
+          "TITLE": "Multiple portals",
+          "DESCRIPTION": "Create multiple help center portals for different products using the same account."
+        },
+        "LOCALES": {
+          "TITLE": "Full support for locales",
+          "DESCRIPTION": "Localize the portal in your language. We support all locales and allow translations for every article."
+        },
+        "SEO": {
+          "TITLE": "SEO-friendly design",
+          "DESCRIPTION": "Customize your meta tags to improve your visibility on search engines with our SEO-friendly pages."
+        },
+        "API": {
+          "TITLE": "Full API support",
+          "DESCRIPTION": "Use the portal as a headless CMS with third party front-end frameworks using our APIs."
         }
       }
     }

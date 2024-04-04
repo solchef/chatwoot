@@ -5,17 +5,22 @@
         !isCards && !isOptions && !isForm && !isArticle && !isCards && !isCSAT
       "
       class="chat-bubble agent"
-      :class="$dm('bg-white', 'dark:bg-slate-700')"
+      :class="$dm('bg-white', 'dark:bg-slate-700 has-dark-mode')"
     >
       <div
         v-dompurify-html="formatMessage(message, false)"
-        class="message-content"
-        :class="$dm('text-black-900', 'dark:text-slate-50')"
+        class="message-content text-slate-900 dark:text-slate-50"
       />
       <email-input
         v-if="isTemplateEmail"
         :message-id="messageId"
         :message-content-attributes="messageContentAttributes"
+      />
+
+      <integration-card
+        v-if="isIntegrations"
+        :message-id="messageId"
+        :meeting-data="messageContentAttributes.data"
       />
     </div>
     <div v-if="isOptions">
@@ -56,13 +61,14 @@
 
 <script>
 import messageFormatterMixin from 'shared/mixins/messageFormatterMixin';
-import ChatCard from 'shared/components/ChatCard';
-import ChatForm from 'shared/components/ChatForm';
-import ChatOptions from 'shared/components/ChatOptions';
-import ChatArticle from './template/Article';
-import EmailInput from './template/EmailInput';
-import CustomerSatisfaction from 'shared/components/CustomerSatisfaction';
+import ChatCard from 'shared/components/ChatCard.vue';
+import ChatForm from 'shared/components/ChatForm.vue';
+import ChatOptions from 'shared/components/ChatOptions.vue';
+import ChatArticle from './template/Article.vue';
+import EmailInput from './template/EmailInput.vue';
+import CustomerSatisfaction from 'shared/components/CustomerSatisfaction.vue';
 import darkModeMixin from 'widget/mixins/darkModeMixin.js';
+import IntegrationCard from './template/IntegrationCard.vue';
 
 export default {
   name: 'AgentMessageBubble',
@@ -73,6 +79,7 @@ export default {
     ChatOptions,
     EmailInput,
     CustomerSatisfaction,
+    IntegrationCard,
   },
   mixins: [messageFormatterMixin, darkModeMixin],
   props: {
@@ -107,6 +114,9 @@ export default {
     isCSAT() {
       return this.contentType === 'input_csat';
     },
+    isIntegrations() {
+      return this.contentType === 'integrations';
+    },
   },
   methods: {
     onResponse(messageResponse) {
@@ -131,14 +141,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import '~widget/assets/scss/variables.scss';
-
-.chat-bubble .message-content::v-deep pre {
-  background: $color-primary-light;
-  color: $color-body;
-  overflow-y: auto;
-  padding: $space-smaller;
-}
-</style>

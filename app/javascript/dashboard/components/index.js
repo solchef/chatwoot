@@ -13,11 +13,11 @@ import DropdownMenu from 'shared/components/ui/dropdown/DropdownMenu';
 import FeatureToggle from './widgets/FeatureToggle';
 import HorizontalBar from './widgets/chart/HorizontalBarChart';
 import Input from './widgets/forms/Input.vue';
+import PhoneInput from './widgets/forms/PhoneInput.vue';
 import Label from './ui/Label';
 import LoadingState from './widgets/LoadingState';
 import Modal from './Modal';
 import ModalHeader from './ModalHeader';
-import ReportStatsCard from './widgets/ReportStatsCard';
 import SidemenuIcon from './SidemenuIcon';
 import Spinner from 'shared/components/Spinner';
 import SubmitButton from './buttons/FormSubmitButton';
@@ -40,11 +40,11 @@ const WootUIKit = {
   FeatureToggle,
   HorizontalBar,
   Input,
+  PhoneInput,
   Label,
   LoadingState,
   Modal,
   ModalHeader,
-  ReportStatsCard,
   SidemenuIcon,
   Spinner,
   SubmitButton,

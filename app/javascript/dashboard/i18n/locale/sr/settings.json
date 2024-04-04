@@ -36,10 +36,13 @@
       },
       "MESSAGE_SIGNATURE_SECTION": {
         "TITLE": "Potpis privatne poruke",
-        "NOTE": "Napravite potpis privatne poruke koji će se dodavati svakoj poruci koju pošaljete u prijemno sanduče e-pošte. Koristite bogati uređivač sadržaja da bi ste napravili personalizovan potpis.",
+        "NOTE": "Create a unique message signature to appear at the end of every message you send from any inbox. You can also include an inline image, which is supported in live-chat, email, and API inboxes.",
         "BTN_TEXT": "Sačuvaj potpis poruke",
         "API_ERROR": "Nije bilo moguće sačuvati potpis! Pokušajte ponovo",
-        "API_SUCCESS": "Potpis je uspešno sačuvan"
+        "API_SUCCESS": "Potpis je uspešno sačuvan",
+        "IMAGE_UPLOAD_ERROR": "Couldn't upload image! Try again",
+        "IMAGE_UPLOAD_SUCCESS": "Image added successfully. Please click on save to save the signature",
+        "IMAGE_UPLOAD_SIZE_ERROR": "Image size should be less than {size}MB"
       },
       "MESSAGE_SIGNATURE": {
         "LABEL": "Potpis poruke",
@@ -79,7 +82,8 @@
         "CONVERSATION_ASSIGNMENT": "Pošalji obaveštenje putem e-poruke kada je razgovor dodeljen meni",
         "CONVERSATION_CREATION": "Pošalji obaveštenje putem e-poruke kada je napravljen novi razgovor",
         "CONVERSATION_MENTION": "Pošalji obaveštenje putem e-poruke kada ste pomenuti u razgovoru",
-        "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Pošalji obaveštenje putem e-poruke kada je napravljena nova poruka u dodeljenom razgovoru"
+        "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Pošalji obaveštenje putem e-poruke kada je napravljena nova poruka u dodeljenom razgovoru",
+        "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Send email notifications when a new message is created in a participating conversation"
       },
       "API": {
         "UPDATE_SUCCESS": "Vaša podešavanja obaveštenja su uspešno izmenjena",
@@ -92,6 +96,7 @@
         "CONVERSATION_CREATION": "Pošalji mobilno obaveštenje kada je napravljen novi razgovor",
         "CONVERSATION_MENTION": "Pošalji mobilno obaveštenje kada ste pomenuti u razgovoru",
         "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Pošalji mobilno obaveštenje kada je napravljena nova poruka u dodeljenom razgovoru",
+        "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Send push notifications when a new message is created in a participating conversation",
         "HAS_ENABLED_PUSH": "Omogućili ste obaveštenje za ovaj pregledač.",
         "REQUEST_PUSH": "Omogućite mobilna obaveštenja"
       },
@@ -147,6 +152,7 @@
     "SELECTOR_SUBTITLE": "Izaberite nalog iz sledećeg spiska",
     "PROFILE_SETTINGS": "Podešavanja profila",
     "KEYBOARD_SHORTCUTS": "Prečice tastature",
+    "APPEARANCE": "Change Appearance",
     "SUPER_ADMIN_CONSOLE": "Super Admin Console",
     "LOGOUT": "Odjavi se"
   },
@@ -154,6 +160,9 @@
     "TRIAL_MESSAGE": "dana preostalo od probnog perioda.",
     "TRAIL_BUTTON": "Kupi sada",
     "DELETED_USER": "Obrisan korisnik",
+    "EMAIL_VERIFICATION_PENDING": "It seems that you haven't verified your email address yet. Please check your inbox for the verification email.",
+    "RESEND_VERIFICATION_MAIL": "Resend verification email",
+    "EMAIL_VERIFICATION_SENT": "Verification email has been sent. Please check your inbox.",
     "ACCOUNT_SUSPENDED": {
       "TITLE": "Nalog je suspendovan",
       "MESSAGE": "Vaš nalog je suspendovan. Molim vas kontaktirajte tim za podršku za dodatne informacije."
@@ -162,6 +171,7 @@
   "COMPONENTS": {
     "CODE": {
       "BUTTON_TEXT": "Kopiraj",
+      "CODEPEN": "Open in CodePen",
       "COPY_SUCCESSFUL": "Kod je uspešno kopiran na beležnicu"
     },
     "SHOW_MORE_BLOCK": {
@@ -170,7 +180,8 @@
     },
     "FILE_BUBBLE": {
       "DOWNLOAD": "Preuzmi",
-      "UPLOADING": "Dodavanje..."
+      "UPLOADING": "Dodavanje...",
+      "INSTAGRAM_STORY_UNAVAILABLE": "Ova priča više nije dostupna."
     },
     "LOCATION_BUBBLE": {
       "SEE_ON_MAP": "See on map"
@@ -189,8 +200,10 @@
     "CURRENTLY_VIEWING_ACCOUNT": "Trenutno pregledate:",
     "SWITCH": "Prebaci",
     "CONVERSATIONS": "Razgovori",
+    "INBOX": "Prijemno sanduče",
     "ALL_CONVERSATIONS": "Svi razgovori",
     "MENTIONED_CONVERSATIONS": "Spominjanja",
+    "PARTICIPATING_CONVERSATIONS": "Participating",
     "UNATTENDED_CONVERSATIONS": "Nedodeljeni",
     "REPORTS": "Izveštaji",
     "SETTINGS": "Podešavanja",
@@ -198,6 +211,7 @@
     "HOME": "Početak",
     "AGENTS": "Agenti",
     "AGENT_BOTS": "Bots",
+    "AUDIT_LOGS": "Audit Logs",
     "INBOXES": "Prijemni sandučići",
     "NOTIFICATIONS": "Obaveštenja",
     "CANNED_RESPONSES": "Gotovi odgovori",
@@ -228,16 +242,18 @@
     "REPORTS_INBOX": "Prijemno sanduče",
     "REPORTS_TEAM": "Tim",
     "SET_AVAILABILITY_TITLE": "Postavite da ste",
+    "SLA": "SLA",
     "BETA": "Beta",
     "REPORTS_OVERVIEW": "Pregled",
     "FACEBOOK_REAUTHORIZE": "Vaša veza sa Fejsbukom je istekla, molim vas povežite ponovo vašu Fejsbuk stranicu za nastavak servisa",
     "HELP_CENTER": {
-      "TITLE": "Help Center (Beta)",
+      "TITLE": "Help Center",
       "ALL_ARTICLES": "Svi članci",
       "MY_ARTICLES": "Moji članci",
       "DRAFT": "Nacrt",
       "ARCHIVED": "Arhivirano",
       "CATEGORY": "Kategorija",
+      "SETTINGS": "Podešavanja",
       "CATEGORY_EMPTY_MESSAGE": "Nije pronađena nijedna kategorija"
     },
     "SET_AUTO_OFFLINE": {
@@ -282,6 +298,7 @@
     }
   },
   "KEYBOARD_SHORTCUTS": {
+    "TOGGLE_MODAL": "View all shortcuts",
     "TITLE": {
       "OPEN_CONVERSATION": "Otvoren razgovor",
       "RESOLVE_AND_NEXT": "Reši i idi na sledeći",

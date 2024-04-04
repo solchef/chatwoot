@@ -1,19 +1,21 @@
 <template>
-  <div class="article-container">
+  <div class="article-container flex w-full overflow-auto">
     <div
-      class="edit-article--container"
-      :class="{ 'is-sidebar-open': showArticleSettings }"
+      class="flex-1 flex-shrink-0 overflow-auto px-6"
+      :class="{ 'flex-grow-1 flex-shrink-0': showArticleSettings }"
     >
       <edit-article-header
         :back-button-label="$t('HELP_CENTER.HEADER.TITLES.ALL_ARTICLES')"
         :is-updating="isUpdating"
         :is-saved="isSaved"
+        :is-sidebar-open="showArticleSettings"
         @back="onClickGoBack"
         @open="openArticleSettings"
         @close="closeArticleSettings"
         @show="showArticleInPortal"
+        @update-meta="updateMeta"
       />
-      <div v-if="isFetching" class="text-center p-normal fs-default h-full">
+      <div v-if="isFetching" class="text-center p-4 text-base h-full">
         <spinner size="" />
         <span>{{ $t('HELP_CENTER.EDIT_ARTICLE.LOADING') }}</span>
       </div>
@@ -30,6 +32,7 @@
       @save-article="saveArticle"
       @delete-article="openDeletePopup"
       @archive-article="archiveArticle"
+      @update-meta="updateMeta"
     />
     <woot-delete-modal
       :show.sync="showDeleteConfirmationPopup"
@@ -42,16 +45,18 @@
     />
   </div>
 </template>
+
 <script>
 import { mapGetters } from 'vuex';
-import EditArticleHeader from '../../components/Header/EditArticleHeader';
-import ArticleEditor from '../../components/ArticleEditor';
-import ArticleSettings from './ArticleSettings';
-import Spinner from 'shared/components/Spinner';
+import EditArticleHeader from '../../components/Header/EditArticleHeader.vue';
+import ArticleEditor from '../../components/ArticleEditor.vue';
+import ArticleSettings from './ArticleSettings.vue';
+import Spinner from 'shared/components/Spinner.vue';
 import portalMixin from '../../mixins/portalMixin';
 import alertMixin from 'shared/mixins/alertMixin';
-import wootConstants from 'dashboard/constants';
+import wootConstants from 'dashboard/constants/globals';
 import { buildPortalArticleURL } from 'dashboard/helper/portalHelper';
+import { PORTALS_EVENTS } from '../../../../../helper/AnalyticsHelper/events';
 
 const { ARTICLE_STATUS_TYPES } = wootConstants;
 export default {
@@ -85,13 +90,16 @@ export default {
     selectedPortalSlug() {
       return this.$route.params.portalSlug;
     },
+    selectedLocale() {
+      return this.$route.params.locale;
+    },
     portalLink() {
       const slug = this.$route.params.portalSlug;
       return buildPortalArticleURL(
         slug,
         this.article.category.slug,
         this.article.category.locale,
-        this.article.id
+        this.article.slug
       );
     },
   },
@@ -100,7 +108,11 @@ export default {
   },
   methods: {
     onClickGoBack() {
-      this.$router.push({ name: 'list_all_locale_articles' });
+      if (window.history.length > 2) {
+        this.$router.go(-1);
+      } else {
+        this.$router.push({ name: 'list_all_locale_articles' });
+      }
     },
     fetchArticleDetails() {
       this.$store.dispatch('articles/show', {
@@ -117,6 +129,9 @@ export default {
     confirmDeletion() {
       this.closeDeletePopup();
       this.deleteArticle();
+      this.$track(PORTALS_EVENTS.DELETE_ARTICLE, {
+        status: this.article?.status,
+      });
     },
     async saveArticle({ ...values }) {
       this.isUpdating = true;
@@ -170,12 +185,20 @@ export default {
           status: ARTICLE_STATUS_TYPES.ARCHIVE,
         });
         this.alertMessage = this.$t('HELP_CENTER.ARCHIVE_ARTICLE.API.SUCCESS');
+        this.$track(PORTALS_EVENTS.ARCHIVE_ARTICLE, { uiFrom: 'sidebar' });
       } catch (error) {
         this.alertMessage =
           error?.message || this.$t('HELP_CENTER.ARCHIVE_ARTICLE.API.ERROR');
       } finally {
         this.showAlert(this.alertMessage);
       }
+    },
+    updateMeta() {
+      const selectedPortalParam = {
+        portalSlug: this.selectedPortalSlug,
+        locale: this.selectedLocale,
+      };
+      return this.$store.dispatch('portals/show', selectedPortalParam);
     },
     openArticleSettings() {
       this.showArticleSettings = true;
@@ -185,28 +208,10 @@ export default {
     },
     showArticleInPortal() {
       window.open(this.portalLink, '_blank');
+      this.$track(PORTALS_EVENTS.PREVIEW_ARTICLE, {
+        status: this.article?.status,
+      });
     },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.article-container {
-  display: flex;
-  padding: 0 var(--space-normal);
-  width: 100%;
-  flex: 1;
-  overflow: auto;
-
-  .edit-article--container {
-    flex: 1;
-    flex-shrink: 0;
-    overflow: auto;
-  }
-
-  .is-sidebar-open {
-    flex-grow: 1;
-    flex-shrink: 0;
-  }
-}
-</style>

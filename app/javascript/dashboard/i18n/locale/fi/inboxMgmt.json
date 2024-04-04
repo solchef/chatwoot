@@ -83,7 +83,7 @@
         },
         "CHANNEL_GREETING_TOGGLE": {
           "LABEL": "Ota käyttöön tervetulotoivotus",
-          "HELP_TEXT": "Automatically send a greeting message when a new conversation is created.",
+          "HELP_TEXT": "Lähetä tervehdys viestejä automaattisesti, kun asiakkaat aloittavat keskustelun ja lähettävät ensimmäisen viestin.",
           "ENABLED": "Käytössä",
           "DISABLED": "Pois käytöstä"
         },
@@ -109,6 +109,17 @@
         "ACCOUNT_SID": {
           "LABEL": "Tilin SID",
           "PLACEHOLDER": "Syötä Twilio-tilisi SID",
+          "ERROR": "Tämä kenttä on pakollinen"
+        },
+        "API_KEY": {
+          "USE_API_KEY": "Use API Key Authentication",
+          "LABEL": "API Key SID",
+          "PLACEHOLDER": "Please enter your API Key SID",
+          "ERROR": "Tämä kenttä on pakollinen"
+        },
+        "API_KEY_SECRET": {
+          "LABEL": "API Key Secret",
+          "PLACEHOLDER": "Please enter your API Key Secret",
           "ERROR": "Tämä kenttä on pakollinen"
         },
         "MESSAGING_SERVICE_SID": {
@@ -329,7 +340,7 @@
       },
       "AUTH": {
         "TITLE": "Choose a channel",
-        "DESC": "Chatwoot supports live-chat widgets, Facebook Messenger, Twitter profiles, WhatsApp, Emails, etc., as channels. If you want to build a custom channel, you can create it using the API channel. To get started, choose one of the channels below."
+        "DESC": "Chatwoot tukee live-chat-widgetejä, Facebook Messenger, WhatsApp, sähköpostit jne. kanavina. Jos haluat rakentaa mukautetun kanavan, voit luoda sen API-kanavalla. Päästäksesi alkuun, valitse jokin kanava alta."
       },
       "AGENTS": {
         "TITLE": "Edustajat",
@@ -344,11 +355,24 @@
       "FINISH": {
         "TITLE": "Nappiin meni!",
         "DESC": "Olet onnistuneesti suorittanut Facebook-sivusi integroinnin. Seuraavalla kerralla kun asiakas lähettää sivullesi viestin, keskustelu ilmaantuu automaattisesti saapuneet-kansioon.<br>Tarjoamme myös sivustolle lisättävän widget skriptin, jonka voit helposti lisätä sivustosi. Kun tämä on sivustollasi, asiakkaat voivat lähettää sinulle viestin suoraan sivustostasi ilman ulkoisen työkalun apua, ja keskustelu näkyy täällä.<br>Makeeta vai mitä? No, me ainakin yrittämme olla :)"
+      },
+      "EMAIL_PROVIDER": {
+        "TITLE": "Select your email provider",
+        "DESCRIPTION": "Select an email provider from the list below. If you don't see your email provider in the list, you can select the other provider option and provide the IMAP and SMTP Credentials."
+      },
+      "MICROSOFT": {
+        "TITLE": "Microsoft Email",
+        "DESCRIPTION": "Click on the Sign in with Microsoft button to get started. You will redirected to the email sign in page. Once you accept the requested permissions, you would be redirected back to the inbox creation step.",
+        "EMAIL_PLACEHOLDER": "Enter email address",
+        "HELP": "To add your Microsoft account as a channel, you need to authenticate your Microsoft account by clicking on 'Sign in with Microsoft' ",
+        "ERROR_MESSAGE": "There was an error connecting to Microsoft, please try again"
       }
     },
     "DETAILS": {
       "LOADING_FB": "Varmennetaan sinua Facebookissa...",
       "ERROR_FB_AUTH": "Jokin meni pieleen, päivitä sivu...",
+      "ERROR_FB_UNAUTHORIZED": "You're not authorized to perform this action. ",
+      "ERROR_FB_UNAUTHORIZED_HELP": "Please ensure you have access to the Facebook page with full control. You can read more about Facebook roles <a href=\" https://www.facebook.com/help/187316341316631\">here</a>.",
       "CREATING_CHANNEL": "Luodaan postilaatikkoasi...",
       "TITLE": "Määritä postilaatikon tiedot",
       "DESC": ""
@@ -379,6 +403,25 @@
       "ENABLE_CSAT": {
         "ENABLED": "Käytössä",
         "DISABLED": "Pois käytöstä"
+      },
+      "SENDER_NAME_SECTION": {
+        "TITLE": "Sender name",
+        "SUB_TEXT": "Select the name shown to the your customer when they receive emails from your agents.",
+        "FOR_EG": "For eg:",
+        "FRIENDLY": {
+          "TITLE": "Friendly",
+          "FROM": "lähettäjä",
+          "SUBTITLE": "Add the name of the agent who sent the reply in the sender name to make it friendly."
+        },
+        "PROFESSIONAL": {
+          "TITLE": "Professional",
+          "SUBTITLE": "Use only the configured business name as the sender name in the email header."
+        },
+        "BUSINESS_NAME": {
+          "BUTTON_TEXT": "+ Configure your business name",
+          "PLACEHOLDER": "Enter your business name",
+          "SAVE_BUTTON_TEXT": "Save"
+        }
       },
       "ALLOW_MESSAGES_AFTER_RESOLVED": {
         "ENABLED": "Käytössä",
@@ -428,7 +471,8 @@
       "LABEL": "Ominaisuudet",
       "DISPLAY_FILE_PICKER": "Näytä liitevalitsin widgetissä",
       "DISPLAY_EMOJI_PICKER": "Näytä emojivalitsin widgetissä",
-      "ALLOW_END_CONVERSATION": "Allow users to end conversation from the widget"
+      "ALLOW_END_CONVERSATION": "Allow users to end conversation from the widget",
+      "USE_INBOX_AVATAR_FOR_BOT": "Use inbox name and avatar for the bot"
     },
     "SETTINGS_POPUP": {
       "MESSENGER_HEADING": "Messenger-skripti",
@@ -442,7 +486,9 @@
       "ENABLE_EMAIL_COLLECT_BOX_SUB_TEXT": "Enable or disable email collect box on new conversation",
       "AUTO_ASSIGNMENT": "Ota automaattinen delegointi käyttöön",
       "ENABLE_CSAT": "Enable CSAT",
+      "SENDER_NAME_SECTION": "Enable Agent Name in Email",
       "ENABLE_CSAT_SUB_TEXT": "Enable/Disable CSAT(Customer satisfaction) survey after resolving a conversation",
+      "SENDER_NAME_SECTION_TEXT": "Enable/Disable showing Agent's name in email, if disabled it will show business name",
       "ENABLE_CONTINUITY_VIA_EMAIL": "Enable conversation continuity via email",
       "ENABLE_CONTINUITY_VIA_EMAIL_SUB_TEXT": "Conversations will continue over email if the contact email address is available.",
       "LOCK_TO_SINGLE_CONVERSATION": "Lock to single conversation",
@@ -452,6 +498,7 @@
       "AUTO_ASSIGNMENT_SUB_TEXT": "Ota käyttöön tai poista käytöstä automaattinen keskusteluiden delegointi edustajille.",
       "HMAC_VERIFICATION": "User Identity Validation",
       "HMAC_DESCRIPTION": "In order to validate the user's identity, you can pass an `identifier_hash` for each user. You can generate a HMAC sha256 hash using the `identifier` with the key shown here.",
+      "HMAC_LINK_TO_DOCS": "You can read more here.",
       "HMAC_MANDATORY_VERIFICATION": "Enforce User Identity Validation",
       "HMAC_MANDATORY_DESCRIPTION": "If enabled, requests missing the `identifier_hash` will be rejected.",
       "INBOX_IDENTIFIER": "Inbox Identifier",
@@ -461,7 +508,21 @@
       "ALLOW_MESSAGES_AFTER_RESOLVED": "Allow messages after conversation resolved",
       "ALLOW_MESSAGES_AFTER_RESOLVED_SUB_TEXT": "Allow the end-users to send messages even after the conversation is resolved.",
       "WHATSAPP_SECTION_SUBHEADER": "This API Key is used for the integration with the WhatsApp APIs.",
-      "WHATSAPP_SECTION_TITLE": "API Key"
+      "WHATSAPP_SECTION_UPDATE_SUBHEADER": "Enter the updated key to be used for the integration with the WhatsApp APIs.",
+      "WHATSAPP_SECTION_TITLE": "API Key",
+      "WHATSAPP_SECTION_UPDATE_TITLE": "Update API Key",
+      "WHATSAPP_SECTION_UPDATE_PLACEHOLDER": "Enter the new API Key here",
+      "WHATSAPP_SECTION_UPDATE_BUTTON": "Päivitä",
+      "WHATSAPP_WEBHOOK_TITLE": "Webhook Verify Token",
+      "WHATSAPP_WEBHOOK_SUBHEADER": "This token is used to verify the authenticity of the webhook endpoint.",
+      "UPDATE_PRE_CHAT_FORM_SETTINGS": "Update Pre Chat Form Settings"
+    },
+    "HELP_CENTER": {
+      "LABEL": "Help Center",
+      "PLACEHOLDER": "Select Help Center",
+      "SELECT_PLACEHOLDER": "Select Help Center",
+      "REMOVE": "Remove Help Center",
+      "SUB_TEXT": "Attach a Help Center with the inbox"
     },
     "AUTO_ASSIGNMENT": {
       "MAX_ASSIGNMENT_LIMIT": "Auto assignment limit",
@@ -508,8 +569,7 @@
       "UPDATE": "Update business hours settings",
       "TOGGLE_AVAILABILITY": "Enable business availability for this inbox",
       "UNAVAILABLE_MESSAGE_LABEL": "Unavailable message for visitors",
-      "UNAVAILABLE_MESSAGE_DEFAULT": "We are unavailable at the moment. Leave a message we will respond once we are back.",
-      "TOGGLE_HELP": "Enabling business availability will show the available hours on live chat widget even if all the agents are offline. Outside available hours vistors can be warned with a message and a pre-chat form.",
+      "TOGGLE_HELP": "Enabling business availability will show the available hours on live chat widget even if all the agents are offline. Outside available hours visitors can be warned with a message and a pre-chat form.",
       "DAY": {
         "ENABLE": "Enable availability for this day",
         "UNAVAILABLE": "Unavailable",
@@ -547,6 +607,10 @@
         "PLACE_HOLDER": "Salasana"
       },
       "ENABLE_SSL": "Enable SSL"
+    },
+    "MICROSOFT": {
+      "TITLE": "Microsoft",
+      "SUBTITLE": "Reauthorize your MICROSOFT account"
     },
     "SMTP": {
       "TITLE": "SMTP",
@@ -666,6 +730,10 @@
       },
       "BRANDING_TEXT": "Palvelun tarjoaa Chatwoot",
       "SCRIPT_SETTINGS": "\n      window.chatwootSettings = {options};"
+    },
+    "EMAIL_PROVIDERS": {
+      "MICROSOFT": "Microsoft",
+      "OTHER_PROVIDERS": "Other Providers"
     }
   }
 }

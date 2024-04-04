@@ -1,14 +1,16 @@
 <template>
-  <div class="wizard-body height-auto small-9 columns">
+  <div
+    class="pt-3 bg-white dark:bg-slate-900 h-full border border-solid border-transparent px-6 pb-6 dark:border-transparent w-full max-w-full md:w-3/4 md:max-w-[75%] flex-shrink-0 flex-grow-0"
+  >
     <empty-state
       :title="$t('HELP_CENTER.PORTAL.ADD.CREATE_FLOW_PAGE.FINISH_PAGE.TITLE')"
       :message="
         $t('HELP_CENTER.PORTAL.ADD.CREATE_FLOW_PAGE.FINISH_PAGE.MESSAGE')
       "
     >
-      <div class="medium-12 columns text-center">
+      <div class="w-full text-center">
         <router-link
-          class="button success nice"
+          class="button success nice rounded"
           :to="{
             name: 'list_all_portals',
           }"
@@ -21,7 +23,7 @@
 </template>
 
 <script>
-import EmptyState from 'dashboard/components/widgets/EmptyState';
+import EmptyState from 'dashboard/components/widgets/EmptyState.vue';
 export default {
   components: {
     EmptyState,
@@ -35,9 +37,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.wizard-body {
-  padding-top: var(--space-slab);
-  border: 1px solid transparent;
-}
-</style>

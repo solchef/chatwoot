@@ -1,5 +1,7 @@
 <template>
-  <div class="wizard-body small-12 medium-9 columns height-auto">
+  <div
+    class="border border-slate-25 dark:border-slate-800/60 bg-white dark:bg-slate-900 h-full p-6 w-full max-w-full md:w-3/4 md:max-w-[75%] flex-shrink-0 flex-grow-0"
+  >
     <page-header
       :header-title="$t('INBOX_MGMT.ADD.AUTH.TITLE')"
       :header-content="
@@ -9,7 +11,7 @@
         )
       "
     />
-    <div class="row channels">
+    <div class="mt-6 mx-0 flex flex-wrap">
       <channel-item
         v-for="channel in channelList"
         :key="channel.key"
@@ -22,9 +24,9 @@
 </template>
 
 <script>
-import ChannelItem from 'dashboard/components/widgets/ChannelItem';
+import ChannelItem from 'dashboard/components/widgets/ChannelItem.vue';
 import router from '../../../index';
-import PageHeader from '../SettingsSubPageHeader';
+import PageHeader from '../SettingsSubPageHeader.vue';
 import { mapGetters } from 'vuex';
 import globalConfigMixin from 'shared/mixins/globalConfigMixin';
 
@@ -48,7 +50,6 @@ export default {
       return [
         { key: 'website', name: 'Website' },
         { key: 'facebook', name: 'Messenger' },
-        { key: 'twitter', name: 'Twitter' },
         { key: 'whatsapp', name: 'WhatsApp' },
         { key: 'sms', name: 'SMS' },
         { key: 'email', name: 'Email' },
@@ -71,7 +72,6 @@ export default {
   },
   methods: {
     async initializeEnabledFeatures() {
-      await this.$store.dispatch('accounts/get', this.accountId);
       this.enabledFeatures = this.account.features;
     },
     initChannelAuth(channel) {
@@ -84,8 +84,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.height-auto {
-  height: auto;
-}
-</style>

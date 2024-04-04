@@ -13,6 +13,7 @@ import {
   inboxes,
   languages,
   countries,
+  slaPolicies,
   MESSAGE_CONDITION_VALUES,
   automationToSubmit,
   savedAutomation,
@@ -35,7 +36,9 @@ Vue.use(Vuelidate);
 const createComponent = (
   mixins,
   data,
+  // eslint-disable-next-line default-param-last
   computed = {},
+  // eslint-disable-next-line default-param-last
   methods = {},
   validations
 ) => {
@@ -86,6 +89,9 @@ const generateComputedProperties = () => {
     },
     countries() {
       return countries;
+    },
+    slaPolicies() {
+      return slaPolicies;
     },
     MESSAGE_CONDITION_VALUES() {
       return MESSAGE_CONDITION_VALUES;
@@ -209,7 +215,7 @@ describe('automationMethodsMixin', () => {
 
   it('appendNewAction appends a new condition to the automation data property', () => {
     const action = {
-      action_name: 'assign_team',
+      action_name: 'assign_agent',
       action_params: [],
     };
     const data = () => {
@@ -339,6 +345,9 @@ describe('automationMethodsMixin', () => {
       };
     };
     const computed = {
+      agents() {
+        return agents;
+      },
       labels() {
         return labels;
       },
@@ -419,11 +428,17 @@ describe('automationMethodsMixin', () => {
       return {};
     };
     const computed = {
+      agents() {
+        return agents;
+      },
       labels() {
         return labels;
       },
       teams() {
         return teams;
+      },
+      slaPolicies() {
+        return slaPolicies;
       },
     };
     const expectedActionDropdownValues = [

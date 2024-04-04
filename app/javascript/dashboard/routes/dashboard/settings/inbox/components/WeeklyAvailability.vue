@@ -1,5 +1,5 @@
 <template>
-  <div class="settings--content">
+  <div class="mx-8">
     <settings-section
       :title="$t('INBOX_MGMT.BUSINESS_HOURS.TITLE')"
       :sub-title="$t('INBOX_MGMT.BUSINESS_HOURS.SUBTITLE')"
@@ -9,16 +9,33 @@
           <input
             v-model="isBusinessHoursEnabled"
             type="checkbox"
+            class="ltr:mr-2 rtl:ml-2"
             name="toggle-business-hours"
           />
           {{ $t('INBOX_MGMT.BUSINESS_HOURS.TOGGLE_AVAILABILITY') }}
         </label>
-        <p>{{ $t('INBOX_MGMT.BUSINESS_HOURS.TOGGLE_HELP') }}</p>
-        <div v-if="isBusinessHoursEnabled" class="business-hours-wrap">
-          <label class="unavailable-input-wrap">
-            {{ $t('INBOX_MGMT.BUSINESS_HOURS.UNAVAILABLE_MESSAGE_LABEL') }}
-            <textarea v-model="unavailableMessage" type="text" />
-          </label>
+        <p class="text-slate-700 dark:text-slate-300 mb-4">
+          {{ $t('INBOX_MGMT.BUSINESS_HOURS.TOGGLE_HELP') }}
+        </p>
+        <div v-if="isBusinessHoursEnabled" class="mb-6">
+          <div class="max-w-[37.5rem]">
+            <label class="unavailable-input-wrap">
+              {{ $t('INBOX_MGMT.BUSINESS_HOURS.UNAVAILABLE_MESSAGE_LABEL') }}
+            </label>
+            <div
+              v-if="isRichEditorEnabled"
+              class="py-0 px-4 border border-solid border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-md mx-0 mt-0 mb-4"
+            >
+              <woot-message-editor
+                v-model="unavailableMessage"
+                :enable-variables="true"
+                :is-format-mode="true"
+                class="message-editor"
+                :min-height="4"
+              />
+            </div>
+            <textarea v-else v-model="unavailableMessage" type="text" />
+          </div>
           <div class="timezone-input-wrap">
             <label>
               {{ $t('INBOX_MGMT.BUSINESS_HOURS.TIMEZONE_LABEL') }}
@@ -61,8 +78,10 @@
 <script>
 import { mapGetters } from 'vuex';
 import alertMixin from 'shared/mixins/alertMixin';
-import SettingsSection from 'dashboard/components/SettingsSection';
-import BusinessDay from './BusinessDay';
+import inboxMixin from 'shared/mixins/inboxMixin';
+import SettingsSection from 'dashboard/components/SettingsSection.vue';
+import WootMessageEditor from 'dashboard/components/widgets/WootWriter/Editor.vue';
+import BusinessDay from './BusinessDay.vue';
 import {
   timeSlotParse,
   timeSlotTransform,
@@ -71,16 +90,17 @@ import {
 } from '../helpers/businessHour';
 
 const DEFAULT_TIMEZONE = {
-  label: 'America/Los_Angeles',
-  key: 'America/Los_Angeles',
+  label: 'Pacific Time (US & Canada) (GMT-07:00)',
+  value: 'America/Los_Angeles',
 };
 
 export default {
   components: {
     SettingsSection,
     BusinessDay,
+    WootMessageEditor,
   },
-  mixins: [alertMixin],
+  mixins: [alertMixin, inboxMixin],
   props: {
     inbox: {
       type: Object,
@@ -90,9 +110,7 @@ export default {
   data() {
     return {
       isBusinessHoursEnabled: false,
-      unavailableMessage: this.$t(
-        'INBOX_MGMT.BUSINESS_HOURS.UNAVAILABLE_MESSAGE_DEFAULT'
-      ),
+      unavailableMessage: '',
       timeZone: DEFAULT_TIMEZONE,
       dayNames: {
         0: 'Sunday',
@@ -115,6 +133,15 @@ export default {
     timeZones() {
       return [...timeZoneOptions()];
     },
+    isRichEditorEnabled() {
+      if (
+        this.isATwilioChannel ||
+        this.isATwitterInbox ||
+        this.isAFacebookInbox
+      )
+        return false;
+      return true;
+    },
   },
   watch: {
     inbox() {
@@ -136,9 +163,7 @@ export default {
         ? timeSlotParse(timeSlots)
         : defaultTimeSlot;
       this.isBusinessHoursEnabled = isEnabled;
-      this.unavailableMessage =
-        unavailableMessage ||
-        this.$t('INBOX_MGMT.BUSINESS_HOURS.UNAVAILABLE_MESSAGE_DEFAULT');
+      this.unavailableMessage = unavailableMessage || '';
       this.timeSlots = slots;
       this.timeZone =
         this.timeZones.find(item => timeZone === item.value) ||
@@ -163,7 +188,9 @@ export default {
         await this.$store.dispatch('inboxes/updateInbox', payload);
         this.showAlert(this.$t('INBOX_MGMT.EDIT.API.SUCCESS_MESSAGE'));
       } catch (error) {
-        this.showAlert(this.$t('INBOX_MGMT.EDIT.API.SUCCESS_MESSAGE'));
+        this.showAlert(
+          error.message || this.$t('INBOX_MGMT.EDIT.API.ERROR_MESSAGE')
+        );
       }
     },
   },
@@ -171,23 +198,22 @@ export default {
 </script>
 <style lang="scss" scoped>
 .timezone-input-wrap {
-  max-width: 60rem;
+  @apply max-w-[37.5rem];
 
   &::v-deep .multiselect {
-    margin-top: var(--space-small);
+    @apply mt-2;
   }
+}
+
+::v-deep.message-editor {
+  @apply border-0;
 }
 
 .unavailable-input-wrap {
-  max-width: 60rem;
+  @apply max-w-[37.5rem];
 
   textarea {
-    min-height: var(--space-jumbo);
-    margin-top: var(--space-small);
+    @apply min-h-[4rem] mt-2;
   }
-}
-
-.business-hours-wrap {
-  margin-bottom: var(--space-medium);
 }
 </style>

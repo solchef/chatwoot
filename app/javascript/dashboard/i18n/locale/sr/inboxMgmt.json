@@ -111,6 +111,17 @@
           "PLACEHOLDER": "Molim vas unesite SID vašeg Twilio naloga",
           "ERROR": "Ovo polje je obavezno"
         },
+        "API_KEY": {
+          "USE_API_KEY": "Use API Key Authentication",
+          "LABEL": "API Key SID",
+          "PLACEHOLDER": "Please enter your API Key SID",
+          "ERROR": "Ovo polje je obavezno"
+        },
+        "API_KEY_SECRET": {
+          "LABEL": "API Key Secret",
+          "PLACEHOLDER": "Please enter your API Key Secret",
+          "ERROR": "Ovo polje je obavezno"
+        },
         "MESSAGING_SERVICE_SID": {
           "LABEL": "SID servisa za poruke",
           "PLACEHOLDER": "Molim vas unesite SID vašeg Twilio servisa za poruke",
@@ -344,11 +355,24 @@
       "FINISH": {
         "TITLE": "Uspeli ste!",
         "DESC": "Uspešno ste završili integraciju vaše Fejsbuk stranice sa Chatwoo-om. Kada potrošač sledeći put pošalje poruku na tvojoj stranici, razgovor će se automatski pojaviti u prijemnom sandučetu.<br>Takođe vam pružamo skriptu za vidžet koju možete jednostavno dodati na veb sajt. Onda kada je postavljen na veb sajt, potrošači mogu da vam pošalju poruku direktno sa veb sajta bez pomoći eksternih alata i razgovor će se pojaviti ovde, na Chatwoot-u.<br>Kul, zar ne? Pa, svakako se trudimo da bude :)"
+      },
+      "EMAIL_PROVIDER": {
+        "TITLE": "Select your email provider",
+        "DESCRIPTION": "Select an email provider from the list below. If you don't see your email provider in the list, you can select the other provider option and provide the IMAP and SMTP Credentials."
+      },
+      "MICROSOFT": {
+        "TITLE": "Microsoft Email",
+        "DESCRIPTION": "Click on the Sign in with Microsoft button to get started. You will redirected to the email sign in page. Once you accept the requested permissions, you would be redirected back to the inbox creation step.",
+        "EMAIL_PLACEHOLDER": "Enter email address",
+        "HELP": "To add your Microsoft account as a channel, you need to authenticate your Microsoft account by clicking on 'Sign in with Microsoft' ",
+        "ERROR_MESSAGE": "There was an error connecting to Microsoft, please try again"
       }
     },
     "DETAILS": {
       "LOADING_FB": "Autentifikacija sa Fejsbukom...",
       "ERROR_FB_AUTH": "Nešto je pošlo po zlu, Molim vas osvežite stranicu...",
+      "ERROR_FB_UNAUTHORIZED": "You're not authorized to perform this action. ",
+      "ERROR_FB_UNAUTHORIZED_HELP": "Please ensure you have access to the Facebook page with full control. You can read more about Facebook roles <a href=\" https://www.facebook.com/help/187316341316631\">here</a>.",
       "CREATING_CHANNEL": "Pravljenje vašeg prijemnog sandučeta...",
       "TITLE": "Podesite detalje prijemnog sandučeta",
       "DESC": ""
@@ -379,6 +403,25 @@
       "ENABLE_CSAT": {
         "ENABLED": "Omogućeno",
         "DISABLED": "Onemogućeno"
+      },
+      "SENDER_NAME_SECTION": {
+        "TITLE": "Sender name",
+        "SUB_TEXT": "Select the name shown to the your customer when they receive emails from your agents.",
+        "FOR_EG": "For eg:",
+        "FRIENDLY": {
+          "TITLE": "Friendly",
+          "FROM": "od",
+          "SUBTITLE": "Add the name of the agent who sent the reply in the sender name to make it friendly."
+        },
+        "PROFESSIONAL": {
+          "TITLE": "Professional",
+          "SUBTITLE": "Use only the configured business name as the sender name in the email header."
+        },
+        "BUSINESS_NAME": {
+          "BUTTON_TEXT": "+ Configure your business name",
+          "PLACEHOLDER": "Enter your business name",
+          "SAVE_BUTTON_TEXT": "Save"
+        }
       },
       "ALLOW_MESSAGES_AFTER_RESOLVED": {
         "ENABLED": "Omogućeno",
@@ -428,7 +471,8 @@
       "LABEL": "Mogućnosti",
       "DISPLAY_FILE_PICKER": "Prikaži izbornik datoteke na vidžetu",
       "DISPLAY_EMOJI_PICKER": "Prikaži izbornik emotikona u vidžetu",
-      "ALLOW_END_CONVERSATION": "Dozvoli korisnicima da završe razgovor iz vidžeta"
+      "ALLOW_END_CONVERSATION": "Dozvoli korisnicima da završe razgovor iz vidžeta",
+      "USE_INBOX_AVATAR_FOR_BOT": "Use inbox name and avatar for the bot"
     },
     "SETTINGS_POPUP": {
       "MESSENGER_HEADING": "Mesindžer skripta",
@@ -442,7 +486,9 @@
       "ENABLE_EMAIL_COLLECT_BOX_SUB_TEXT": "Omogući ili onemogući polje za prikupljanje e-pošte za novi razgovor",
       "AUTO_ASSIGNMENT": "Omogući automatsko dodeljivanje",
       "ENABLE_CSAT": "Omogući ocenu zadovoljstva korisnika",
+      "SENDER_NAME_SECTION": "Enable Agent Name in Email",
       "ENABLE_CSAT_SUB_TEXT": "Omogući/onemogući upitnik o zadovoljstvu korisnika nakon rešavanja razgovora",
+      "SENDER_NAME_SECTION_TEXT": "Enable/Disable showing Agent's name in email, if disabled it will show business name",
       "ENABLE_CONTINUITY_VIA_EMAIL": "Omogući nastavljanje razgovora putem e-pošte",
       "ENABLE_CONTINUITY_VIA_EMAIL_SUB_TEXT": "Razgovori će se nastaviti putem e-pošte ako je dostupna adresa e-pošte kontakta.",
       "LOCK_TO_SINGLE_CONVERSATION": "Lock to single conversation",
@@ -451,9 +497,10 @@
       "INBOX_UPDATE_SUB_TEXT": "Izmenite podešavanja vašeg prijemnog sandučeta",
       "AUTO_ASSIGNMENT_SUB_TEXT": "Omogući ili onemogući automatsku dodelu novih razgovora agentima dodatih ovom prijemnom sandučetu.",
       "HMAC_VERIFICATION": "Potvrda identiteta korisnika",
-      "HMAC_DESCRIPTION": "Da bi se potvrdio identitet korisnika, morate proslediti `identifier_hash` za svakog korisnika. Možete generisti HMAC sha256 heš koristeći `identifier` sa ključem prikazanim ovde.",
+      "HMAC_DESCRIPTION": "With this key you can generate a secret token that can be used to verify the identity of your users.",
+      "HMAC_LINK_TO_DOCS": "You can read more here.",
       "HMAC_MANDATORY_VERIFICATION": "Primoraj potvrdu identiteta korisnika",
-      "HMAC_MANDATORY_DESCRIPTION": "Ukoliko je omogućeno, zahtevi kojima nedostaje `identifier_hash` će biti odbijeni.",
+      "HMAC_MANDATORY_DESCRIPTION": "If enabled, requests that cannot be verified will be rejected.",
       "INBOX_IDENTIFIER": "Identifikator prijemnog sandučeta",
       "INBOX_IDENTIFIER_SUB_TEXT": "Koristite `inbox_identifier` token prikazan ovde za autentifikaciju vaših API klijenata.",
       "FORWARD_EMAIL_TITLE": "Prosledi na e-poštu",
@@ -461,7 +508,21 @@
       "ALLOW_MESSAGES_AFTER_RESOLVED": "Dozvoli poruke nakon rešavanja razgovora",
       "ALLOW_MESSAGES_AFTER_RESOLVED_SUB_TEXT": "Dozvolite krajnjim korisnicima da šalju poruke čak i kada je razgovor rešen.",
       "WHATSAPP_SECTION_SUBHEADER": "Ovaj API ključ se koristi za integraciju sa WhatsApp API-jima.",
-      "WHATSAPP_SECTION_TITLE": "API ključ"
+      "WHATSAPP_SECTION_UPDATE_SUBHEADER": "Enter the updated key to be used for the integration with the WhatsApp APIs.",
+      "WHATSAPP_SECTION_TITLE": "API ključ",
+      "WHATSAPP_SECTION_UPDATE_TITLE": "Update API Key",
+      "WHATSAPP_SECTION_UPDATE_PLACEHOLDER": "Enter the new API Key here",
+      "WHATSAPP_SECTION_UPDATE_BUTTON": "Primeni",
+      "WHATSAPP_WEBHOOK_TITLE": "Token potvrde veb zakačke",
+      "WHATSAPP_WEBHOOK_SUBHEADER": "This token is used to verify the authenticity of the webhook endpoint.",
+      "UPDATE_PRE_CHAT_FORM_SETTINGS": "Update Pre Chat Form Settings"
+    },
+    "HELP_CENTER": {
+      "LABEL": "Help Center",
+      "PLACEHOLDER": "Select Help Center",
+      "SELECT_PLACEHOLDER": "Select Help Center",
+      "REMOVE": "Remove Help Center",
+      "SUB_TEXT": "Attach a Help Center with the inbox"
     },
     "AUTO_ASSIGNMENT": {
       "MAX_ASSIGNMENT_LIMIT": "Ograničenje automatskog dodeljivanja",
@@ -508,8 +569,7 @@
       "UPDATE": "Izmena podešavanja radnog vremena",
       "TOGGLE_AVAILABILITY": "Omogući vreme dostupnosti za ovo prijemno sanduče",
       "UNAVAILABLE_MESSAGE_LABEL": "Poruka nedostupnosti za posetioce",
-      "UNAVAILABLE_MESSAGE_DEFAULT": "Trenutno nismo dostupni. Ostavite poruku i odgovorićemo vam čim je pročitamo.",
-      "TOGGLE_HELP": "Omogućavanje vremena dostupnosti će prikazati dostupno vreme na vidžetu ćaskanja čak i kada su svi agenti nedostupni. Van radnih sati posetioci će biti upozoreni porukom i formularom pre ćaskanja.",
+      "TOGGLE_HELP": "Enabling business availability will show the available hours on live chat widget even if all the agents are offline. Outside available hours visitors can be warned with a message and a pre-chat form.",
       "DAY": {
         "ENABLE": "Omogućite dostupnost za ovaj dan",
         "UNAVAILABLE": "Nedostupan",
@@ -547,6 +607,10 @@
         "PLACE_HOLDER": "Lozinka"
       },
       "ENABLE_SSL": "Omogući SSL"
+    },
+    "MICROSOFT": {
+      "TITLE": "Microsoft",
+      "SUBTITLE": "Reauthorize your MICROSOFT account"
     },
     "SMTP": {
       "TITLE": "SMTP",
@@ -666,6 +730,10 @@
       },
       "BRANDING_TEXT": "Pokreće Chatwoot",
       "SCRIPT_SETTINGS": "\n      window.chatwootSettings ={options};"
+    },
+    "EMAIL_PROVIDERS": {
+      "MICROSOFT": "Microsoft",
+      "OTHER_PROVIDERS": "Other Providers"
     }
   }
 }

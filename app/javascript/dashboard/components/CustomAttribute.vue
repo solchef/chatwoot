@@ -1,7 +1,7 @@
 <template>
-  <div class="custom-attribute">
-    <div class="title-wrap">
-      <h4 class="text-block-title title error">
+  <div class="py-3 px-4">
+    <div class="flex items-center mb-1">
+      <h4 class="text-sm flex items-center m-0 w-full error">
         <div v-if="isAttributeTypeCheckbox" class="checkbox-wrap">
           <input
             v-model="editedValue"
@@ -10,9 +10,9 @@
             @change="onUpdate"
           />
         </div>
-        <div class="name-button__wrap">
+        <div class="flex items-center justify-between w-full">
           <span
-            class="attribute-name"
+            class="attribute-name w-full text-slate-800 dark:text-slate-100 font-medium text-sm mb-0"
             :class="{ error: $v.editedValue.$error }"
           >
             {{ label }}
@@ -24,7 +24,7 @@
             size="medium"
             color-scheme="secondary"
             icon="delete"
-            class-names="delete-button"
+            class-names="flex justify-end w-4"
             @click="onDelete"
           />
         </div>
@@ -32,22 +32,30 @@
     </div>
     <div v-if="notAttributeTypeCheckboxAndList">
       <div v-show="isEditing">
-        <div class="input-group small">
+        <div class="mb-2 w-full flex items-center">
           <input
             ref="inputfield"
             v-model="editedValue"
             :type="inputType"
-            class="input-group-field"
+            class="!h-8 ltr:rounded-r-none rtl:rounded-l-none !mb-0 !text-sm"
             autofocus="true"
             :class="{ error: $v.editedValue.$error }"
             @blur="$v.editedValue.$touch"
             @keyup.enter="onUpdate"
           />
-          <div class="input-group-button">
-            <woot-button size="small" icon="checkmark" @click="onUpdate" />
+          <div>
+            <woot-button
+              size="small"
+              icon="checkmark"
+              class="rounded-l-none rtl:rounded-r-none"
+              @click="onUpdate"
+            />
           </div>
         </div>
-        <span v-if="shouldShowErrorMessage" class="error-message">
+        <span
+          v-if="shouldShowErrorMessage"
+          class="text-red-400 dark:text-red-500 text-sm block font-normal -mt-px w-full"
+        >
           {{ errorMessage }}
         </span>
       </div>
@@ -58,17 +66,20 @@
       >
         <a
           v-if="isAttributeTypeLink"
-          :href="value"
+          :href="hrefURL"
           target="_blank"
           rel="noopener noreferrer"
-          class="value"
+          class="value inline-block rounded-sm mb-0 break-all py-0.5 px-1"
         >
           {{ urlValue }}
         </a>
-        <p v-else class="value">
+        <p
+          v-else
+          class="value inline-block rounded-sm mb-0 break-all py-0.5 px-1"
+        >
           {{ displayValue || '---' }}
         </p>
-        <div class="action-buttons__wrap">
+        <div class="flex max-w-[2rem] gap-1 ml-1 rtl:mr-1 rtl:ml-0">
           <woot-button
             v-if="showActions"
             v-tooltip="$t('CUSTOM_ATTRIBUTES.ACTIONS.COPY')"
@@ -115,23 +126,31 @@
 </template>
 
 <script>
-import format from 'date-fns/format';
+import { format, parseISO } from 'date-fns';
 import { required, url } from 'vuelidate/lib/validators';
 import { BUS_EVENTS } from 'shared/constants/busEvents';
 import MultiselectDropdown from 'shared/components/ui/MultiselectDropdown.vue';
 import { isValidURL } from '../helper/URLHelper';
+import customAttributeMixin from '../mixins/customAttributeMixin';
 const DATE_FORMAT = 'yyyy-MM-dd';
 
 export default {
   components: {
     MultiselectDropdown,
   },
+  mixins: [customAttributeMixin],
   props: {
     label: { type: String, required: true },
     values: { type: Array, default: () => [] },
     value: { type: [String, Number, Boolean], default: '' },
     showActions: { type: Boolean, default: false },
     attributeType: { type: String, default: 'text' },
+    attributeRegex: {
+      type: String,
+      default: null,
+    },
+    regexCue: { type: String, default: null },
+    regexEnabled: { type: Boolean, default: false },
     attributeKey: { type: String, required: true },
     contactId: { type: Number, default: null },
   },
@@ -143,14 +162,19 @@ export default {
   },
 
   computed: {
-    formattedValue() {
+    displayValue() {
       if (this.isAttributeTypeDate) {
-        return format(new Date(this.value || new Date()), DATE_FORMAT);
+        return new Date(this.value || new Date()).toLocaleDateString();
       }
       if (this.isAttributeTypeCheckbox) {
         return this.value === 'false' ? false : this.value;
       }
       return this.value;
+    },
+    formattedValue() {
+      return this.isAttributeTypeDate
+        ? format(this.value ? new Date(this.value) : new Date(), DATE_FORMAT)
+        : this.value;
     },
     listOptions() {
       return this.values.map((value, index) => ({
@@ -177,6 +201,9 @@ export default {
     urlValue() {
       return isValidURL(this.value) ? this.value : '---';
     },
+    hrefURL() {
+      return isValidURL(this.value) ? this.value : '';
+    },
     notAttributeTypeCheckboxAndList() {
       return !this.isAttributeTypeCheckbox && !this.isAttributeTypeList;
     },
@@ -190,19 +217,18 @@ export default {
       if (this.$v.editedValue.url) {
         return this.$t('CUSTOM_ATTRIBUTES.VALIDATIONS.INVALID_URL');
       }
-      return this.$t('CUSTOM_ATTRIBUTES.VALIDATIONS.REQUIRED');
-    },
-    displayValue() {
-      if (this.attributeType === 'date') {
-        return format(new Date(this.editedValue), 'dd-MM-yyyy');
+      if (!this.$v.editedValue.regexValidation) {
+        return this.regexCue
+          ? this.regexCue
+          : this.$t('CUSTOM_ATTRIBUTES.VALIDATIONS.INVALID_INPUT');
       }
-      return this.editedValue;
+      return this.$t('CUSTOM_ATTRIBUTES.VALIDATIONS.REQUIRED');
     },
   },
   watch: {
     value() {
       this.isEditing = false;
-      this.editedValue = this.value;
+      this.editedValue = this.formattedValue;
     },
   },
 
@@ -213,18 +239,30 @@ export default {
       };
     }
     return {
-      editedValue: { required },
+      editedValue: {
+        required,
+        regexValidation: value => {
+          return !(
+            this.attributeRegex &&
+            !this.getRegexp(this.attributeRegex).test(value)
+          );
+        },
+      },
     };
   },
   mounted() {
     this.editedValue = this.formattedValue;
-    bus.$on(BUS_EVENTS.FOCUS_CUSTOM_ATTRIBUTE, focusAttributeKey => {
+    bus.$on(BUS_EVENTS.FOCUS_CUSTOM_ATTRIBUTE, this.onFocusAttribute);
+  },
+  destroyed() {
+    bus.$off(BUS_EVENTS.FOCUS_CUSTOM_ATTRIBUTE, this.onFocusAttribute);
+  },
+  methods: {
+    onFocusAttribute(focusAttributeKey) {
       if (this.attributeKey === focusAttributeKey) {
         this.onEdit();
       }
-    });
-  },
-  methods: {
+    },
     focusInput() {
       if (this.$refs.inputfield) {
         this.$refs.inputfield.focus();
@@ -245,9 +283,8 @@ export default {
     onUpdate() {
       const updatedValue =
         this.attributeType === 'date'
-          ? format(new Date(this.editedValue), DATE_FORMAT)
+          ? parseISO(this.editedValue)
           : this.editedValue;
-
       this.$v.$touch();
       if (this.$v.$invalid) {
         return;
@@ -267,98 +304,44 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.custom-attribute {
-  padding: var(--space-slab) var(--space-normal);
-}
-
-.title-wrap {
-  display: flex;
-  align-items: center;
-  margin-bottom: var(--space-mini);
-}
-.title {
-  display: flex;
-  align-items: center;
-  margin: 0;
-  width: 100%;
-}
 .checkbox-wrap {
-  display: flex;
-  align-items: center;
+  @apply flex items-center;
 }
 .checkbox {
-  margin: 0 var(--space-small) 0 0;
-}
-.name-button__wrap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  @apply my-0 mr-2 ml-0;
 }
 .attribute-name {
-  width: 100%;
   &.error {
-    color: var(--r-400);
+    @apply text-red-400 dark:text-red-500;
   }
 }
-.title--icon {
-  width: var(--space-two);
-}
+
 .edit-button {
-  display: none;
+  @apply hidden;
 }
-.delete-button {
-  display: flex;
-  justify-content: flex-end;
-  width: var(--space-normal);
-}
+
 .value--view {
-  display: flex;
+  @apply flex;
 
   &.is-editable:hover {
     .value {
-      background: var(--color-background);
-      margin-bottom: 0;
+      @apply bg-slate-50 dark:bg-slate-700 mb-0;
     }
     .edit-button {
-      display: block;
+      @apply block;
     }
   }
-
-  .action-buttons__wrap {
-    display: flex;
-    max-width: var(--space-larger);
-  }
-}
-.value {
-  display: inline-block;
-  min-width: var(--space-mega);
-  border-radius: var(--border-radius-small);
-  margin-bottom: 0;
-  word-break: break-all;
-  padding: var(--space-micro) var(--space-smaller);
-}
-.error-message {
-  color: var(--r-400);
-  display: block;
-  font-size: 1.4rem;
-  font-size: var(--font-size-small);
-  font-weight: 400;
-  margin-bottom: 1rem;
-  margin-top: -1.6rem;
-  width: 100%;
 }
 
 ::v-deep {
   .selector-wrap {
-    margin: 0;
-    top: var(--space-smaller);
+    @apply m-0 top-1;
     .selector-name {
-      margin-left: 0;
+      @apply ml-0;
     }
   }
   .name {
-    margin-left: 0;
+    @apply ml-0;
   }
 }
 </style>

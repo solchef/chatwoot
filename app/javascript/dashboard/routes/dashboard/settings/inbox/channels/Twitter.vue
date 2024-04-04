@@ -1,6 +1,8 @@
 <template>
-  <div class="wizard-body columns content-box small-9">
-    <div class="login-init full-height text-center">
+  <div
+    class="border border-slate-25 dark:border-slate-800/60 bg-white dark:bg-slate-900 h-full p-6 w-full max-w-full md:w-3/4 md:max-w-[75%] flex-shrink-0 flex-grow-0"
+  >
+    <div class="login-init h-full text-center">
       <form @submit.prevent="requestAuthorization">
         <woot-submit-button
           icon="brand-twitter"
@@ -40,3 +42,14 @@ export default {
   },
 };
 </script>
+<style scoped lang="scss">
+.login-init {
+  @apply pt-[30%] text-center;
+  p {
+    @apply p-6;
+  }
+  > a > img {
+    @apply w-60;
+  }
+}
+</style>

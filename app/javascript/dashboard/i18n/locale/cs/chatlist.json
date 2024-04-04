@@ -30,6 +30,51 @@
       },
       "snoozed": {
         "TEXT": "Odložené"
+      },
+      "all": {
+        "TEXT": "Vše"
+      }
+    },
+    "VIEW_FILTER": "Zobrazit",
+    "SORT_TOOLTIP_LABEL": "Sort conversations",
+    "CHAT_SORT": {
+      "STATUS": "Stav",
+      "ORDER_BY": "Order by"
+    },
+    "CHAT_TIME_STAMP": {
+      "CREATED": {
+        "LATEST": "Created",
+        "OLDEST": "Created at:"
+      },
+      "LAST_ACTIVITY": {
+        "NOT_ACTIVE": "Last activity:",
+        "ACTIVE": "Last activity"
+      }
+    },
+    "SORT_ORDER_ITEMS": {
+      "last_activity_at_asc": {
+        "TEXT": "Last activity: Oldest first"
+      },
+      "last_activity_at_desc": {
+        "TEXT": "Last activity: Newest first"
+      },
+      "created_at_desc": {
+        "TEXT": "Created at: Newest first"
+      },
+      "created_at_asc": {
+        "TEXT": "Created at: Oldest first"
+      },
+      "priority_desc": {
+        "TEXT": "Priority: Highest first"
+      },
+      "priority_asc": {
+        "TEXT": "Priority: Lowest first"
+      },
+      "waiting_since_asc": {
+        "TEXT": "Pending Response: Longest first"
+      },
+      "waiting_since_desc": {
+        "TEXT": "Pending Response: Shortest first"
       }
     },
     "ATTACHMENTS": {
@@ -50,6 +95,24 @@
       },
       "fallback": {
         "CONTENT": "sdílel URL"
+      }
+    },
+    "CHAT_SORT_BY_FILTER": {
+      "TITLE": "Sort conversation",
+      "DROPDOWN_TITLE": "Seřadit podle",
+      "ITEMS": {
+        "LATEST": {
+          "NAME": "Last activity at",
+          "LABEL": "Last activity"
+        },
+        "CREATED_AT": {
+          "NAME": "Created at",
+          "LABEL": "Created at"
+        },
+        "LAST_USER_MESSAGE_AT": {
+          "NAME": "Last user message at",
+          "LABEL": "Last message"
+        }
       }
     },
     "RECEIVED_VIA_EMAIL": "Obdrženo e-mailem",

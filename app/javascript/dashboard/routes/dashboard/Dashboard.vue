@@ -1,5 +1,7 @@
 <template>
-  <div class="row app-wrapper">
+  <div
+    class="app-wrapper h-full flex-grow-0 min-h-0 w-full max-w-full ml-auto mr-auto flex flex-wrap dark:text-slate-300"
+  >
     <sidebar
       :route="currentRoute"
       :show-secondary-sidebar="isSidebarOpen"
@@ -9,7 +11,7 @@
       @close-key-shortcut-modal="closeKeyShortcutModal"
       @show-add-label-popup="showAddLabelPopup"
     />
-    <section class="app-content columns">
+    <section class="flex h-full min-h-0 overflow-hidden flex-1 px-0">
       <router-view />
       <command-bar />
       <account-selector
@@ -38,15 +40,16 @@
 </template>
 
 <script>
-import Sidebar from '../../components/layout/Sidebar';
+import Sidebar from '../../components/layout/Sidebar.vue';
 import CommandBar from './commands/commandbar.vue';
 import { BUS_EVENTS } from 'shared/constants/busEvents';
-import WootKeyShortcutModal from 'dashboard/components/widgets/modal/WootKeyShortcutModal';
-import AddAccountModal from 'dashboard/components/layout/sidebarComponents/AddAccountModal';
-import AccountSelector from 'dashboard/components/layout/sidebarComponents/AccountSelector';
-import AddLabelModal from 'dashboard/routes/dashboard/settings/labels/AddLabel';
-import NotificationPanel from 'dashboard/routes/dashboard/notifications/components/NotificationPanel';
+import WootKeyShortcutModal from 'dashboard/components/widgets/modal/WootKeyShortcutModal.vue';
+import AddAccountModal from 'dashboard/components/layout/sidebarComponents/AddAccountModal.vue';
+import AccountSelector from 'dashboard/components/layout/sidebarComponents/AccountSelector.vue';
+import AddLabelModal from 'dashboard/routes/dashboard/settings/labels/AddLabel.vue';
+import NotificationPanel from 'dashboard/routes/dashboard/notifications/components/NotificationPanel.vue';
 import uiSettingsMixin from 'dashboard/mixins/uiSettings';
+import wootConstants from 'dashboard/constants/globals';
 
 export default {
   components: {
@@ -61,12 +64,12 @@ export default {
   mixins: [uiSettingsMixin],
   data() {
     return {
-      isOnDesktop: true,
       showAccountModal: false,
       showCreateAccountModal: false,
       showAddLabelModal: false,
       showShortcutModal: false,
       isNotificationPanel: false,
+      displayLayoutType: '',
     };
   },
   computed: {
@@ -77,17 +80,67 @@ export default {
       const { show_secondary_sidebar: showSecondarySidebar } = this.uiSettings;
       return showSecondarySidebar;
     },
+    previouslyUsedDisplayType() {
+      const {
+        previously_used_conversation_display_type: conversationDisplayType,
+      } = this.uiSettings;
+      return conversationDisplayType;
+    },
+    previouslyUsedSidebarView() {
+      const { previously_used_sidebar_view: showSecondarySidebar } =
+        this.uiSettings;
+      return showSecondarySidebar;
+    },
+  },
+  watch: {
+    displayLayoutType() {
+      const { LAYOUT_TYPES } = wootConstants;
+      this.updateUISettings({
+        conversation_display_type:
+          this.displayLayoutType === LAYOUT_TYPES.EXPANDED
+            ? LAYOUT_TYPES.EXPANDED
+            : this.previouslyUsedDisplayType,
+        show_secondary_sidebar:
+          this.displayLayoutType === LAYOUT_TYPES.EXPANDED
+            ? false
+            : this.previouslyUsedSidebarView,
+      });
+    },
   },
   mounted() {
+    this.handleResize();
+    window.addEventListener('resize', this.handleResize);
     bus.$on(BUS_EVENTS.TOGGLE_SIDEMENU, this.toggleSidebar);
   },
   beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
     bus.$off(BUS_EVENTS.TOGGLE_SIDEMENU, this.toggleSidebar);
   },
+
   methods: {
+    handleResize() {
+      const { SMALL_SCREEN_BREAKPOINT, LAYOUT_TYPES } = wootConstants;
+      let throttled = false;
+      const delay = 150;
+
+      if (throttled) {
+        return;
+      }
+      throttled = true;
+
+      setTimeout(() => {
+        throttled = false;
+        if (window.innerWidth <= SMALL_SCREEN_BREAKPOINT) {
+          this.displayLayoutType = LAYOUT_TYPES.EXPANDED;
+        } else {
+          this.displayLayoutType = LAYOUT_TYPES.CONDENSED;
+        }
+      }, delay);
+    },
     toggleSidebar() {
       this.updateUISettings({
         show_secondary_sidebar: !this.isSidebarOpen,
+        previously_used_sidebar_view: !this.isSidebarOpen,
       });
     },
     openCreateAccountModal() {

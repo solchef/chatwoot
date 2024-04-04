@@ -21,6 +21,7 @@ vi:
   messages:
     reset_password_success: Chà! Yêu cầu đặt lại mật khẩu thành công. Kiểm tra thư của bạn để biết hướng dẫn.
     reset_password_failure: Uh ho! Chúng tôi không thể tìm thấy bất kỳ người dùng nào có email được chỉ định.
+    inbox_deletetion_response: Yêu cầu xoá hộp thư của bạn sẽ được xử lý.
   errors:
     validations:
       presence: không được để trống
@@ -30,6 +31,7 @@ vi:
       disposable_email: Chúng tôi không cho phép các email dùng một lần
       invalid_email: Bạn đã nhập một email không hợp lệ
       email_already_exists: "Bạn đã đăng ký một tài khoản với %{email}"
+      invalid_params: 'Invalid, please check the signup paramters and try again'
       failed: Đăng ký thât bại
     data_import:
       data_type:
@@ -37,6 +39,8 @@ vi:
     contacts:
       import:
         failed: Chưa chọn tệp
+      export:
+        success: Chúng tôi sẽ thông báo khi tệp xuất danh sách liên hệ đã sẵn sàng.
       email:
         invalid: Email không hợp lệ
       phone_number:
@@ -44,6 +48,10 @@ vi:
     categories:
       locale:
         unique: phải là duy nhất trong danh mục và cổng thông tin
+    dyte:
+      invalid_message_type: "Loại tin nhắn không hợp lệ. Hành động không được phép"
+    slack:
+      invalid_channel_id: "Invalid slack channel. Please try again"
     inboxes:
       imap:
         socket_error: Vui lòng kiểm tra kết nối mạng, địa chỉ IMAP và thử lại.
@@ -53,29 +61,34 @@ vi:
         connection_closed_error: Kêt nối bị đóng.
       validations:
         name: không nên bắt đầu hoặc kết thúc bằng các ký hiệu và không nên có kí tự < > / \ @.
+    custom_filters:
+      number_of_records: Đã đạt giới hạn. Số lượng tuỳ chọn lọc tối đa cho mỗi mỗi người dùng mỗi tài khoản là 50.
   reports:
     period: Thời gian báo cáo từ %{since} đến %{until}
+    utc_warning: Báo cáo đã được tạo với múi giờ UTC
     agent_csv:
       agent_name: Tên tổng đài viên
-      conversations_count: Số hội thoại
-      avg_first_response_time: Thời gian trung bình của phản hồi đầu tiên (phút)
-      avg_resolution_time: Thời gian giải quyết trung bình (phút)
+      conversations_count: Assigned conversations
+      avg_first_response_time: Avg first response time
+      avg_resolution_time: Avg resolution time
     inbox_csv:
       inbox_name: Tên kênh
       inbox_type: Kiểu kênh
       conversations_count: Số hội thoại
-      avg_first_response_time: Thời gian trung bình của phản hồi đầu tiên (phút)
-      avg_resolution_time: Thời gian giải quyết trung bình (phút)
+      avg_first_response_time: Avg first response time
+      avg_resolution_time: Avg resolution time
     label_csv:
       label_title: Nhãn
       conversations_count: Số hội thoại
-      avg_first_response_time: Thời gian trung bình của phản hồi đầu tiên (phút)
-      avg_resolution_time: Thời gian giải quyết trung bình (phút)
+      avg_first_response_time: Avg first response time
+      avg_resolution_time: Avg resolution time
     team_csv:
       team_name: Tên nhóm
       conversations_count: Số hội thoại
-      avg_first_response_time: Thời gian trung bình của phản hồi đầu tiên (phút)
-      avg_resolution_time: Thời gian giải quyết trung bình (phút)
+      avg_first_response_time: Avg first response time
+      avg_resolution_time: Avg resolution time
+    conversation_traffic_csv:
+      timezone: Múi giờ
     default_group_by: ngày
     csat:
       headers:
@@ -89,15 +102,19 @@ vi:
         recorded_at: Ngày nghi
   notifications:
     notification_title:
-      conversation_creation: "[Hội thoại mới] - #%{display_id} đã được tạo trong %{inbox_name}"
-      conversation_assignment: "[Phân công cho bạn] - #%{display_id} đã được phân công cho bạn"
-      assigned_conversation_new_message: "[Tin nhắn mới] - #%{display_id} %{content}"
-      conversation_mention: "Bạn đã được nhắn đến trong hội thoại [ID - %{display_id}] bởi %{name}"
+      conversation_creation: "A conversation (#%{display_id}) has been created in %{inbox_name}"
+      conversation_assignment: "A conversation (#%{display_id}) has been assigned to you"
+      assigned_conversation_new_message: "A new message is created in conversation (#%{display_id})"
+      conversation_mention: "You have been mentioned in conversation (#%{display_id})"
+    attachment: "Attachment"
+    no_content: "No content"
   conversations:
     messages:
       instagram_story_content: "%{story_sender} đã đề cập đến bạn trong hội thoại: "
       instagram_deleted_story_content: Hội thoại này không còn nữa.
       deleted: Tin nhắn đã bị xoá
+      delivery_status:
+        error_code: "Error code: %{error_code}"
     activity:
       status:
         resolved: "Cuộc trò chuyện được đánh dấu là đã giải quyết bởi %{user_name}"
@@ -106,6 +123,11 @@ vi:
         pending: "Hội thoại được đánh dấu là chưa giải quyết bởi %{user_name}"
         snoozed: "Hội thoại đã được tạm dừng lại bởi %{user_name}"
         auto_resolved: "Hội thoại được đánh dấu là đã giải quyết bởi hệ thống vì %{duration} ngày không hoạt động"
+        system_auto_open: Hệ thống mở lại hội thoại do có tin nhắn mới.
+      priority:
+        added: '%{user_name} thiết lập độ ưu tiên thành %{new_priority}'
+        updated: '%{user_name} thay đổi mức độ ưu tiên từ %{old_priority} thành %{new_priority}'
+        removed: '%{user_name} bỏ mức độ ưu tiên'
       assignee:
         self_assigned: "%{user_name} phân công chính mình vào hội thoại này"
         assigned: "Chỉ định %{assignee_name} bởi %{user_name}"
@@ -127,8 +149,14 @@ vi:
     reply:
       email:
         header:
-          from_with_name: '%{assignee_name} từ %{inbox_name} <%{from_email}>'
-          reply_with_name: '%{assignee_name} từ %{inbox_name} <reply+%{reply_email}>'
+          from_with_name: "%{assignee_name} từ %{inbox_name} <%{from_email}>"
+          reply_with_name: "%{assignee_name} từ %{inbox_name} <reply+%{reply_email}>"
+          friendly_name: "%{sender_name} từ %{business_name} <%{from_email}>"
+          professional_name: "%{business_name} <%{from_email}>"
+      channel_email:
+        header:
+          reply_with_name: "%{assignee_name} từ %{inbox_name} <%{from_email}>"
+          reply_with_inbox_name: "%{inbox_name} <%{from_email}>"
       email_subject: "Tin nhắn mới về cuộc trò chuyện này"
       transcript_subject: "Bản ghi cuộc hội thoại"
     survey:
@@ -137,6 +165,10 @@ vi:
     online:
       delete: "%{contact_name} đang trực tiếng, vui lòng thử lại sau"
   integration_apps:
+    dyte:
+      name: "Dyte"
+      description: "Dyte là công cụ giúp bạn thêm âm thanh và video trực tiếp vào ứng dụng của mình chỉ bằng một vài dòng mã. Sự tích hợp này cho phép bạn cung cấp tùy chọn cho các đại lý của mình để thực hiện cuộc gọi thoại hoặc video với khách hàng mà không cần rời khỏi Chatwoot."
+      meeting_name: "%{agent_name} đã bắt đầu một cuộc họp"
     slack:
       name: "Slack"
       description: "Slack là một công cụ trò chuyện giúp mang tất cả các cuộc giao tiếp của bạn lại với nhau ở một nơi. Bằng cách tích hợp Slack, bạn có thể nhận được thông báo về tất cả các cuộc trò chuyện mới trong tài khoản của mình ngay bên trong Slack."
@@ -149,11 +181,62 @@ vi:
     fullcontact:
       name: "Fullcontact"
       description: "Tích hợp FullContact giúp làm phong phú hồ sơ khách truy cập. Xác định người dùng ngay khi họ chia sẻ địa chỉ email và cung cấp cho họ dịch vụ khách hàng phù hợp. Kết nối FullContact với tài khoản của bạn bằng cách chia sẻ Khóa API FullContact."
+    google_translate:
+      name: "Google Translate"
+      description: "Giúp các đại lý dịch tin nhắn dễ dàng hơn bằng cách thêm Tích hợp Google Dịch. Google dịch giúp tự động xác định ngôn ngữ và chuyển đổi ngôn ngữ đó sang ngôn ngữ do quản trị viên đại lý/tài khoản chọn."
+    openai:
+      name: "OpenAI"
+      description: "Tích hợp các tính năng AI mạnh mẽ vào Chatwoot bằng cách tận dụng các mô hình GPT từ OpenAI."
   public_portal:
     search:
       search_placeholder: Tìm bài viết theo tiêu đề hoặc nội dung...
       empty_placeholder: Không tìm thấy kết quả.
       loading_placeholder: Đang tìm kiếm...
       results_title: Các kết quả tìm kiếm
+    toc_header: 'Trên trang này'
     hero:
       sub_title: Tìm trong bài viết hoặc xem danh mục dưới đây.
+    common:
+      home: Trang Chủ
+      last_updated_on: 'Cập nhật lần cuối: %{last_updated_on}'
+      view_all_articles: View all
+      article: bài viết
+      articles: bài viết
+      author: tác giả
+      authors: authors
+      other: other
+      others: others
+      by: By
+      no_articles: Không tìm thấy bài viết
+    footer:
+      made_with: Tạo bởi
+    header:
+      go_to_homepage: Website
+      appearance:
+        system: System
+        light: Light
+        dark: Dark
+      featured_articles: Featured Articles
+      uncategorized: Chưa được phân loại
+    404:
+      title: Page not found
+      description: We couldn't find the page you were looking for.
+      back_to_home: Go to home page
+  slack_unfurl:
+    fields:
+      name: Tên
+      email: Email
+      phone_number: Phone
+      company_name: Công ty
+      inbox_name: Hộp thư đến
+      inbox_type: Inbox Type
+    button: Mở cuộc trò chuyện
+  time_units:
+    days:
+      other: "%{count} days"
+    hours:
+      other: "%{count} hours"
+    minutes:
+      other: "%{count} minutes"
+    seconds:
+      other: "%{count} seconds"

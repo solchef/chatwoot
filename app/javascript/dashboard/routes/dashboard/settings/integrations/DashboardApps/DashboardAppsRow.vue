@@ -1,14 +1,12 @@
 <template>
   <tr>
-    <td>
+    <td class="w-40 max-w-[10rem] truncate" :title="app.title">
       {{ app.title }}
     </td>
-    <td class="dashboard-app-label-url">
-      <span class="text-truncate">
-        {{ app.content[0].url }}
-      </span>
+    <td class="max-w-xs truncate" :title="app.content[0].url">
+      {{ app.content[0].url }}
     </td>
-    <td class="button-wrapper">
+    <td class="flex justify-end gap-1">
       <woot-button
         v-tooltip.top="
           $t('INTEGRATION_SETTINGS.DASHBOARD_APPS.LIST.EDIT_TOOLTIP')
@@ -37,31 +35,27 @@
 
 <script>
 export default {
+  loading: {
+    type: Boolean,
+    default: false,
+  },
   props: {
     app: {
       type: Object,
       default: () => ({}),
     },
   },
-  loading: {
-    type: Boolean,
-    default: false,
-  },
 };
 </script>
 
 <style lang="scss" scoped>
 .dashboard-app-label-url {
-  position: relative;
-  width: 50%;
+  @apply relative w-full;
   &:before {
-    content: '&nbsp;';
-    visibility: hidden;
+    @apply invisible content-['&nbsp'];
   }
   span {
-    position: absolute;
-    left: 0;
-    right: 0;
+    @apply absolute left-0 right-0;
   }
 }
 </style>

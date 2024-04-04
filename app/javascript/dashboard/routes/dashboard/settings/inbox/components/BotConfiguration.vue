@@ -1,17 +1,21 @@
 <template>
-  <div class="settings--content">
+  <div class="mx-8">
     <loading-state v-if="uiFlags.isFetching || uiFlags.isFetchingAgentBot" />
-    <form v-else class="row" @submit.prevent="updateActiveAgentBot">
+    <form
+      v-else
+      class="mx-0 flex flex-wrap"
+      @submit.prevent="updateActiveAgentBot"
+    >
       <settings-section
         :title="$t('AGENT_BOTS.BOT_CONFIGURATION.TITLE')"
         :sub-title="$t('AGENT_BOTS.BOT_CONFIGURATION.DESC')"
       >
-        <div class="medium-7 columns">
+        <div class="w-3/5">
           <label>
             <select v-model="selectedAgentBotId">
-              <option value="" disabled selected>{{
-                $t('AGENT_BOTS.BOT_CONFIGURATION.SELECT_PLACEHOLDER')
-              }}</option>
+              <option value="" disabled selected>
+                {{ $t('AGENT_BOTS.BOT_CONFIGURATION.SELECT_PLACEHOLDER') }}
+              </option>
               <option
                 v-for="agentBot in agentBots"
                 :key="agentBot.id"
@@ -21,10 +25,23 @@
               </option>
             </select>
           </label>
-          <woot-submit-button
-            :button-text="$t('AGENT_BOTS.BOT_CONFIGURATION.SUBMIT')"
-            :loading="uiFlags.isSettingAgentBot"
-          />
+          <div class="button-container">
+            <woot-submit-button
+              :button-text="$t('AGENT_BOTS.BOT_CONFIGURATION.SUBMIT')"
+              :loading="uiFlags.isSettingAgentBot"
+            />
+            <woot-button
+              type="button"
+              :disabled="!selectedAgentBotId"
+              :loading="uiFlags.isDisconnecting"
+              variant="smooth"
+              color-scheme="alert"
+              class="button--disconnect"
+              @click="disconnectBot"
+            >
+              {{ $t('AGENT_BOTS.BOT_CONFIGURATION.DISCONNECT') }}
+            </woot-button>
+          </div>
         </div>
       </settings-section>
     </form>
@@ -33,8 +50,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import SettingsSection from 'dashboard/components/SettingsSection';
-import LoadingState from 'dashboard/components/widgets/LoadingState';
+import SettingsSection from 'dashboard/components/SettingsSection.vue';
+import LoadingState from 'dashboard/components/widgets/LoadingState.vue';
 import alertMixin from 'shared/mixins/alertMixin';
 
 export default {
@@ -86,6 +103,27 @@ export default {
         this.showAlert(this.$t('AGENT_BOTS.BOT_CONFIGURATION.ERROR_MESSAGE'));
       }
     },
+    async disconnectBot() {
+      try {
+        await this.$store.dispatch('agentBots/disconnectBot', {
+          inboxId: this.inbox.id,
+        });
+        this.showAlert(
+          this.$t('AGENT_BOTS.BOT_CONFIGURATION.DISCONNECTED_SUCCESS_MESSAGE')
+        );
+      } catch (error) {
+        this.showAlert(
+          error?.message ||
+            this.$t('AGENT_BOTS.BOT_CONFIGURATION.DISCONNECTED_ERROR_MESSAGE')
+        );
+      }
+    },
   },
 };
 </script>
+
+<style scoped lang="scss">
+.button--disconnect {
+  @apply ml-2;
+}
+</style>

@@ -1,14 +1,16 @@
 <template>
-  <div class="columns profile--settings">
+  <div class="overflow-auto p-6">
     <form @submit.prevent="updateUser('profile')">
-      <div class="small-12 row profile--settings--row">
-        <div class="columns small-3">
-          <h4 class="block-title">
+      <div
+        class="flex flex-row border-b border-slate-50 dark:border-slate-700 items-center flex p-4"
+      >
+        <div class="w-1/4 py-4 pr-6 ml-0">
+          <h4 class="text-lg text-black-900 dark:text-slate-200">
             {{ $t('PROFILE_SETTINGS.FORM.PROFILE_SECTION.TITLE') }}
           </h4>
           <p>{{ $t('PROFILE_SETTINGS.FORM.PROFILE_SECTION.NOTE') }}</p>
         </div>
-        <div class="columns small-9 medium-5">
+        <div class="p-4 w-[45%]">
           <woot-avatar-uploader
             :label="$t('PROFILE_SETTINGS.FORM.PROFILE_IMAGE.LABEL')"
             :src="avatarUrl"
@@ -70,20 +72,22 @@
       </div>
     </form>
     <message-signature />
-    <div class="profile--settings--row row">
-      <div class="columns small-3">
-        <h4 class="block-title">
+    <div
+      class="border-b border-slate-50 dark:border-slate-700 items-center flex p-4 text-black-900 dark:text-slate-300 row"
+    >
+      <div class="w-1/4 py-4 pr-6 ml-0">
+        <h4 class="text-lg text-black-900 dark:text-slate-200">
           {{ $t('PROFILE_SETTINGS.FORM.SEND_MESSAGE.TITLE') }}
         </h4>
         <p>
           {{ $t('PROFILE_SETTINGS.FORM.SEND_MESSAGE.NOTE') }}
         </p>
       </div>
-      <div class="columns small-9 medium-5 card-preview">
+      <div class="p-4 w-[45%] flex gap-4 flex-row">
         <button
           v-for="keyOption in keyOptions"
           :key="keyOption.key"
-          class="preview-button"
+          class="cursor-pointer p-0"
           @click="toggleEditorMessageKey(keyOption.key)"
         >
           <preview-card
@@ -97,9 +101,11 @@
     </div>
     <change-password v-if="!globalConfig.disableUserProfileUpdate" />
     <notification-settings />
-    <div class="profile--settings--row row">
-      <div class="columns small-3">
-        <h4 class="block-title">
+    <div
+      class="border-b border-slate-50 dark:border-slate-700 items-center flex p-4 text-black-900 dark:text-slate-300 row"
+    >
+      <div class="w-1/4 py-4 pr-6 ml-0">
+        <h4 class="text-lg text-black-900 dark:text-slate-200">
           {{ $t('PROFILE_SETTINGS.FORM.ACCESS_TOKEN.TITLE') }}
         </h4>
         <p>
@@ -111,8 +117,8 @@
           }}
         </p>
       </div>
-      <div class="columns small-9 medium-5">
-        <woot-code :script="currentUser.access_token" />
+      <div class="p-4 w-[45%]">
+        <masked-text :value="currentUser.access_token" />
       </div>
     </div>
   </div>
@@ -122,14 +128,16 @@
 import { required, minLength, email } from 'vuelidate/lib/validators';
 import { mapGetters } from 'vuex';
 import { clearCookiesOnLogout } from '../../../../store/utils/api';
-import NotificationSettings from './NotificationSettings';
+import { hasValidAvatarUrl } from 'dashboard/helper/URLHelper';
+import NotificationSettings from './NotificationSettings.vue';
 import alertMixin from 'shared/mixins/alertMixin';
-import ChangePassword from './ChangePassword';
-import MessageSignature from './MessageSignature';
+import ChangePassword from './ChangePassword.vue';
+import MessageSignature from './MessageSignature.vue';
 import globalConfigMixin from 'shared/mixins/globalConfigMixin';
 import uiSettingsMixin, {
   isEditorHotKeyEnabled,
 } from 'dashboard/mixins/uiSettings';
+import MaskedText from 'dashboard/components/MaskedText.vue';
 import PreviewCard from 'dashboard/components/ui/PreviewCard.vue';
 
 export default {
@@ -138,6 +146,7 @@ export default {
     ChangePassword,
     MessageSignature,
     PreviewCard,
+    MaskedText,
   },
   mixins: [alertMixin, globalConfigMixin, uiSettingsMixin],
   data() {
@@ -190,6 +199,9 @@ export default {
       currentUserId: 'getCurrentUserID',
       globalConfig: 'globalConfig/get',
     }),
+    showDeleteButton() {
+      return hasValidAvatarUrl(this.avatarUrl);
+    },
   },
   watch: {
     currentUserId(newCurrentUserId, prevCurrentUserId) {
@@ -257,9 +269,6 @@ export default {
         this.showAlert(this.$t('PROFILE_SETTINGS.AVATAR_DELETE_FAILED'));
       }
     },
-    showDeleteButton() {
-      return this.avatarUrl && !this.avatarUrl.includes('www.gravatar.com');
-    },
     toggleEditorMessageKey(key) {
       this.updateUISettings({ editor_message_key: key });
       this.showAlert(
@@ -269,38 +278,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-@import '~dashboard/assets/scss/variables.scss';
-@import '~dashboard/assets/scss/mixins.scss';
-
-.profile--settings {
-  overflow: auto;
-  padding: 24px;
-}
-
-.profile--settings--row {
-  @include border-normal-bottom;
-  align-items: center;
-  display: flex;
-  padding: $space-normal;
-
-  .small-3 {
-    padding: $space-normal $space-medium $space-normal 0;
-  }
-
-  .small-9 {
-    padding: $space-normal;
-  }
-
-  .card-preview {
-    display: flex;
-    flex-direction: row;
-
-    .preview-button {
-      cursor: pointer;
-      margin-right: var(--space-normal);
-    }
-  }
-}
-</style>

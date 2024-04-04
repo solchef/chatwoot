@@ -15,6 +15,7 @@
     "INITIATED_FROM": "Initié depuis",
     "INITIATED_AT": "Initié à",
     "IP_ADDRESS": "Adresse IP",
+    "CREATED_AT_LABEL": "Créé",
     "NEW_MESSAGE": "Nouveau message",
     "CONVERSATIONS": {
       "NO_RECORDS_FOUND": "Il n'y a aucune conversation précédente associée à ce contact.",
@@ -32,15 +33,16 @@
       "LABEL_SELECT": {
         "TITLE": "Ajouter une étiquette",
         "PLACEHOLDER": "Rechercher des étiquettes",
-        "NO_RESULT": "Aucune étiquette trouvée"
+        "NO_RESULT": "Aucune étiquette trouvée",
+        "CREATE_LABEL": "Créer une nouvelle étiquette"
       }
     },
     "MERGE_CONTACT": "Fusionner le contact",
     "CONTACT_ACTIONS": "Actions du contact",
-    "MUTE_CONTACT": "Mettre la conversation en sourdine",
-    "UNMUTE_CONTACT": "Réactiver le son de conversation",
-    "MUTED_SUCCESS": "Cette conversation est mise en sourdine pendant 6 heures",
-    "UNMUTED_SUCCESS": "Cette conversation n'est plus muette",
+    "MUTE_CONTACT": "Block Contact",
+    "UNMUTE_CONTACT": "Unblock Contact",
+    "MUTED_SUCCESS": "This contact is blocked successfully. You will not be notified of any future conversations.",
+    "UNMUTED_SUCCESS": "This contact is unblocked successfully.",
     "SEND_TRANSCRIPT": "Envoyer la transcription",
     "EDIT_LABEL": "Modifier",
     "SIDEBAR_SECTIONS": {
@@ -69,14 +71,27 @@
       "SUBMIT": "Importer",
       "CANCEL": "Annuler"
     },
-    "SUCCESS_MESSAGE": "Contacts enregistrés avec succès",
+    "SUCCESS_MESSAGE": "Vous serez notifié par e-mail lorsque l'importation sera terminée.",
     "ERROR_MESSAGE": "Une erreur est survenue, veuillez réessayer"
+  },
+  "EXPORT_CONTACTS": {
+    "BUTTON_LABEL": "Exporter",
+    "TITLE": "Exporter les contacts",
+    "DESC": "Exporter les contacts vers un fichier CSV.",
+    "SUCCESS_MESSAGE": "Export is in progress, You will be notified via email when export file is ready to dowanlod.",
+    "ERROR_MESSAGE": "Une erreur est survenue, veuillez réessayer",
+    "CONFIRM": {
+      "TITLE": "Exporter les contacts",
+      "MESSAGE": "Are you sure you want to export all contacts?",
+      "YES": "Yes, Export",
+      "NO": "No, Cancel"
+    }
   },
   "DELETE_NOTE": {
     "CONFIRM": {
       "TITLE": "Confirmer la suppression",
-      "MESSAGE": "Are you want sure to delete this note?",
-      "YES": "Yes, Delete it",
+      "MESSAGE": "Êtes-vous sûr de vouloir supprimer cette note ?",
+      "YES": "Oui, supprimer",
       "NO": "Non, conservez-le"
     }
   },
@@ -121,6 +136,7 @@
         "LABEL": "Numéro de téléphone",
         "HELP": "Le numéro de téléphone doit être au format E.164. Ex. : +1415555555 [+][code pays][code régional][numéro de téléphone local]",
         "ERROR": "Le numéro de téléphone doit être soit vide soit au format E.164",
+        "DIAL_CODE_ERROR": "Veuillez sélectionner un code d'appel dans la liste",
         "DUPLICATE": "Ce numéro de téléphone est utilisé par un autre contact."
       },
       "LOCATION": {
@@ -130,6 +146,17 @@
       "COMPANY_NAME": {
         "PLACEHOLDER": "Entrez le nom de la société",
         "LABEL": "Nom de la société"
+      },
+      "COUNTRY": {
+        "PLACEHOLDER": "Entrez le nom du pays",
+        "LABEL": "Nom du pays",
+        "SELECT_PLACEHOLDER": "Sélectionner",
+        "REMOVE": "Supprimer",
+        "SELECT_COUNTRY": "Sélectionner un pays"
+      },
+      "CITY": {
+        "PLACEHOLDER": "Entrez le nom de la ville",
+        "LABEL": "Nom de la Ville"
       },
       "SOCIAL_PROFILES": {
         "FACEBOOK": {
@@ -152,8 +179,8 @@
     },
     "DELETE_AVATAR": {
       "API": {
-        "SUCCESS_MESSAGE": "Contact avatar deleted successfully",
-        "ERROR_MESSAGE": "Could not delete the contact avatar. Please try again later."
+        "SUCCESS_MESSAGE": "Avatar du contact supprimé avec succès",
+        "ERROR_MESSAGE": "Impossible de supprimer l'avatar du contact. Veuillez réessayer plus tard."
       }
     },
     "SUCCESS_MESSAGE": "Contact enregistré avec succès",
@@ -170,6 +197,7 @@
       },
       "INBOX": {
         "LABEL": "Boîte de réception",
+        "PLACEHOLDER": "Choisir la boîte de réception source",
         "ERROR": "Sélectionner une boîte de réception"
       },
       "SUBJECT": {
@@ -181,6 +209,10 @@
         "LABEL": "Message",
         "PLACEHOLDER": "Ecrivez votre message ici",
         "ERROR": "Le message ne peut être vide"
+      },
+      "ATTACHMENTS": {
+        "SELECT": "Choisir les fichiers",
+        "HELP_TEXT": "Glissez et déposez des fichiers ici ou choisissez les fichiers à joindre"
       },
       "SUBMIT": "Envoyer un message",
       "CANCEL": "Annuler",
@@ -197,6 +229,7 @@
     "FILTER_CONTACTS": "Filtrer",
     "FILTER_CONTACTS_SAVE": "Enregistrer le filtre",
     "FILTER_CONTACTS_DELETE": "Supprimer le filtre",
+    "FILTER_CONTACTS_EDIT": "Modifier le segment",
     "LIST": {
       "LOADING_MESSAGE": "Chargement des contacts...",
       "404": "Aucun contact ne correspond à votre recherche 🔍",
@@ -206,6 +239,7 @@
         "PHONE_NUMBER": "Numéro de téléphone",
         "CONVERSATIONS": "Conversations",
         "LAST_ACTIVITY": "Dernière activité",
+        "CREATED_AT": "Créé le",
         "COUNTRY": "Pays",
         "CITY": "Ville",
         "SOCIAL_PROFILES": "Comptes réseaux sociaux",
@@ -311,7 +345,8 @@
     },
     "VALIDATIONS": {
       "REQUIRED": "Une valeur valide est requise",
-      "INVALID_URL": "URL invalide"
+      "INVALID_URL": "URL invalide",
+      "INVALID_INPUT": "Entrée invalide"
     }
   },
   "MERGE_CONTACTS": {
@@ -319,17 +354,17 @@
     "DESCRIPTION": "Fusionner les contacts pour combiner deux profils en un, y compris tous les attributs et conversations. En cas de conflit, les attributs du contact principal auront priorité.",
     "PRIMARY": {
       "TITLE": "Contact principal",
-      "HELP_LABEL": "À conserver"
+      "HELP_LABEL": "A supprimer"
     },
-    "CHILD": {
+    "PARENT": {
       "TITLE": "Contact à fusionner",
       "PLACEHOLDER": "Rechercher un contact",
-      "HELP_LABEL": "A supprimer"
+      "HELP_LABEL": "À conserver"
     },
     "SUMMARY": {
       "TITLE": "Résumé",
-      "DELETE_WARNING": "Le contact de <strong>%{childContactName}</strong> sera supprimé.",
-      "ATTRIBUTE_WARNING": "Les coordonnées de <strong>%{childContactName}</strong> seront copiées vers <strong>%{primaryContactName}</strong>."
+      "DELETE_WARNING": "Le contact de <strong>%{primaryContactName}</strong> sera supprimé.",
+      "ATTRIBUTE_WARNING": "Les coordonnées de <strong>%{primaryContactName}</strong> seront copiées vers <strong>%{parentContactName}</strong>."
     },
     "SEARCH": {
       "ERROR": "ERROR_MESSAGE"

@@ -1,5 +1,5 @@
 import { MESSAGE_TYPE } from 'shared/constants/messages';
-import { applyPageFilters } from './helpers';
+import { applyPageFilters, sortComparator } from './helpers';
 
 export const getSelectedChatConversation = ({
   allConversations,
@@ -7,17 +7,19 @@ export const getSelectedChatConversation = ({
 }) =>
   allConversations.filter(conversation => conversation.id === selectedChatId);
 
-// getters
 const getters = {
-  getAllConversations: ({ allConversations }) =>
-    allConversations.sort(
-      (a, b) => b.messages.last()?.created_at - a.messages.last()?.created_at
-    ),
+  getAllConversations: ({ allConversations, chatSortFilter: sortKey }) => {
+    return allConversations.sort((a, b) => sortComparator(a, b, sortKey));
+  },
   getSelectedChat: ({ selectedChatId, allConversations }) => {
     const selectedChat = allConversations.find(
       conversation => conversation.id === selectedChatId
     );
     return selectedChat || {};
+  },
+  getSelectedChatAttachments: (_state, _getters) => {
+    const selectedChat = _getters.getSelectedChat;
+    return selectedChat.attachments || [];
   },
   getLastEmailInSelectedChat: (stage, _getters) => {
     const selectedChat = _getters.getSelectedChat;
@@ -85,11 +87,18 @@ const getters = {
     ).length;
   },
   getChatStatusFilter: ({ chatStatusFilter }) => chatStatusFilter,
+  getChatSortFilter: ({ chatSortFilter }) => chatSortFilter,
   getSelectedInbox: ({ currentInbox }) => currentInbox,
   getConversationById: _state => conversationId => {
     return _state.allConversations.find(
       value => value.id === Number(conversationId)
     );
+  },
+  getConversationParticipants: _state => {
+    return _state.conversationParticipants;
+  },
+  getConversationLastSeen: _state => {
+    return _state.conversationLastSeen;
   },
 };
 

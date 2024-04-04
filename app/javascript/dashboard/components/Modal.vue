@@ -4,14 +4,19 @@
       v-if="show"
       :class="modalClassName"
       transition="modal"
-      @click="onBackDropClick"
+      @mousedown="handleMouseDown"
     >
-      <div :class="modalContainerClassName" @click.stop>
+      <div
+        :class="modalContainerClassName"
+        @mouse.stop
+        @mousedown="event => event.stopPropagation()"
+      >
         <woot-button
+          v-if="showCloseButton"
           color-scheme="secondary"
           icon="dismiss"
           variant="clear"
-          class="modal--close"
+          class="absolute ltr:right-2 rtl:left-2 top-2 z-10"
           @click="close"
         />
         <slot />
@@ -28,6 +33,10 @@ export default {
       default: true,
     },
     show: Boolean,
+    showCloseButton: {
+      type: Boolean,
+      default: true,
+    },
     onClose: {
       type: Function,
       required: true,
@@ -45,11 +54,17 @@ export default {
       default: '',
     },
   },
+  data() {
+    return {
+      mousedDownOnBackdrop: false,
+    };
+  },
   computed: {
     modalContainerClassName() {
-      let className = 'modal-container';
+      let className =
+        'modal-container rtl:text-right shadow-md rounded-sm max-h-full overflow-auto relative w-[37.5rem] bg-white dark:bg-slate-800 skip-context-menu';
       if (this.fullWidth) {
-        return `${className} modal-container--full-width`;
+        return `${className} items-center rounded-none flex h-full justify-center w-full`;
       }
 
       return `${className} ${this.size}`;
@@ -60,7 +75,9 @@ export default {
         'right-aligned': 'right-aligned',
       };
 
-      return `modal-mask ${modalClassNameMap[this.modalType] || ''}`;
+      return `modal-mask skip-context-menu ${
+        modalClassNameMap[this.modalType] || ''
+      }`;
     },
   },
   mounted() {
@@ -69,13 +86,22 @@ export default {
         this.onClose();
       }
     });
+
+    document.body.addEventListener('mouseup', this.onMouseUp);
+  },
+  beforeDestroy() {
+    document.body.removeEventListener('mouseup', this.onMouseUp);
   },
   methods: {
+    handleMouseDown() {
+      this.mousedDownOnBackdrop = true;
+    },
     close() {
       this.onClose();
     },
-    onBackDropClick() {
-      if (this.closeOnBackdropClick) {
+    onMouseUp() {
+      if (this.mousedDownOnBackdrop) {
+        this.mousedDownOnBackdrop = false;
         this.onClose();
       }
     },
@@ -83,26 +109,43 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.modal-container--full-width {
-  align-items: center;
-  border-radius: 0;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  width: 100%;
-}
-
-.modal-mask.right-aligned {
-  justify-content: flex-end;
-
+<style lang="scss">
+.modal-mask {
+  @apply flex items-center justify-center bg-modal-backdrop-light dark:bg-modal-backdrop-dark z-[9990] h-full left-0 fixed top-0 w-full;
   .modal-container {
-    border-radius: 0;
-    height: 100%;
-    width: 48rem;
+    &.medium {
+      @apply max-w-[80%] w-[56.25rem];
+    }
+    // .content-box {
+    //   @apply h-auto p-0;
+    // }
+    .content {
+      @apply p-8;
+    }
+    form,
+    .modal-content {
+      @apply pt-4 pb-8 px-8 self-center;
+      a {
+        @apply p-4;
+      }
+    }
   }
 }
 .modal-big {
-  width: 60%;
+  @apply w-full;
+}
+.modal-mask.right-aligned {
+  @apply justify-end;
+  .modal-container {
+    @apply rounded-none h-full w-[30rem];
+  }
+}
+.modal-enter,
+.modal-leave {
+  @apply opacity-0;
+}
+.modal-enter .modal-container,
+.modal-leave .modal-container {
+  transform: scale(1.1);
 }
 </style>

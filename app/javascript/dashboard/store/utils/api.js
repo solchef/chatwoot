@@ -7,7 +7,8 @@ import {
   CHATWOOT_RESET,
   CHATWOOT_SET_USER,
 } from '../../helper/scriptHelpers';
-import { LocalStorage, LOCAL_STORAGE_KEYS } from '../../helper/localStorage';
+import { LOCAL_STORAGE_KEYS } from 'dashboard/constants/localStorage';
+import { LocalStorage } from 'shared/helpers/localStorage';
 
 Cookies.defaults = { sameSite: 'Lax' };
 
@@ -26,7 +27,7 @@ export const getHeaderExpiry = response =>
 
 export const setAuthCredentials = response => {
   const expiryDate = getHeaderExpiry(response);
-  Cookies.set('cw_d_session_info', response.headers, {
+  Cookies.set('cw_d_session_info', JSON.stringify(response.headers), {
     expires: differenceInDays(expiryDate, new Date()),
   });
   setUser(response.data.data, expiryDate);
@@ -40,6 +41,32 @@ export const clearBrowserSessionCookies = () => {
 
 export const clearLocalStorageOnLogout = () => {
   LocalStorage.remove(LOCAL_STORAGE_KEYS.DRAFT_MESSAGES);
+};
+
+export const deleteIndexedDBOnLogout = async () => {
+  let dbs = [];
+  try {
+    dbs = await window.indexedDB.databases();
+    dbs = dbs.map(db => db.name);
+  } catch (e) {
+    dbs = JSON.parse(localStorage.getItem('cw-idb-names') || '[]');
+  }
+
+  dbs.forEach(dbName => {
+    const deleteRequest = window.indexedDB.deleteDatabase(dbName);
+
+    deleteRequest.onerror = event => {
+      // eslint-disable-next-line no-console
+      console.error(`Error deleting database ${dbName}.`, event);
+    };
+
+    deleteRequest.onsuccess = () => {
+      // eslint-disable-next-line no-console
+      console.log(`Database ${dbName} deleted successfully.`);
+    };
+  });
+
+  localStorage.removeItem('cw-idb-names');
 };
 
 export const clearCookiesOnLogout = () => {
@@ -58,6 +85,9 @@ export const parseAPIErrorResponse = error => {
   }
   if (error?.response?.data?.error) {
     return error?.response?.data?.error;
+  }
+  if (error?.response?.data?.errors) {
+    return error?.response?.data?.errors[0];
   }
   return error;
 };

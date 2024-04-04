@@ -37,13 +37,15 @@ class Attachment < ApplicationRecord
   belongs_to :message
   has_one_attached :file
   validate :acceptable_file
-
-  enum file_type: [:image, :audio, :video, :file, :location, :fallback, :share, :story_mention]
+  validates :external_url, length: { maximum: Limits::URL_LENGTH_LIMIT }
+  enum file_type: { :image => 0, :audio => 1, :video => 2, :file => 3, :location => 4, :fallback => 5, :share => 6, :story_mention => 7,
+                    :contact => 8 }
 
   def push_event_data
     return unless file_type
     return base_data.merge(location_metadata) if file_type.to_sym == :location
     return base_data.merge(fallback_data) if file_type.to_sym == :fallback
+    return base_data.merge(contact_metadata) if file_type.to_sym == :contact
 
     base_data.merge(file_metadata)
   end
@@ -55,13 +57,13 @@ class Attachment < ApplicationRecord
 
   # NOTE: for External services use this methods since redirect doesn't work effectively in a lot of cases
   def download_url
-    ActiveStorage::Current.host = Rails.application.routes.default_url_options[:host] if ActiveStorage::Current.host.blank?
+    ActiveStorage::Current.url_options = Rails.application.routes.default_url_options if ActiveStorage::Current.url_options.blank?
     file.attached? ? file.blob.url : ''
   end
 
   def thumb_url
     if file.attached? && file.representable?
-      url_for(file.representation(resize: '250x250'))
+      url_for(file.representation(resize_to_fill: [250, nil]))
     else
       ''
     end
@@ -74,7 +76,9 @@ class Attachment < ApplicationRecord
       extension: extension,
       data_url: file_url,
       thumb_url: thumb_url,
-      file_size: file.byte_size
+      file_size: file.byte_size,
+      width: file.metadata[:width],
+      height: file.metadata[:height]
     }
 
     metadata[:data_url] = metadata[:thumb_url] = external_url if message.instagram_story_mention?
@@ -103,6 +107,12 @@ class Attachment < ApplicationRecord
       message_id: message_id,
       file_type: file_type,
       account_id: account_id
+    }
+  end
+
+  def contact_metadata
+    {
+      fallback_title: fallback_title
     }
   end
 

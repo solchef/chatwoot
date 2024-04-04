@@ -30,6 +30,51 @@
       },
       "snoozed": {
         "TEXT": "غفوة"
+      },
+      "all": {
+        "TEXT": "الكل"
+      }
+    },
+    "VIEW_FILTER": "عرض",
+    "SORT_TOOLTIP_LABEL": "ترتيب المحادثات",
+    "CHAT_SORT": {
+      "STATUS": "الحالة",
+      "ORDER_BY": "الترتيب بواسطة"
+    },
+    "CHAT_TIME_STAMP": {
+      "CREATED": {
+        "LATEST": "Created",
+        "OLDEST": "تم إنشاؤها في:"
+      },
+      "LAST_ACTIVITY": {
+        "NOT_ACTIVE": "النشاط الأخير:",
+        "ACTIVE": "النشاط الأخير"
+      }
+    },
+    "SORT_ORDER_ITEMS": {
+      "last_activity_at_asc": {
+        "TEXT": "Last activity: Oldest first"
+      },
+      "last_activity_at_desc": {
+        "TEXT": "Last activity: Newest first"
+      },
+      "created_at_desc": {
+        "TEXT": "Created at: Newest first"
+      },
+      "created_at_asc": {
+        "TEXT": "Created at: Oldest first"
+      },
+      "priority_desc": {
+        "TEXT": "Priority: Highest first"
+      },
+      "priority_asc": {
+        "TEXT": "Priority: Lowest first"
+      },
+      "waiting_since_asc": {
+        "TEXT": "Pending Response: Longest first"
+      },
+      "waiting_since_desc": {
+        "TEXT": "Pending Response: Shortest first"
       }
     },
     "ATTACHMENTS": {
@@ -52,13 +97,31 @@
         "CONTENT": "قام بمشاركة رابط"
       }
     },
+    "CHAT_SORT_BY_FILTER": {
+      "TITLE": "ترتيب المحادثات",
+      "DROPDOWN_TITLE": "ترتيب حسب",
+      "ITEMS": {
+        "LATEST": {
+          "NAME": "النشاط الأخير في",
+          "LABEL": "النشاط الأخير"
+        },
+        "CREATED_AT": {
+          "NAME": "تم إنشاؤها في",
+          "LABEL": "تم إنشاؤها في"
+        },
+        "LAST_USER_MESSAGE_AT": {
+          "NAME": "Last user message at",
+          "LABEL": "Last message"
+        }
+      }
+    },
     "RECEIVED_VIA_EMAIL": "تم تلقيه عبر البريد الإلكتروني",
     "VIEW_TWEET_IN_TWITTER": "عرض التغريدة في تويتر",
     "REPLY_TO_TWEET": "الرد على هذه التغريدة",
     "LINK_TO_STORY": "الذهاب إلى قصة الإنستقرام",
     "SENT": "Sent successfully",
-    "READ": "Read successfully",
-    "DELIVERED": "Delivered successfully",
+    "READ": "تمت القراءة بنجاح",
+    "DELIVERED": "تم الإرسال بنجاح",
     "NO_MESSAGES": "لا توجد رسائل",
     "NO_CONTENT": "لم يتم العثور على محتوى",
     "HIDE_QUOTED_TEXT": "Hide Quoted Text",

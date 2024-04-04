@@ -30,7 +30,7 @@ class Api::V1::Accounts::PortalsController < Api::V1::Accounts::BaseController
     ActiveRecord::Base.transaction do
       @portal.update!(portal_params) if params[:portal].present?
       # @portal.custom_domain = parsed_custom_domain
-      process_attached_logo
+      process_attached_logo if params[:blob_id].present?
     rescue StandardError => e
       Rails.logger.error e
       render json: { error: @portal.errors.messages }.to_json, status: :unprocessable_entity
@@ -47,8 +47,15 @@ class Api::V1::Accounts::PortalsController < Api::V1::Accounts::BaseController
     head :ok
   end
 
+  def logo
+    @portal.logo.purge if @portal.logo.attached?
+    head :ok
+  end
+
   def process_attached_logo
-    @portal.logo.attach(params[:logo])
+    blob_id = params[:blob_id]
+    blob = ActiveStorage::Blob.find_by(id: blob_id)
+    @portal.logo.attach(blob)
   end
 
   private

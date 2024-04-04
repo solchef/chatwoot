@@ -3,19 +3,18 @@
     <resizable-text-area
       v-model="articleTitle"
       type="text"
-      rows="1"
+      :rows="1"
       class="article-heading"
       :placeholder="$t('HELP_CENTER.EDIT_ARTICLE.TITLE_PLACEHOLDER')"
       @focus="onFocus"
       @blur="onBlur"
       @input="onTitleInput"
     />
-    <woot-message-editor
+    <woot-article-editor
       v-model="articleContent"
       class="article-content"
       :placeholder="$t('HELP_CENTER.EDIT_ARTICLE.CONTENT_PLACEHOLDER')"
-      :is-format-mode="true"
-      :override-line-breaks="true"
+      :enabled-menu-options="customEditorMenuOptions"
       @focus="onFocus"
       @blur="onBlur"
       @input="onContentInput"
@@ -25,12 +24,13 @@
 
 <script>
 import { debounce } from '@chatwoot/utils';
-import ResizableTextArea from 'shared/components/ResizableTextArea';
-import WootMessageEditor from 'dashboard/components/widgets/WootWriter/Editor.vue';
+import ResizableTextArea from 'shared/components/ResizableTextArea.vue';
+import WootArticleEditor from 'dashboard/components/widgets/WootWriter/FullEditor.vue';
+import { ARTICLE_EDITOR_MENU_OPTIONS } from 'dashboard/constants/editor';
 
 export default {
   components: {
-    WootMessageEditor,
+    WootArticleEditor,
     ResizableTextArea,
   },
   props: {
@@ -48,6 +48,7 @@ export default {
       articleTitle: '',
       articleContent: '',
       saveArticle: () => {},
+      customEditorMenuOptions: ARTICLE_EDITOR_MENU_OPTIONS,
     };
   },
   mounted() {
@@ -80,42 +81,21 @@ export default {
 
 <style lang="scss" scoped>
 .edit-article--container {
-  margin: var(--space-large) auto;
-  width: 640px;
+  @apply my-8 mx-auto py-0 max-w-[56rem] w-full;
 }
 
 .article-heading {
-  font-size: var(--font-size-giga);
-  font-weight: var(--font-weight-bold);
-  min-height: var(--space-jumbo);
-  max-height: 64rem;
-  height: auto;
-  border: 0px solid transparent;
-  padding: 0;
-  color: var(--s-900);
+  @apply text-[2.5rem] font-semibold leading-normal w-full text-slate-900 dark:text-slate-75 p-4 hover:bg-slate-25 dark:hover:bg-slate-800 hover:rounded-md resize-none min-h-[4rem] max-h-[40rem] h-auto mb-2 border-0 border-solid border-transparent dark:border-transparent;
+}
+
+.article-content {
+  @apply py-0 px-4 h-fit;
 }
 
 ::v-deep {
   .ProseMirror-menubar-wrapper {
-    .ProseMirror-menubar .ProseMirror-menuitem {
-      .ProseMirror-icon {
-        margin-right: var(--space-normal);
-        font-size: var(--font-size-small);
-      }
-    }
-
     .ProseMirror-woot-style {
-      min-height: var(--space-giga);
-      max-height: 100%;
-
-      p {
-        font-size: var(--font-size-default);
-        line-height: 1.5;
-      }
-
-      li::marker {
-        font-size: var(--font-size-default);
-      }
+      @apply min-h-[15rem] max-h-full;
     }
   }
 }

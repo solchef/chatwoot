@@ -1,5 +1,5 @@
 # pre-build stage
-FROM ruby:3.0.4-alpine AS pre-builder
+FROM ruby:3.2.2-alpine3.18 AS pre-builder
 
 # ARG default to production settings
 # For development docker-compose file overrides ARGS
@@ -13,18 +13,21 @@ ENV RAILS_SERVE_STATIC_FILES ${RAILS_SERVE_STATIC_FILES}
 ARG RAILS_ENV=production
 ENV RAILS_ENV ${RAILS_ENV}
 
+ARG NODE_OPTIONS="--openssl-legacy-provider"
+ENV NODE_OPTIONS ${NODE_OPTIONS}
+
 ENV BUNDLE_PATH="/gems"
 
-RUN apk add --no-cache \
-    openssl \
-    tar \
-    build-base \
-    tzdata \
-    postgresql-dev \
-    postgresql-client \
-    nodejs \
-    yarn \
-    git \
+RUN apk update && apk add --no-cache \
+  openssl \
+  tar \
+  build-base \
+  tzdata \
+  postgresql-dev \
+  postgresql-client \
+  nodejs-current \
+  yarn \
+  git \
   && mkdir -p /var/app \
   && gem install bundler
 
@@ -36,7 +39,7 @@ COPY Gemfile Gemfile.lock ./
 # https://github.com/googleapis/google-cloud-ruby/issues/13306
 # adding xz as nokogiri was failing to build libxml
 # https://github.com/chatwoot/chatwoot/issues/4045
-RUN apk add --no-cache musl ruby-full ruby-dev gcc make musl-dev openssl openssl-dev g++ linux-headers xz
+RUN apk update && apk add --no-cache build-base musl ruby-full ruby-dev gcc make musl-dev openssl openssl-dev g++ linux-headers xz vips
 RUN bundle config set --local force_ruby_platform true
 
 # Do not install development or test gems in production
@@ -60,12 +63,18 @@ RUN if [ "$RAILS_ENV" = "production" ]; then \
   && rm -rf spec node_modules tmp/cache; \
   fi
 
+# Generate .git_sha file with current commit hash
+RUN git rev-parse HEAD > /app/.git_sha
+
 # Remove unnecessary files
-RUN rm -rf /gems/ruby/3.0.0/cache/*.gem \
-  && find /gems/ruby/3.0.0/gems/ \( -name "*.c" -o -name "*.o" \) -delete
+RUN rm -rf /gems/ruby/3.2.0/cache/*.gem \
+  && find /gems/ruby/3.2.0/gems/ \( -name "*.c" -o -name "*.o" \) -delete \
+  && rm -rf .git \
+  && rm .gitignore
 
 # final build stage
-FROM ruby:3.0.4-alpine
+FROM ruby:3.2.2-alpine3.18
+
 
 ARG BUNDLE_WITHOUT="development:test"
 ENV BUNDLE_WITHOUT ${BUNDLE_WITHOUT}
@@ -84,20 +93,25 @@ ARG RAILS_ENV=production
 ENV RAILS_ENV ${RAILS_ENV}
 ENV BUNDLE_PATH="/gems"
 
-RUN apk add --no-cache \
-    openssl \
-    tzdata \
-    postgresql-client \
-    imagemagick \
-    git \
+RUN apk update && apk add --no-cache \
+  build-base \
+  openssl \
+  tzdata \
+  postgresql-client \
+  imagemagick \
+  git \
+  vips \
   && gem install bundler
 
 RUN if [ "$RAILS_ENV" != "production" ]; then \
-  apk add --no-cache nodejs yarn; \
+  apk add --no-cache nodejs-current yarn; \
   fi
 
 COPY --from=pre-builder /gems/ /gems/
 COPY --from=pre-builder /app /app
+
+# Copy .git_sha file from pre-builder stage
+COPY --from=pre-builder /app/.git_sha /app/.git_sha
 
 WORKDIR /app
 

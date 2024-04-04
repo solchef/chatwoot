@@ -6,18 +6,18 @@ const createConversationAPI = async content => {
   return API.post(urlData.url, urlData.params);
 };
 
-const sendMessageAPI = async content => {
-  const urlData = endPoints.sendMessage(content);
+const sendMessageAPI = async (content, replyTo = null) => {
+  const urlData = endPoints.sendMessage(content, replyTo);
   return API.post(urlData.url, urlData.params);
 };
 
-const sendAttachmentAPI = async attachment => {
-  const urlData = endPoints.sendAttachment(attachment);
+const sendAttachmentAPI = async (attachment, replyTo = null) => {
+  const urlData = endPoints.sendAttachment(attachment, replyTo);
   return API.post(urlData.url, urlData.params);
 };
 
-const getMessagesAPI = async ({ before }) => {
-  const urlData = endPoints.getConversation({ before });
+const getMessagesAPI = async ({ before, after }) => {
+  const urlData = endPoints.getConversation({ before, after });
   return API.get(urlData.url, { params: urlData.params });
 };
 
@@ -50,6 +50,24 @@ const toggleStatus = async () => {
   );
 };
 
+const setCustomAttributes = async customAttributes => {
+  return API.post(
+    `/api/v1/widget/conversations/set_custom_attributes${window.location.search}`,
+    {
+      custom_attributes: customAttributes,
+    }
+  );
+};
+
+const deleteCustomAttribute = async customAttribute => {
+  return API.post(
+    `/api/v1/widget/conversations/destroy_custom_attributes${window.location.search}`,
+    {
+      custom_attribute: [customAttribute],
+    }
+  );
+};
+
 export {
   createConversationAPI,
   sendMessageAPI,
@@ -60,4 +78,6 @@ export {
   setUserLastSeenAt,
   sendEmailTranscript,
   toggleStatus,
+  setCustomAttributes,
+  deleteCustomAttribute,
 };

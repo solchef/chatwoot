@@ -1,12 +1,13 @@
 <template>
-  <div class="article-container">
+  <div class="flex flex-1 overflow-auto">
     <div
-      class="new-article--container"
-      :class="{ 'is-sidebar-open': showArticleSettings }"
+      class="flex-1 overflow-y-auto flex-shrink-0 px-6"
+      :class="{ 'flex-grow-1': showArticleSettings }"
     >
       <edit-article-header
         :back-button-label="$t('HELP_CENTER.HEADER.TITLES.ALL_ARTICLES')"
         draft-state="saved"
+        :is-sidebar-open="showArticleSettings"
         @back="onClickGoBack"
         @open="openArticleSettings"
         @close="closeArticleSettings"
@@ -21,13 +22,15 @@
     />
   </div>
 </template>
+
 <script>
 import { mapGetters } from 'vuex';
-import EditArticleHeader from 'dashboard/routes/dashboard/helpcenter/components/Header/EditArticleHeader';
+import EditArticleHeader from 'dashboard/routes/dashboard/helpcenter/components/Header/EditArticleHeader.vue';
 import ArticleEditor from '../../components/ArticleEditor.vue';
 import portalMixin from '../../mixins/portalMixin';
 import alertMixin from 'shared/mixins/alertMixin.js';
 import ArticleSettings from './ArticleSettings.vue';
+import { PORTALS_EVENTS } from '../../../../../helper/AnalyticsHelper/events';
 export default {
   components: {
     EditArticleHeader,
@@ -90,6 +93,9 @@ export default {
               recentlyCreated: true,
             },
           });
+          this.$track(PORTALS_EVENTS.CREATE_ARTICLE, {
+            locale: this.locale,
+          });
         } catch (error) {
           this.alertMessage =
             error?.message ||
@@ -111,22 +117,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.article-container {
-  display: flex;
-  padding: 0 var(--space-normal);
-  width: 100%;
-  flex: 1;
-  overflow: auto;
-}
-.new-article--container {
-  flex: 1;
-  flex-shrink: 0;
-  overflow-y: auto;
-}
-.is-sidebar-open {
-  flex: 0.7;
-  flex-grow: 1;
-}
-</style>

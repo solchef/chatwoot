@@ -16,6 +16,29 @@ const MESSAGE_CONDITION_VALUES = [
   },
 ];
 
+export const PRIORITY_CONDITION_VALUES = [
+  {
+    id: 'nil',
+    name: 'None',
+  },
+  {
+    id: 'low',
+    name: 'Low',
+  },
+  {
+    id: 'medium',
+    name: 'Medium',
+  },
+  {
+    id: 'high',
+    name: 'High',
+  },
+  {
+    id: 'urgent',
+    name: 'Urgent',
+  },
+];
+
 export const getCustomAttributeInputType = key => {
   const customAttributeMap = {
     date: 'date',
@@ -97,11 +120,30 @@ export const generateConditionOptions = (options, key = 'id') => {
   });
 };
 
-export const getActionOptions = ({ teams, labels, type }) => {
+// Add the "None" option to the agent list
+export const agentList = agents => [
+  {
+    id: 'nil',
+    name: 'None',
+  },
+  ...(agents || []),
+];
+
+export const getActionOptions = ({
+  agents,
+  teams,
+  labels,
+  slaPolicies,
+  type,
+}) => {
   const actionsMap = {
+    assign_agent: agentList(agents),
     assign_team: teams,
     send_email_to_team: teams,
     add_label: generateConditionOptions(labels, 'title'),
+    remove_label: generateConditionOptions(labels, 'title'),
+    change_priority: PRIORITY_CONDITION_VALUES,
+    add_sla: slaPolicies,
   };
   return actionsMap[type];
 };
@@ -135,8 +177,10 @@ export const getConditionOptions = ({
     team_id: teams,
     campaigns: generateConditionOptions(campaigns),
     browser_language: languages,
+    conversation_language: languages,
     country_code: countries,
     message_type: MESSAGE_CONDITION_VALUES,
+    priority: PRIORITY_CONDITION_VALUES,
   };
 
   return conditionFilterMaps[type];
@@ -164,6 +208,17 @@ export const getDefaultConditions = eventName => {
       },
     ];
   }
+  if (eventName === 'conversation_opened') {
+    return [
+      {
+        attribute_key: 'browser_language',
+        filter_operator: 'equal_to',
+        values: '',
+        query_operator: 'and',
+        custom_attribute_type: '',
+      },
+    ];
+  }
   return [
     {
       attribute_key: 'status',
@@ -178,7 +233,7 @@ export const getDefaultConditions = eventName => {
 export const getDefaultActions = () => {
   return [
     {
-      action_name: 'assign_team',
+      action_name: 'assign_agent',
       action_params: [],
     },
   ];
@@ -212,8 +267,10 @@ export const isCustomAttribute = (attrs, key) => {
 };
 
 export const generateCustomAttributes = (
+  // eslint-disable-next-line default-param-last
   conversationAttributes = [],
-  contactAttribtues = [],
+  // eslint-disable-next-line default-param-last
+  contactAttributes = [],
   conversationlabel,
   contactlabel
 ) => {
@@ -228,14 +285,14 @@ export const generateCustomAttributes = (
       ...conversationAttributes
     );
   }
-  if (contactAttribtues.length) {
+  if (contactAttributes.length) {
     customAttributes.push(
       {
         key: `contact_custom_attribute`,
         name: contactlabel,
         disabled: true,
       },
-      ...contactAttribtues
+      ...contactAttributes
     );
   }
   return customAttributes;

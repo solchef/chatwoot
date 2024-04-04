@@ -39,11 +39,22 @@
           "PLACEHOLDER": "Benutzerdefinierten Attributschlüssel eingeben",
           "ERROR": "Schlüssel ist erforderlich",
           "IN_VALID": "Ungültiger Schlüssel"
+        },
+        "REGEX_PATTERN": {
+          "LABEL": "Regex Pattern",
+          "PLACEHOLDER": "Please enter custom attribute regex pattern. (Optional)"
+        },
+        "REGEX_CUE": {
+          "LABEL": "Regex Cue",
+          "PLACEHOLDER": "Please enter regex pattern hint. (Optional)"
+        },
+        "ENABLE_REGEX": {
+          "LABEL": "Enable regex validation"
         }
       },
       "API": {
-        "SUCCESS_MESSAGE": "Benutzerdefiniertes Attribut erfolgreich hinzugefügt",
-        "ERROR_MESSAGE": "Konnte kein benutzerdefiniertes Attribut erstellen. Bitte versuchen Sie es später erneut"
+        "SUCCESS_MESSAGE": "Benutzerdefiniertes Attribut erfolgreich hinzugefügt!",
+        "ERROR_MESSAGE": "Konnte kein benutzerdefiniertes Attribut erstellen, bitte versuchen Sie es später erneut."
       }
     },
     "DELETE": {
@@ -93,6 +104,17 @@
       "EMPTY_RESULT": {
         "404": "Es wurden keine benutzerdefinierten Attribute erstellt",
         "NOT_FOUND": "Es sind keine benutzerdefinierten Attribute konfiguriert"
+      },
+      "REGEX_PATTERN": {
+        "LABEL": "Regex Pattern",
+        "PLACEHOLDER": "Please enter custom attribute regex pattern. (Optional)"
+      },
+      "REGEX_CUE": {
+        "LABEL": "Regex Cue",
+        "PLACEHOLDER": "Please enter regex pattern hint. (Optional)"
+      },
+      "ENABLE_REGEX": {
+        "LABEL": "Enable regex validation"
       }
     }
   }

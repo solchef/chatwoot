@@ -74,6 +74,11 @@
           "LABEL": "Dirección de email",
           "PLACEHOLDER": "Por favor, introduzca una dirección de correo electrónico del agente"
         },
+        "AGENT_AVAILABILITY": {
+          "LABEL": "Disponibilidad",
+          "PLACEHOLDER": "Por favor, seleccione un estado de disponibilidad",
+          "ERROR": "La disponibilidad es necesaria"
+        },
         "SUBMIT": "Editar agente"
       },
       "BUTTON_TEXT": "Editar",
@@ -101,11 +106,12 @@
       "SEARCH": {
         "NO_RESULTS": {
           "AGENT": "No se encontraron agentes",
-          "TEAM": "No se encontro equipo"
+          "TEAM": "No se encontraron equipos"
         },
         "PLACEHOLDER": {
           "AGENT": "Buscar agentes",
-          "TEAM": "Buscar equipos"
+          "TEAM": "Buscar equipos",
+          "INPUT": "Búsqueda por agentes"
         }
       }
     }

@@ -1,8 +1,8 @@
 <template>
-  <div class="column content-box">
+  <div class="flex-1 overflow-auto">
     <woot-button
       color-scheme="success"
-      class-names="button--fixed-right-top"
+      class-names="button--fixed-top"
       icon="add-circle"
       @click="openAddPopup()"
     >
@@ -10,11 +10,11 @@
     </woot-button>
 
     <!-- List Canned Response -->
-    <div class="row">
-      <div class="small-8 columns with-right-space ">
+    <div class="flex flex-row gap-4 p-8">
+      <div class="w-full xl:w-3/5">
         <p
           v-if="!uiFlags.fetchingList && !records.length"
-          class="no-items-error-message"
+          class="flex flex-col items-center justify-center h-full"
         >
           {{ $t('CANNED_MGMT.LIST.404') }}
         </p>
@@ -32,6 +32,7 @@
             <th
               v-for="thHeader in $t('CANNED_MGMT.LIST.TABLE_HEADER')"
               :key="thHeader"
+              class="last:text-right"
             >
               {{ thHeader }}
             </th>
@@ -42,13 +43,18 @@
               :key="cannedItem.short_code"
             >
               <!-- Short Code  -->
-              <td class="short-code">
+              <td
+                class="w-[8.75rem] truncate max-w-[8.75rem]"
+                :title="cannedItem.short_code"
+              >
                 {{ cannedItem.short_code }}
               </td>
               <!-- Content -->
-              <td class="wrap-break-words">{{ cannedItem.content }}</td>
+              <td class="break-all whitespace-normal">
+                {{ cannedItem.content }}
+              </td>
               <!-- Action Buttons -->
-              <td class="button-wrapper">
+              <td class="flex justify-end gap-1 min-w-[12.5rem]">
                 <woot-button
                   v-tooltip.top="$t('CANNED_MGMT.EDIT.BUTTON_TEXT')"
                   variant="smooth"
@@ -73,7 +79,7 @@
         </table>
       </div>
 
-      <div class="small-4 columns">
+      <div class="hidden w-1/3 xl:block">
         <span v-dompurify-html="$t('CANNED_MGMT.SIDEBAR_TXT')" />
       </div>
     </div>
@@ -108,8 +114,8 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import AddCanned from './AddCanned';
-import EditCanned from './EditCanned';
+import AddCanned from './AddCanned.vue';
+import EditCanned from './EditCanned.vue';
 
 export default {
   components: {
@@ -198,19 +204,12 @@ export default {
         .then(() => {
           this.showAlert(this.$t('CANNED_MGMT.DELETE.API.SUCCESS_MESSAGE'));
         })
-        .catch(() => {
-          this.showAlert(this.$t('CANNED_MGMT.DELETE.API.ERROR_MESSAGE'));
+        .catch(error => {
+          const errorMessage =
+            error?.message || this.$t('CANNED_MGMT.DELETE.API.ERROR_MESSAGE');
+          this.showAlert(errorMessage);
         });
     },
   },
 };
 </script>
-<style scoped>
-.short-code {
-  width: 14rem;
-}
-.wrap-break-words {
-  word-break: break-all;
-  white-space: normal;
-}
-</style>

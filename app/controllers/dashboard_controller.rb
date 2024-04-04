@@ -1,6 +1,7 @@
 class DashboardController < ActionController::Base
   include SwitchLocale
 
+  before_action :set_application_pack
   before_action :set_global_config
   around_action :switch_locale
   before_action :ensure_installation_onboarding, only: [:index]
@@ -14,9 +15,10 @@ class DashboardController < ActionController::Base
 
   def set_global_config
     @global_config = GlobalConfig.get(
-      'LOGO', 'LOGO_THUMBNAIL',
+      'LOGO', 'LOGO_DARK', 'LOGO_THUMBNAIL',
       'INSTALLATION_NAME',
       'WIDGET_BRAND_URL', 'TERMS_URL',
+      'BRAND_URL', 'BRAND_NAME',
       'PRIVACY_URL',
       'DISPLAY_MANIFEST',
       'CREATE_NEW_ACCOUNT_FROM_DASHBOARD',
@@ -54,8 +56,18 @@ class DashboardController < ActionController::Base
       VAPID_PUBLIC_KEY: VapidService.public_key,
       ENABLE_ACCOUNT_SIGNUP: GlobalConfigService.load('ENABLE_ACCOUNT_SIGNUP', 'false'),
       FB_APP_ID: GlobalConfigService.load('FB_APP_ID', ''),
-      FACEBOOK_API_VERSION: 'v14.0',
-      IS_ENTERPRISE: ChatwootApp.enterprise?
+      FACEBOOK_API_VERSION: GlobalConfigService.load('FACEBOOK_API_VERSION', 'v17.0'),
+      IS_ENTERPRISE: ChatwootApp.enterprise?,
+      AZURE_APP_ID: ENV.fetch('AZURE_APP_ID', ''),
+      GIT_SHA: GIT_HASH
     }
+  end
+
+  def set_application_pack
+    @application_pack = if request.path.include?('/auth') || request.path.include?('/login')
+                          'v3app'
+                        else
+                          'application'
+                        end
   end
 end

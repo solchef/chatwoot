@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
   # AUTH STARTS
-  match 'auth/:provider/callback', to: 'home#callback', via: [:get, :post]
   mount_devise_token_auth_for 'User', at: 'auth', controllers: {
     confirmations: 'devise_overrides/confirmations',
     passwords: 'devise_overrides/passwords',
     sessions: 'devise_overrides/sessions',
-    token_validations: 'devise_overrides/token_validations'
+    token_validations: 'devise_overrides/token_validations',
+    omniauth_callbacks: 'devise_overrides/omniauth_callbacks'
   }, via: [:get, :post]
 
   ## renders the frontend paths only if its not an api only server
@@ -17,12 +17,15 @@ Rails.application.routes.draw do
     get '/app', to: 'dashboard#index'
     get '/app/*params', to: 'dashboard#index'
     get '/app/accounts/:account_id/settings/inboxes/new/twitter', to: 'dashboard#index', as: 'app_new_twitter_inbox'
+    get '/app/accounts/:account_id/settings/inboxes/new/microsoft', to: 'dashboard#index', as: 'app_new_microsoft_inbox'
     get '/app/accounts/:account_id/settings/inboxes/new/:inbox_id/agents', to: 'dashboard#index', as: 'app_twitter_inbox_agents'
+    get '/app/accounts/:account_id/settings/inboxes/new/:inbox_id/agents', to: 'dashboard#index', as: 'app_microsoft_inbox_agents'
 
     resource :widget, only: [:show]
     namespace :survey do
       resources :responses, only: [:show]
     end
+    resource :slack_uploads, only: [:show]
   end
 
   get '/api', to: 'api#index'
@@ -33,17 +36,27 @@ Rails.application.routes.draw do
       resources :accounts, only: [:create, :show, :update] do
         member do
           post :update_active_at
+          get :cache_keys
         end
 
         scope module: :accounts do
           namespace :actions do
             resource :contact_merge, only: [:create]
           end
-
           resource :bulk_actions, only: [:create]
-          resources :agents, only: [:index, :create, :update, :destroy]
-          resources :agent_bots, only: [:index, :create, :show, :update, :destroy]
+          resources :agents, only: [:index, :create, :update, :destroy] do
+            post :bulk_create, on: :collection
+          end
+          resources :agent_bots, only: [:index, :create, :show, :update, :destroy] do
+            delete :avatar, on: :member
+          end
+          resources :contact_inboxes, only: [] do
+            collection do
+              post :filter
+            end
+          end
           resources :assignable_agents, only: [:index]
+          resource :audit_logs, only: [:show]
           resources :callbacks, only: [] do
             collection do
               post :register_facebook_page
@@ -55,27 +68,32 @@ Rails.application.routes.draw do
           resources :canned_responses, only: [:index, :create, :update, :destroy]
           resources :automation_rules, only: [:index, :create, :show, :update, :destroy] do
             post :clone
-            post :attach_file, on: :collection
           end
           resources :macros, only: [:index, :create, :show, :update, :destroy] do
             post :execute, on: :member
-            post :attach_file, on: :collection
           end
+          resources :sla_policies, only: [:index, :create, :show, :update, :destroy]
           resources :campaigns, only: [:index, :create, :show, :update, :destroy]
           resources :dashboard_apps, only: [:index, :show, :create, :update, :destroy]
           namespace :channels do
             resource :twilio_channel, only: [:create]
           end
-          resources :conversations, only: [:index, :create, :show] do
+          resources :conversations, only: [:index, :create, :show, :update] do
             collection do
               get :meta
               get :search
               post :filter
             end
             scope module: :conversations do
-              resources :messages, only: [:index, :create, :destroy]
+              resources :messages, only: [:index, :create, :destroy] do
+                member do
+                  post :translate
+                  post :retry
+                end
+              end
               resources :assignments, only: [:create]
               resources :labels, only: [:create, :index]
+              resource :participants, only: [:show, :create, :update, :destroy]
               resource :direct_uploads, only: [:create]
             end
             member do
@@ -83,10 +101,20 @@ Rails.application.routes.draw do
               post :unmute
               post :transcript
               post :toggle_status
+              post :toggle_priority
               post :toggle_typing_status
               post :update_last_seen
               post :unread
               post :custom_attributes
+              get :attachments
+            end
+          end
+
+          resources :search, only: [:index] do
+            collection do
+              get :conversations
+              get :messages
+              get :contacts
             end
           end
 
@@ -96,6 +124,7 @@ Rails.application.routes.draw do
               get :search
               post :filter
               post :import
+              get :export
             end
             member do
               get :contactable_inboxes
@@ -115,11 +144,18 @@ Rails.application.routes.draw do
               get :download
             end
           end
+          resources :applied_slas, only: [:index] do
+            collection do
+              get :metrics
+              get :download
+            end
+          end
           resources :custom_attribute_definitions, only: [:index, :show, :create, :update, :destroy]
           resources :custom_filters, only: [:index, :show, :create, :update, :destroy]
           resources :inboxes, only: [:index, :show, :create, :update, :destroy] do
             get :assignable_agents, on: :member
             get :campaigns, on: :member
+            get :response_sources, on: :member
             get :agent_bot, on: :member
             post :set_agent_bot, on: :member
             delete :avatar, on: :member
@@ -131,11 +167,25 @@ Rails.application.routes.draw do
             end
           end
           resources :labels, only: [:index, :show, :create, :update, :destroy]
+          resources :response_sources, only: [:create] do
+            collection do
+              post :parse
+            end
+            member do
+              post :add_document
+              post :remove_document
+            end
+          end
 
-          resources :notifications, only: [:index, :update] do
+          resources :notifications, only: [:index, :update, :destroy] do
             collection do
               post :read_all
               get :unread_count
+              post :destroy_all
+            end
+            member do
+              post :snooze
+              post :unread
             end
           end
           resource :notification_settings, only: [:show, :update]
@@ -153,11 +203,29 @@ Rails.application.routes.draw do
             resource :authorization, only: [:create]
           end
 
+          namespace :microsoft do
+            resource :authorization, only: [:create]
+          end
+
           resources :webhooks, only: [:index, :create, :update, :destroy]
           namespace :integrations do
             resources :apps, only: [:index, :show]
-            resources :hooks, only: [:create, :update, :destroy]
-            resource :slack, only: [:create, :update, :destroy], controller: 'slack'
+            resources :hooks, only: [:show, :create, :update, :destroy] do
+              member do
+                post :process_event
+              end
+            end
+            resource :slack, only: [:create, :update, :destroy], controller: 'slack' do
+              member do
+                get :list_all_channels
+              end
+            end
+            resource :dyte, controller: 'dyte', only: [] do
+              collection do
+                post :create_a_meeting
+                post :add_participant_to_meeting
+              end
+            end
           end
           resources :working_hours, only: [:update]
 
@@ -165,10 +233,15 @@ Rails.application.routes.draw do
             member do
               patch :archive
               put :add_members
+              delete :logo
             end
             resources :categories
-            resources :articles
+            resources :articles do
+              post :reorder, on: :collection
+            end
           end
+
+          resources :upload, only: [:create]
         end
       end
       # end of account scoped api routes
@@ -184,6 +257,7 @@ Rails.application.routes.draw do
           post :availability
           post :auto_offline
           put :set_active_account
+          post :resend_confirmation
         end
       end
 
@@ -197,6 +271,8 @@ Rails.application.routes.draw do
         resources :messages, only: [:index, :create, :update]
         resources :conversations, only: [:index, :create] do
           collection do
+            post :destroy_custom_attributes
+            post :set_custom_attributes
             post :update_last_seen
             post :toggle_typing
             post :transcript
@@ -211,19 +287,37 @@ Rails.application.routes.draw do
         end
         resources :inbox_members, only: [:index]
         resources :labels, only: [:create, :destroy]
+        namespace :integrations do
+          resource :dyte, controller: 'dyte', only: [] do
+            collection do
+              post :add_participant_to_meeting
+            end
+          end
+        end
       end
     end
 
     namespace :v2 do
-      resources :accounts, only: [], module: :accounts do
-        resources :reports, only: [:index] do
-          collection do
-            get :summary
-            get :agents
-            get :inboxes
-            get :labels
-            get :teams
-            get :conversations
+      resources :accounts, only: [:create] do
+        scope module: :accounts do
+          resources :summary_reports, only: [] do
+            collection do
+              get :agent
+              get :team
+            end
+          end
+          resources :reports, only: [:index] do
+            collection do
+              get :summary
+              get :bot_summary
+              get :agents
+              get :inboxes
+              get :labels
+              get :teams
+              get :conversations
+              get :conversation_traffic
+              get :bot_metrics
+            end
           end
         end
       end
@@ -238,6 +332,7 @@ Rails.application.routes.draw do
             member do
               post :checkout
               post :subscription
+              get :limits
             end
           end
         end
@@ -257,7 +352,9 @@ Rails.application.routes.draw do
             get :login
           end
         end
-        resources :agent_bots, only: [:index, :create, :show, :update, :destroy]
+        resources :agent_bots, only: [:index, :create, :show, :update, :destroy] do
+          delete :avatar, on: :member
+        end
         resources :accounts, only: [:create, :show, :update, :destroy] do
           resources :account_users, only: [:index, :create] do
             collection do
@@ -277,7 +374,13 @@ Rails.application.routes.draw do
         resources :inboxes do
           scope module: :inboxes do
             resources :contacts, only: [:create, :show, :update] do
-              resources :conversations, only: [:index, :create] do
+              resources :conversations, only: [:index, :create, :show] do
+                member do
+                  post :toggle_status
+                  post :toggle_typing
+                  post :update_last_seen
+                end
+
                 resources :messages, only: [:index, :create, :update]
               end
             end
@@ -293,9 +396,9 @@ Rails.application.routes.draw do
   get 'hc/:slug/:locale', to: 'public/api/v1/portals#show'
   get 'hc/:slug/:locale/articles', to: 'public/api/v1/portals/articles#index'
   get 'hc/:slug/:locale/categories', to: 'public/api/v1/portals/categories#index'
-  get 'hc/:slug/:locale/:category_slug', to: 'public/api/v1/portals/categories#show'
-  get 'hc/:slug/:locale/:category_slug/articles', to: 'public/api/v1/portals/articles#index'
-  get 'hc/:slug/:locale/:category_slug/:id', to: 'public/api/v1/portals/articles#show'
+  get 'hc/:slug/:locale/categories/:category_slug', to: 'public/api/v1/portals/categories#show'
+  get 'hc/:slug/:locale/categories/:category_slug/articles', to: 'public/api/v1/portals/articles#index'
+  get 'hc/:slug/articles/:article_slug', to: 'public/api/v1/portals/articles#show'
 
   # ----------------------------------------------------------------------
   # Used in mailer templates
@@ -324,12 +427,16 @@ Rails.application.routes.draw do
 
   namespace :twilio do
     resources :callback, only: [:create]
+    resources :delivery_status, only: [:create]
   end
+
+  get 'microsoft/callback', to: 'microsoft/callbacks#show'
 
   # ----------------------------------------------------------------------
   # Routes for external service verifications
   get 'apple-app-site-association' => 'apple_app#site_association'
   get '.well-known/assetlinks.json' => 'android_app#assetlinks'
+  get '.well-known/microsoft-identity-association.json' => 'microsoft#identity_association'
 
   # ----------------------------------------------------------------------
   # Internal Monitoring Routes
@@ -345,14 +452,31 @@ Rails.application.routes.draw do
       resource :app_config, only: [:show, :create]
 
       # order of resources affect the order of sidebar navigation in super admin
-      resources :accounts, only: [:index, :new, :create, :show, :edit, :update] do
+      resources :accounts, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
         post :seed, on: :member
+        post :reset_cache, on: :member
       end
-      resources :users, only: [:index, :new, :create, :show, :edit, :update, :destroy]
+      resources :users, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
+        delete :avatar, on: :member, action: :destroy_avatar
+      end
+
       resources :access_tokens, only: [:index, :show]
+      resources :response_sources, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+        get :chat, on: :member
+        post :chat, on: :member, action: :process_chat
+      end
+      resources :response_documents, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+      resources :responses, only: [:index, :show, :new, :create, :edit, :update, :destroy]
       resources :installation_configs, only: [:index, :new, :create, :show, :edit, :update]
-      resources :agent_bots, only: [:index, :new, :create, :show, :edit, :update]
+      resources :agent_bots, only: [:index, :new, :create, :show, :edit, :update] do
+        delete :avatar, on: :member, action: :destroy_avatar
+      end
       resources :platform_apps, only: [:index, :new, :create, :show, :edit, :update]
+      resource :instance_status, only: [:show]
+
+      resource :settings, only: [:show] do
+        get :refresh, on: :collection
+      end
 
       # resources that doesn't appear in primary navigation in super admin
       resources :account_users, only: [:new, :create, :destroy]

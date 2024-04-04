@@ -11,6 +11,8 @@
       emoji=""
       :value="attribute.value"
       :show-actions="true"
+      :attribute-regex="attribute.regex_pattern"
+      :regex-cue="attribute.regex_cue"
       :class="attributeClass"
       @update="onUpdate"
       @delete="onDelete"
@@ -97,13 +99,13 @@ export default {
 <style scoped lang="scss">
 .custom-attributes--panel {
   .conversation--attribute {
-    border-bottom: 1px solid var(--color-border-light);
+    @apply border-slate-50 dark:border-slate-700 border-b border-solid;
   }
 
   &.odd {
     .conversation--attribute {
       &:nth-child(2n + 1) {
-        background: var(--s-25);
+        @apply bg-slate-25 dark:bg-slate-800;
       }
     }
   }
@@ -111,7 +113,7 @@ export default {
   &.even {
     .conversation--attribute {
       &:nth-child(2n) {
-        background: var(--s-25);
+        @apply bg-slate-25 dark:bg-slate-800;
       }
     }
   }

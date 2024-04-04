@@ -1,64 +1,102 @@
 <template>
-  <tr class="row--article-block">
-    <td>
-      <div class="article-content-wrap">
-        <div class="article-block">
-          <router-link :to="articleUrl(id)">
-            <h6 :title="title" class="sub-block-title text-truncate">
-              {{ title }}
-            </h6>
-          </router-link>
-          <div class="author">
-            <span class="by">{{ $t('HELP_CENTER.TABLE.COLUMNS.BY') }}</span>
-            <span class="name">{{ articleAuthorName }}</span>
+  <div
+    class="text-slate-700 dark:text-slate-100 last:border-b-0 bg-white dark:bg-slate-900 my-0 -mx-4 grid grid-cols-1 lg:grid-cols-12 gap-4 border-b border-slate-50 dark:border-slate-800 px-6 py-3"
+  >
+    <span class="items-start flex gap-2 col-span-6 text-left">
+      <fluent-icon
+        v-if="showDragIcon"
+        size="20"
+        class="block cursor-move flex-shrink-0 h-4 mt-1 w-4 text-slate-200 dark:text-slate-700 hover:text-slate-400 hover:dark:text-slate-200"
+        icon="grab-handle"
+      />
+      <div class="flex flex-col truncate">
+        <router-link :to="articleUrl(id)">
+          <h6
+            :title="title"
+            class="text-base ltr:text-left rtl:text-right text-slate-800 dark:text-slate-100 mb-0.5 leading-6 font-medium hover:underline overflow-hidden whitespace-nowrap text-ellipsis"
+          >
+            {{ title }}
+          </h6>
+        </router-link>
+        <div class="flex gap-1 items-center">
+          <Thumbnail
+            v-if="author"
+            :src="author.thumbnail"
+            :username="author.name"
+            size="14px"
+          />
+          <div
+            v-else
+            v-tooltip.right="
+              $t('HELP_CENTER.TABLE.COLUMNS.AUTHOR_NOT_AVAILABLE')
+            "
+            class="flex items-center justify-center rounded w-3.5 h-3.5 bg-woot-100 dark:bg-woot-700"
+          >
+            <fluent-icon
+              icon="person"
+              type="filled"
+              size="10"
+              class="text-woot-300 dark:text-woot-300"
+            />
           </div>
+          <span class="font-normal text-slate-700 dark:text-slate-200 text-sm">
+            {{ articleAuthorName }}
+          </span>
         </div>
       </div>
-    </td>
-    <td>
+    </span>
+    <span class="flex items-center col-span-2">
       <router-link
-        class="fs-small button clear link secondary"
+        class="text-sm hover:underline p-0.5 truncate hover:bg-slate-25 hover:rounded-md"
         :to="getCategoryRoute(category.slug)"
       >
-        <span
-          :title="category.name"
-          class="category-link-content text-ellipsis"
-        >
+        <span :title="category.name">
           {{ category.name }}
         </span>
       </router-link>
-    </td>
-    <td>
-      <span class="fs-small">
-        {{ readCount }}
+    </span>
+    <span
+      class="flex items-center text-xs lg:text-sm"
+      :title="formattedViewCount"
+    >
+      {{ readableViewCount }}
+      <span class="lg:hidden ml-1">
+        {{ ` ${$t('HELP_CENTER.TABLE.HEADERS.READ_COUNT')}` }}
       </span>
-    </td>
-    <td>
-      <div>
-        <woot-label
-          :title="status"
-          size="small"
-          variant="smooth"
-          :color-scheme="labelColor"
-        />
-      </div>
-    </td>
-    <td>
-      <span class="fs-small">
-        {{ lastUpdatedAt }}
-      </span>
-    </td>
-  </tr>
+    </span>
+    <span class="flex items-center capitalize">
+      <woot-label
+        class="!mb-0"
+        :title="status"
+        size="small"
+        variant="smooth"
+        :color-scheme="labelColor"
+      />
+    </span>
+    <span
+      class="flex items-center justify-end col-span-2 first-letter:uppercase text-slate-700 dark:text-slate-100 text-xs"
+    >
+      {{ lastUpdatedAt }}
+    </span>
+  </div>
 </template>
+
 <script>
 import timeMixin from 'dashboard/mixins/time';
 import portalMixin from '../mixins/portalMixin';
 import { frontendURL } from 'dashboard/helper/URLHelper';
+import Thumbnail from 'dashboard/components/widgets/Thumbnail.vue';
 
 export default {
+  components: {
+    Thumbnail,
+  },
   mixins: [timeMixin, portalMixin],
-
   props: {
+    showDragIcon: {
+      type: Boolean,
+      default: false,
+    },
     id: {
       type: Number,
       required: true,
@@ -76,7 +114,7 @@ export default {
       type: Object,
       default: () => {},
     },
-    readCount: {
+    views: {
       type: Number,
       default: 0,
     },
@@ -95,8 +133,17 @@ export default {
     lastUpdatedAt() {
       return this.dynamicTime(this.updatedAt);
     },
+    formattedViewCount() {
+      return Number(this.views || 0).toLocaleString('en');
+    },
+    readableViewCount() {
+      return new Intl.NumberFormat('en-US', {
+        notation: 'compact',
+        compactDisplay: 'short',
+      }).format(this.views || 0);
+    },
     articleAuthorName() {
-      return this.author.name;
+      return this.author?.name || '-';
     },
     labelColor() {
       switch (this.status) {
@@ -119,50 +166,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-td {
-  font-weight: var(--font-weight-normal);
-  color: var(--s-700);
-  font-size: var(--font-size-mini);
-  padding-left: 0;
-}
-.row--article-block {
-  border-bottom-color: transparent;
-  .article-content-wrap {
-    align-items: center;
-    display: flex;
-    text-align: left;
-  }
-  .article-block {
-    min-width: 0;
-  }
-
-  .sub-block-title {
-    margin-bottom: 0;
-    line-height: var(--space-medium);
-    height: var(--space-medium);
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  .author {
-    .by {
-      font-weight: var(--font-weight-normal);
-      color: var(--s-500);
-      font-size: var(--font-size-small);
-    }
-    .name {
-      font-weight: var(--font-weight-medium);
-      color: var(--s-600);
-      font-size: var(--font-size-small);
-    }
-  }
-}
-
-.category-link-content {
-  max-width: 16rem;
-  line-height: 1.5;
-}
-</style>

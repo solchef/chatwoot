@@ -1,8 +1,15 @@
 <template>
-  <base-icon :size="size" :icon="icon" :type="type" :icons="icons" />
+  <base-icon
+    :size="size"
+    :icon="icon"
+    :type="type"
+    :icons="icons"
+    :view-box="viewBox"
+    :icon-lib="iconLib"
+  />
 </template>
 <script>
-import BaseIcon from './Icon';
+import BaseIcon from './Icon.vue';
 import icons from './dashboard-icons.json';
 
 export default {
@@ -22,6 +29,14 @@ export default {
     type: {
       type: String,
       default: 'outline',
+    },
+    viewBox: {
+      type: String,
+      default: '0 0 24 24',
+    },
+    iconLib: {
+      type: String,
+      default: 'fluent',
     },
   },
   data() {

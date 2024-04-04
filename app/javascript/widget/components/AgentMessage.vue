@@ -1,7 +1,9 @@
 <template>
   <div
-    class="agent-message-wrap"
-    :class="{ 'has-response': hasRecordedResponse || isASubmittedForm }"
+    class="agent-message-wrap group"
+    :class="{
+      'has-response': hasRecordedResponse || isASubmittedForm,
+    }"
   >
     <div v-if="!isASubmittedForm" class="agent-message">
       <div class="avatar-wrap">
@@ -13,40 +15,55 @@
         />
       </div>
       <div class="message-wrap">
-        <AgentMessageBubble
-          v-if="shouldDisplayAgentMessage"
-          :content-type="contentType"
-          :message-content-attributes="messageContentAttributes"
-          :message-id="message.id"
-          :message-type="messageType"
-          :message="message.content"
-        />
-        <div
-          v-if="hasAttachments"
-          class="chat-bubble has-attachment agent"
-          :class="(wrapClass, $dm('bg-white', 'dark:bg-slate-50'))"
-        >
-          <div v-for="attachment in message.attachments" :key="attachment.id">
-            <image-bubble
-              v-if="attachment.file_type === 'image' && !hasImageError"
-              :url="attachment.data_url"
-              :thumb="attachment.data_url"
-              :readable-time="readableTime"
-              @error="onImageLoadError"
+        <div v-if="hasReplyTo" class="flex mt-2 mb-1 text-xs">
+          <reply-to-chip :reply-to="replyTo" />
+        </div>
+        <div class="flex gap-1">
+          <div class="space-y-2">
+            <AgentMessageBubble
+              v-if="shouldDisplayAgentMessage"
+              :content-type="contentType"
+              :message-content-attributes="messageContentAttributes"
+              :message-id="message.id"
+              :message-type="messageType"
+              :message="message.content"
             />
-            <audio v-else-if="attachment.file_type === 'audio'" controls>
-              <source :src="attachment.data_url" />
-            </audio>
-            <file-bubble v-else :url="attachment.data_url" />
+            <div
+              v-if="hasAttachments"
+              class="chat-bubble has-attachment agent"
+              :class="(wrapClass, $dm('bg-white', 'dark:bg-slate-700'))"
+            >
+              <div
+                v-for="attachment in message.attachments"
+                :key="attachment.id"
+              >
+                <image-bubble
+                  v-if="attachment.file_type === 'image' && !hasImageError"
+                  :url="attachment.data_url"
+                  :thumb="attachment.data_url"
+                  :readable-time="readableTime"
+                  @error="onImageLoadError"
+                />
+                <audio v-else-if="attachment.file_type === 'audio'" controls>
+                  <source :src="attachment.data_url" />
+                </audio>
+                <file-bubble v-else :url="attachment.data_url" />
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col justify-end">
+            <message-reply-button
+              class="transition-opacity delay-75 opacity-0 group-hover:opacity-100 sm:opacity-0"
+              @click="toggleReply"
+            />
           </div>
         </div>
         <p
           v-if="message.showAvatar || hasRecordedResponse"
+          v-dompurify-html="agentName"
           class="agent-name"
           :class="$dm('text-slate-700', 'dark:text-slate-200')"
-        >
-          {{ agentName }}
-        </p>
+        />
       </div>
     </div>
 
@@ -62,17 +79,20 @@
 </template>
 
 <script>
-import UserMessage from 'widget/components/UserMessage';
-import AgentMessageBubble from 'widget/components/AgentMessageBubble';
+import UserMessage from 'widget/components/UserMessage.vue';
+import AgentMessageBubble from 'widget/components/AgentMessageBubble.vue';
+import MessageReplyButton from 'widget/components/MessageReplyButton.vue';
 import timeMixin from 'dashboard/mixins/time';
-import ImageBubble from 'widget/components/ImageBubble';
-import FileBubble from 'widget/components/FileBubble';
-import Thumbnail from 'dashboard/components/widgets/Thumbnail';
+import ImageBubble from 'widget/components/ImageBubble.vue';
+import FileBubble from 'widget/components/FileBubble.vue';
+import Thumbnail from 'dashboard/components/widgets/Thumbnail.vue';
 import { MESSAGE_TYPE } from 'widget/helpers/constants';
 import configMixin from '../mixins/configMixin';
 import messageMixin from '../mixins/messageMixin';
 import { isASubmittedFormMessage } from 'shared/helpers/MessageTypeHelper';
 import darkModeMixin from 'widget/mixins/darkModeMixin.js';
+import ReplyToChip from 'widget/components/ReplyToChip.vue';
+import { BUS_EVENTS } from 'shared/constants/busEvents';
 
 export default {
   name: 'AgentMessage',
@@ -82,10 +102,16 @@ export default {
     Thumbnail,
     UserMessage,
     FileBubble,
+    MessageReplyButton,
+    ReplyToChip,
   },
   mixins: [timeMixin, configMixin, messageMixin, darkModeMixin],
   props: {
     message: {
+      type: Object,
+      default: () => {},
+    },
+    replyTo: {
       type: Object,
       default: () => {},
     },
@@ -119,13 +145,15 @@ export default {
       return type;
     },
     agentName() {
-      if (this.message.message_type === MESSAGE_TYPE.TEMPLATE) {
-        return 'Bot';
-      }
       if (this.message.sender) {
         return this.message.sender.available_name || this.message.sender.name;
       }
-      return 'Bot';
+
+      if (this.useInboxAvatarForBot) {
+        return this.channelConfig.websiteName;
+      }
+
+      return this.$t('UNREAD_VIEW.BOT');
     },
     avatarUrl() {
       // eslint-disable-next-line
@@ -156,9 +184,8 @@ export default {
 
       if (this.messageContentAttributes.submitted_values) {
         if (this.contentType === 'input_select') {
-          const [
-            selectionOption = {},
-          ] = this.messageContentAttributes.submitted_values;
+          const [selectionOption = {}] =
+            this.messageContentAttributes.submitted_values;
           return { content: selectionOption.title || selectionOption.value };
         }
       }
@@ -180,6 +207,9 @@ export default {
         'has-text': this.shouldDisplayAgentMessage,
       };
     },
+    hasReplyTo() {
+      return this.replyTo && (this.replyTo.content || this.replyTo.attachments);
+    },
   },
   watch: {
     message() {
@@ -192,6 +222,9 @@ export default {
   methods: {
     onImageLoadError() {
       this.hasImageError = true;
+    },
+    toggleReply() {
+      bus.$emit(BUS_EVENTS.TOGGLE_REPLY_TO_MESSAGE, this.message);
     },
   },
 };
